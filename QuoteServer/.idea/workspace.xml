@@ -78,8 +78,11 @@
       <file leaf-file-name="QuoteServerThread.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/QuoteServerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="8" selection-start="1891" selection-end="1891" vertical-scroll-proportion="0.22849463" vertical-offset="0" max-vertical-offset="1292">
-              <folding />
+            <state line="42" column="5" selection-start="1923" selection-end="1923" vertical-scroll-proportion="0.29704303" vertical-offset="0" max-vertical-offset="1122">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#getNextQuote#0;class#QuoteServerThread#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -396,7 +399,10 @@
     <entry file="file://$PROJECT_DIR$/src/QuoteServerThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="41" column="8" selection-start="1891" selection-end="1891" vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="1292">
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getNextQuote#0;class#QuoteServerThread#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -425,8 +431,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/QuoteServerThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="8" selection-start="1891" selection-end="1891" vertical-scroll-proportion="0.22849463" vertical-offset="0" max-vertical-offset="1292">
-          <folding />
+        <state line="42" column="5" selection-start="1923" selection-end="1923" vertical-scroll-proportion="0.29704303" vertical-offset="0" max-vertical-offset="1122">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getNextQuote#0;class#QuoteServerThread#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
