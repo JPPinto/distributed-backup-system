@@ -25,13 +25,17 @@ public class Client {
 
         String request = "";
         if(args[2].equals("register"))
-            request = args[2] + args[3] + args[4];
+            request = args[2] + " " + args[3].replace(' ','_') + " " +  args[4];
         else
         if(args[2].equals("lookup"))
-            request = args[2] + args[3];
+            request = args[2] + " " + args[3].replace(' ','_');
         else {
+            System.out.println("Usage: no \"register\" or \"lookup\" comand found!");
             System.exit(-1);
         }
+
+        System.out.print(request);
+        in.nextLine();
 
         // send request
         byte[] buf = request.getBytes();
