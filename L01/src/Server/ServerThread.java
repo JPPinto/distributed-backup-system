@@ -48,8 +48,7 @@ public class ServerThread extends Thread {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
 
-                /* figure out response */
-                String input, response = "AD";
+                String input, response;
                 input = buf.toString();
 
                 /* Split input */
@@ -59,16 +58,39 @@ public class ServerThread extends Thread {
                 /* DEBUG */
                 System.out.println("Input: " + input);
                 System.out.println("Number of args: " + Integer.toString(numberOfArgs));
+                /* DEBUG END */
 
+                /* figure out response */
+                switch (numberOfArgs){
+                    case 2:
+                        if (commandArray[0].equals("LOOKUP")) {
+                            response = lookupPlate(commandArray[1]);
+                            break;
+                        }
+
+                    case 3:
+                        if (commandArray[0].equals("REGISTER")) {
+                            response = registerPlate(commandArray[1], commandArray[2]);
+                            break;
+                        }
+
+                    default:
+                        response = "INVALID_INPUT";
+                        break;
+                }
+
+                /* DEBUG */
+                System.out.println("Response: " + response);
                 /* DEBUG END */
 
                 buf = response.getBytes();
 
-                // send the response to the client at "address" and "port"
+                /* send the response to the client at "address" and "port" */
                 InetAddress address = packet.getAddress();
                 int port = packet.getPort();
                 packet = new DatagramPacket(buf, buf.length, address, port);
                 socket.send(packet);
+                
             } catch (IOException e) {
                 e.printStackTrace();
                 serverIsRunning = false;
@@ -81,13 +103,13 @@ public class ServerThread extends Thread {
     /**
      * Returns -1 if plate already exists, else returns the number of vehicles in the database.
      */
-    private String registerPlate(String plate){
+    private String registerPlate(String plate, String owner){
 
         return "-1";
     }
 
     /**
-     * Returns NOT_FOUND if plate doesn't exist, else returns the driver name.
+     * Returns NOT_FOUND if plate doesn't exist, else returns the owners name.
      */
     private String lookupPlate(String plate){
 
