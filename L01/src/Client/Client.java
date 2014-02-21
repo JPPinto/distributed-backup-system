@@ -18,8 +18,6 @@ public class Client {
             System.exit(0);
         }
 
-        Scanner in = new Scanner(System.in);
-
         // get a datagram socket
         DatagramSocket socket = new DatagramSocket();
 
@@ -33,9 +31,6 @@ public class Client {
             System.out.println("Usage: no \"register\" or \"lookup\" comand found!");
             System.exit(-1);
         }
-
-        System.out.print(request);
-        in.nextLine();
 
         // send request
         byte[] buf = request.getBytes();
