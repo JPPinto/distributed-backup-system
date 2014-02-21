@@ -1,5 +1,12 @@
+import java.io.IOException;
+
 /**
- * Created by xs on 21/02/14.
+ * SDIS Lab 01
+ * Eduardo Fernandes
+ * José Pinto
  */
 public class Server {
+    public static void main(String[] args) throws IOException {
+        new ServerThread().start();
+    }
 }
