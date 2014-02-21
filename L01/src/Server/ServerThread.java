@@ -64,14 +64,17 @@ public class ServerThread extends Thread {
                 /* figure out response */
                 switch (numberOfArgs){
                     case 2:
-                        if (commandArray[0].equals("LOOKUP")) {
+                        if (commandArray[0].equals("lookup")) {
+                            commandArray[1] = commandArray[1].substring(0,8);
                             response = lookupPlate(commandArray[1]);
                             break;
                         }
 
                     case 3:
-                        if (commandArray[0].equals("REGISTER")) {
-                            response = registerPlate(commandArray[1], commandArray[2]);
+                        if (commandArray[0].equals("register")) {
+                            commandArray[1] = commandArray[1].replace('_', ' ');
+                            commandArray[2] = commandArray[2].substring(0,8);
+                            response = registerPlate(commandArray[2], commandArray[1]);
                             break;
                         }
 
@@ -105,21 +108,20 @@ public class ServerThread extends Thread {
      * Returns -1 if plate already exists, else returns the number of vehicles in the database.
      */
     private String registerPlate(String plate, String owner){
+        if(dataBase.containsKey(plate))
+            return "-1";
         dataBase.put(plate, owner);
-        // Complete HERE
-        return "-1";
+        return Integer.toString(dataBase.size());
     }
 
     /**
      * Returns NOT_FOUND if plate doesn't exist, else returns the owners name.
      */
     private String lookupPlate(String plate){
-        String owner = dataBase.get(plate);
-        if (owner != null){
-            return owner;
-        } else {
+        if(!dataBase.containsKey(plate))
             return "NOT_FOUND";
-        }
+        String owner = dataBase.get(plate);
+        return owner;
     }
 
     private void initializeConnection() throws IOException {

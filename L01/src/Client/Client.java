@@ -21,6 +21,7 @@ public class Client {
         // get a datagram socket
         DatagramSocket socket = new DatagramSocket();
 
+        /*Composing string which forms the server request/verify the correct usage of the server commands*/
         String request = "";
         if(args[2].equals("register"))
             request = args[2] + " " + args[3].replace(' ','_') + " " +  args[4];
@@ -35,16 +36,17 @@ public class Client {
         // send request
         byte[] buf = request.getBytes();
         InetAddress address = InetAddress.getByName(args[0]);
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+        DatagramPacket packet;
+        packet = new DatagramPacket(buf, buf.length, address, Integer.parseInt(args[1]));
         socket.send(packet);
 
         // get response
         packet = new DatagramPacket(buf, buf.length);
         socket.receive(packet);
 
-        // display response
+        // display response/result
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println(received);
+        System.out.println(request.replace('_', ' ') + " " +  received);
 
         socket.close();
     }
