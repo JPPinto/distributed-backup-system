@@ -2,6 +2,7 @@ package Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -25,7 +26,6 @@ import java.util.*;
 public class ServerThread extends Thread {
 
     protected DatagramSocket socket = null;
-    protected BufferedReader in = null;
     protected boolean serverIsRunning = false;
 
     public ServerThread() {
@@ -44,18 +44,25 @@ public class ServerThread extends Thread {
             try {
                 byte[] buf = new byte[256];
 
-                // receive request
+                /* receive request */
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
 
-                // figure out response
-                String dString = null;
-                if (in == null)
-                    dString = new Date().toString();
-                else
-                    dString = "Hello";
+                /* figure out response */
+                String input, response = "AD";
+                input = buf.toString();
 
-                buf = dString.getBytes();
+                /* Split input */
+                String[] commandArray = input.split(" ");
+                int numberOfArgs = Array.getLength(commandArray);
+
+                /* DEBUG */
+                System.out.println("Input: " + input);
+                System.out.println("Number of args: " + Integer.toString(numberOfArgs));
+
+                /* DEBUG END */
+
+                buf = response.getBytes();
 
                 // send the response to the client at "address" and "port"
                 InetAddress address = packet.getAddress();
@@ -69,6 +76,22 @@ public class ServerThread extends Thread {
         }
 
         closeConnection();
+    }
+
+    /**
+     * Returns -1 if plate already exists, else returns the number of vehicles in the database.
+     */
+    private String registerPlate(String plate){
+
+        return "-1";
+    }
+
+    /**
+     * Returns NOT_FOUND if plate doesn't exist, else returns the driver name.
+     */
+    private String lookupPlate(String plate){
+
+        return "NOT_FOUND";
     }
 
     private void initializeConnection() throws IOException {
