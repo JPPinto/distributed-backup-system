@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.HashMap;
 
 /**
  * SDIS Lab 01
@@ -25,6 +26,8 @@ public class ServerThread extends Thread {
 
     protected DatagramSocket socket = null;
     protected boolean serverIsRunning = false;
+
+    private HashMap<String, String> dataBase = new HashMap<String, String>();
 
     public ServerThread() {
 
@@ -102,6 +105,7 @@ public class ServerThread extends Thread {
      * Returns -1 if plate already exists, else returns the number of vehicles in the database.
      */
     private String registerPlate(String plate, String owner){
+        dataBase.put(plate, owner);
 
         return "-1";
     }
@@ -110,8 +114,12 @@ public class ServerThread extends Thread {
      * Returns NOT_FOUND if plate doesn't exist, else returns the owners name.
      */
     private String lookupPlate(String plate){
-
-        return "NOT_FOUND";
+        String owner = dataBase.get(plate);
+        if (owner != null){
+            return owner;
+        } else {
+            return "NOT_FOUND";
+        }
     }
 
     private void initializeConnection() throws IOException {
