@@ -13,22 +13,25 @@ import java.util.*;
 public class Client {
     public static void main(String[] args) throws IOException {
 
-        Scanner in = new Scanner(System.in);
-
-        if (args.length != 1) {
+        if (args.length < 1) {
             System.out.println("Usage: java Client ");
-            return;
+            System.exit(0);
         }
+
+        Scanner in = new Scanner(System.in);
 
         // get a datagram socket
         DatagramSocket socket = new DatagramSocket();
 
         String request = "";
-        if(args[1].equals("register"))
-            request = args[3] + args[4] + args[5];
+        if(args[2].equals("register"))
+            request = args[2] + args[3] + args[4];
         else
-        if(args[1].equals("lookup"))
-            request = args[3] + args[4];
+        if(args[2].equals("lookup"))
+            request = args[2] + args[3];
+        else {
+            System.exit(-1);
+        }
 
         // send request
         byte[] buf = request.getBytes();
