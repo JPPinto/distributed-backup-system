@@ -24,11 +24,11 @@ public class Client {
         DatagramSocket socket = new DatagramSocket();
 
         String request = "";
-        if(args[1].equals("REGISTER"))
-            request = args[1] + args[2] + args[3];
+        if(args[1].equals("register"))
+            request = args[3] + args[4] + args[5];
         else
-        if(args[1].equals("LOOKUP"))
-            request = args[1] + args[2];
+        if(args[1].equals("lookup"))
+            request = args[3] + args[4];
 
         // send request
         byte[] buf = request.getBytes();
@@ -42,7 +42,7 @@ public class Client {
 
         // display response
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println("Quote of the Moment: " + received);
+        System.out.println(received);
 
         socket.close();
     }
