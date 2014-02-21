@@ -11,6 +11,16 @@ import java.util.*;
  * SDIS Lab 01
  * Eduardo Fernandes
  * José Pinto
+ *
+ * Server Thread
+ *
+ * register
+ * to register the association of a plate number to the owner. Returns -1 if the plate
+ * number has already been registered; otherwise, returns the number of vehicles in the database.
+ *
+ * lookup
+ * to obtain the owner of a given plate number. Returns the owner's name or the string
+ * NOT_FOUND if the plate number was never registered.
  */
 public class ServerThread extends Thread {
 
@@ -18,7 +28,7 @@ public class ServerThread extends Thread {
     protected BufferedReader in = null;
     protected boolean serverIsRunning = false;
 
-    publc ServerThread() {
+    public ServerThread() {
 
         try {
             initializeConnection();
@@ -28,8 +38,6 @@ public class ServerThread extends Thread {
 
         serverIsRunning = true;
     }
-
-
 
     public void run(){
         while(serverIsRunning) {

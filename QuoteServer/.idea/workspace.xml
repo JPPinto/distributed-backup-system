@@ -78,7 +78,7 @@
       <file leaf-file-name="QuoteServerThread.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/QuoteServerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="74" column="32" selection-start="2349" selection-end="3216" vertical-scroll-proportion="1.0282258" vertical-offset="0" max-vertical-offset="1122">
+            <state line="45" column="20" selection-start="1966" selection-end="2008" vertical-scroll-proportion="-0.045698926" vertical-offset="306" max-vertical-offset="1122">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getNextQuote#0;class#QuoteServerThread#0" expanded="false" />
@@ -470,7 +470,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/QuoteServerThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="32" selection-start="2349" selection-end="3216" vertical-scroll-proportion="1.0282258" vertical-offset="0" max-vertical-offset="1122">
+        <state line="45" column="20" selection-start="1966" selection-end="2008" vertical-scroll-proportion="-0.045698926" vertical-offset="306" max-vertical-offset="1122">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#getNextQuote#0;class#QuoteServerThread#0" expanded="false" />
