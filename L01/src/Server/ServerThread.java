@@ -50,7 +50,7 @@ public class ServerThread extends Thread {
                 socket.receive(packet);
 
                 String input, response;
-                input = buf.toString();
+                input = new String(buf, "UTF-8");
 
                 /* Split input */
                 String[] commandArray = input.split(" ");
@@ -106,7 +106,7 @@ public class ServerThread extends Thread {
      */
     private String registerPlate(String plate, String owner){
         dataBase.put(plate, owner);
-
+        // Complete HERE
         return "-1";
     }
 
