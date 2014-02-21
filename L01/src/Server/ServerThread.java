@@ -65,6 +65,7 @@ public class ServerThread extends Thread {
                 switch (numberOfArgs){
                     case 2:
                         if (commandArray[0].equals("lookup")) {
+                            /*Isolating plate number from unknown caracter from empty buf positions*/
                             commandArray[1] = commandArray[1].substring(0,8);
                             response = lookupPlate(commandArray[1]);
                             break;
@@ -73,8 +74,9 @@ public class ServerThread extends Thread {
                     case 3:
                         if (commandArray[0].equals("register")) {
                             commandArray[1] = commandArray[1].replace('_', ' ');
+                            /*Isolating plate number from unknown characters from empty buf positions*/
                             commandArray[2] = commandArray[2].substring(0,8);
-                            response = registerPlate(commandArray[2], commandArray[1]);
+                            response = registerPlate(commandArray[2], commandArray[1]); //Order of arguments was wrong - changed
                             break;
                         }
 

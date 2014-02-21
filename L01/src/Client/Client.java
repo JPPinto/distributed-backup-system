@@ -46,6 +46,9 @@ public class Client {
 
         // display response/result
         String received = new String(packet.getData(), 0, packet.getLength());
+        /*The server response becomes "ERROR" given the following conditions*/
+        if(!received.matches("[0-9]+") && received.equals("NOT_FOUND"))
+            received = "ERROR";
         System.out.println(request.replace('_', ' ') + " " +  received);
 
         socket.close();
