@@ -78,7 +78,7 @@
       <file leaf-file-name="QuoteServerThread.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/QuoteServerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="5" selection-start="1923" selection-end="1923" vertical-scroll-proportion="0.29704303" vertical-offset="0" max-vertical-offset="1122">
+            <state line="74" column="32" selection-start="2349" selection-end="3216" vertical-scroll-proportion="1.0282258" vertical-offset="0" max-vertical-offset="1122">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getNextQuote#0;class#QuoteServerThread#0" expanded="false" />
@@ -205,6 +205,26 @@
       <option name="PROGRAM_PARAMETERS" />
       <method />
     </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -285,6 +305,25 @@
       </option>
       <envs />
       <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
       <method />
     </configuration>
     <configuration default="false" name="QuoteServer" type="Application" factoryName="Application">
@@ -431,7 +470,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/QuoteServerThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="5" selection-start="1923" selection-end="1923" vertical-scroll-proportion="0.29704303" vertical-offset="0" max-vertical-offset="1122">
+        <state line="74" column="32" selection-start="2349" selection-end="3216" vertical-scroll-proportion="1.0282258" vertical-offset="0" max-vertical-offset="1122">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#getNextQuote#0;class#QuoteServerThread#0" expanded="false" />
