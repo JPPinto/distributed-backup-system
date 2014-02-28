@@ -24,10 +24,10 @@ public class Client {
         /*Composing string which forms the server request/verify the correct usage of the server commands*/
         String request = "";
         if(args[2].equals("register"))
-            request = args[2] + " " + args[3].replace(' ','_') + " " +  args[4];
+            request = args[2] + " " + args[3].replace(' ','_').toUpperCase() + " " +  args[4];
         else
         if(args[2].equals("lookup"))
-            request = args[2] + " " + args[3].replace(' ','_');
+            request = args[2] + " " + args[3].replace(' ','_').toUpperCase();
         else {
             System.out.println("Usage: no \"register\" or \"lookup\" comand found!");
             System.exit(-1);

@@ -76,7 +76,7 @@ public class ServerThread extends Thread {
                             commandArray[1] = commandArray[1].replace('_', ' ');
                             /*Isolating plate number from unknown characters from empty buf positions*/
                             commandArray[2] = commandArray[2].substring(0,8);
-                            response = registerPlate(commandArray[2], commandArray[1]); //Order of arguments was wrong - changed
+                            response = registerPlate(commandArray[2], commandArray[1]);
                             break;
                         }
 
