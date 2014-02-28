@@ -4,4 +4,6 @@
 *.jar
 *.war
 *.ear
-L01/.idea/workspace.xml
+
+# IntelliJ workspace
+workspace.xml
