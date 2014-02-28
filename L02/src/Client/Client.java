@@ -13,10 +13,17 @@ import java.util.*;
 public class Client {
     public static void main(String[] args) throws IOException {
 
-        if (args.length < 1) {
-            System.out.println("Usage: java Client ");
+        if (args.length < 4) {
+            System.out.println("Usage: java mcast_addr mcast_port ip ip_range");
             System.exit(0);
         }
+
+        // Create multicast socket
+        MulticastSocket mSocket = new MulticastSocket(Integer.parseInt(args[1]));
+
+        InetAddress iAddress = new InetAddress.getByName(args[0]);
+
+        mSocket.joinGroup(iAddress);
 
         // get a datagram socket
         DatagramSocket socket = new DatagramSocket();
