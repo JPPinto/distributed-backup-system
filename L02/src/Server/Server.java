@@ -9,6 +9,11 @@ import java.io.IOException;
  */
 public class Server {
     public static void main(String[] args) throws IOException {
-        new ServerThread().start();
+        if (args.length != 3) {
+            System.out.println("Usage: client <srvc_port> <mcast_addr> <mcast_port>");
+            System.exit(0);
+        }
+
+        new ServerThread(args[0], args[1], args[2]).start();
     }
 }
