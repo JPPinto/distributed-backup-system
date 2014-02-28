@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 
 /**
@@ -23,18 +24,26 @@ import java.util.HashMap;
  * NOT_FOUND if the plate number was never registered.
  */
 public class ServerThread extends Thread {
+    // Params
+    private String serverPort, mcastAddress, mcastPort;
+
+    private byte[] helloMessage = ("HELLO").getBytes();
+    private InetSocketAddress destAddress = null;
 
     protected DatagramSocket socket = null;
     protected boolean serverIsRunning = false;
 
     private HashMap<String, String> dataBase = new HashMap<String, String>();
 
-    public ServerThread() {
+    public ServerThread(String srvc_port, String mcast_addr, String mcast_port) {
+        serverPort = srvc_port;
+        mcastAddress = mcast_addr;
+        mcastPort = mcast_port;
 
         try {
             initializeConnection();
         } catch (IOException e) {
-            System.out.println("Cannot create server");
+            System.out.println("Could not create server.");
         }
 
         serverIsRunning = true;
@@ -43,6 +52,7 @@ public class ServerThread extends Thread {
     public void run(){
         while(serverIsRunning) {
             try {
+                sleep(1000);
                 byte[] buf = new byte[256];
 
                 /* receive request */
@@ -100,6 +110,8 @@ public class ServerThread extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
                 serverIsRunning = false;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
@@ -127,6 +139,7 @@ public class ServerThread extends Thread {
     }
 
     private void initializeConnection() throws IOException {
+        destAddress = new InetSocketAddress(mcastAddress, Integer.parseInt(mcastPort));
         socket = new DatagramSocket(60000);
     }
 
