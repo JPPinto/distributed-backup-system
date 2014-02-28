@@ -18,11 +18,14 @@ public class Client {
             System.exit(0);
         }
 
-        // Create multicast socket
+        // Create multicast socket, Used only for the first received packet
         MulticastSocket mSocket = new MulticastSocket(Integer.parseInt(args[1]));
 
         InetAddress iAddress = InetAddress.getByName(args[0]);
         mSocket.joinGroup(iAddress);
+
+        // get a datagram socket
+        DatagramSocket socket = new DatagramSocket();
 
         /*Composing string which forms the server request/verify the correct usage of the server commands*/
         String request = "";
@@ -47,12 +50,12 @@ public class Client {
         DatagramPacket packet;
         /*Using the first packet's address and port*/
         packet = new DatagramPacket(buf, buf.length, packet_initial.getAddress(), packet_initial.getPort());
-        mSocket.send(packet);
+        socket.send(packet);
 
         // get response
         byte[] buf_received = new byte[1000];
         packet = new DatagramPacket(buf_received, buf_received.length);
-        mSocket.receive(packet);
+        socket.receive(packet);
 
         // display response/result
         String received = new String(packet.getData(), 0, packet.getLength());
