@@ -14,19 +14,15 @@ public class Client {
     public static void main(String[] args) throws IOException {
 
         if (args.length < 4) {
-            System.out.println("Usage: java mcast_addr mcast_port ip ip_range");
+            System.out.println("Usage: java mcast_addr mcast_port");
             System.exit(0);
         }
 
         // Create multicast socket
         MulticastSocket mSocket = new MulticastSocket(Integer.parseInt(args[1]));
 
-        InetAddress iAddress = new InetAddress.getByName(args[0]);
-
+        InetAddress iAddress = InetAddress.getByName(args[0]);
         mSocket.joinGroup(iAddress);
-
-        // get a datagram socket
-        DatagramSocket socket = new DatagramSocket();
 
         /*Composing string which forms the server request/verify the correct usage of the server commands*/
         String request = "";
@@ -36,20 +32,27 @@ public class Client {
         if(args[2].equals("lookup"))
             request = args[2] + " " + args[3].replace(' ','_');
         else {
-            System.out.println("Usage: no \"register\" or \"lookup\" comand found!");
+            System.out.println("Usage: \"register\" or \"lookup\" comand not found!");
             System.exit(-1);
         }
 
+        /*Initial message receive in order to determine the IP and Port on which to send*/
+        byte[] bub_initial = new byte[1000];
+        DatagramPacket packet_initial;
+        packet_initial = new DatagramPacket(bub_initial, bub_initial.length);
+        mSocket.receive(packet_initial);
+
         // send request
         byte[] buf = request.getBytes();
-        InetAddress address = InetAddress.getByName(args[0]);
         DatagramPacket packet;
-        packet = new DatagramPacket(buf, buf.length, address, Integer.parseInt(args[1]));
-        socket.send(packet);
+        /*Using the first packet's address and port*/
+        packet = new DatagramPacket(buf, buf.length, packet_initial.getAddress(), packet_initial.getPort());
+        mSocket.send(packet);
 
         // get response
-        packet = new DatagramPacket(buf, buf.length);
-        socket.receive(packet);
+        byte[] buf_received = new byte[1000];
+        packet = new DatagramPacket(buf_received, buf_received.length);
+        mSocket.receive(packet);
 
         // display response/result
         String received = new String(packet.getData(), 0, packet.getLength());
@@ -58,6 +61,6 @@ public class Client {
             received = "ERROR";
         System.out.println(request.replace('_', ' ') + " " +  received);
 
-        socket.close();
+        mSocket.close();
     }
 }
