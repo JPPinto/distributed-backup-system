@@ -1,0 +1,29 @@
+    void serverGameLoop() {
+        try (ServerSocket serverSocket = new ServerSocket(portNumber);
+             Socket clientSocket = serverSocket.accept();
+             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
+
+            String inputLine, outputLine;
+
+            /* Wait for input */
+            while ((inputLine = in.readLine()) != null) {
+                /* Show the input (DEBUG) */
+                System.out.println("Input: " + inputLine);
+                /* Process the input */
+                outputLine = processInput(inputLine);
+                /* Print the response (DEBUG) */
+                System.out.println("Response: " + outputLine);
+                /* Send the response */
+                out.println(outputLine);
+
+                /* Close sockets */
+                if (state == -2) {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error with sockets: ");
+            e.printStackTrace();
+        }
+    }
