@@ -1,6 +1,10 @@
 /**
+ * SDIS TP1
+ *
  * Eduardo Fernandes
  * José Pinto
+ *
+ * Message class
  */
 
 import java.lang.reflect.Array;
