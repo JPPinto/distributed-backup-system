@@ -75,8 +75,9 @@ public class PotatoBackup {
                 String hashT = hash(listOfFiles[i]);
 
                 fileName = listOfFiles[i].getName();
+                System.out.print(hashT + "  ");
                 System.out.println(fileName);
-                System.out.println(hashT);
+
             }
 
         }
