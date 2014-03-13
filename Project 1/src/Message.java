@@ -25,7 +25,7 @@ import java.lang.reflect.Array;
  *        Next we describe the meaning of each field and its format.
  *
  *<MessageType>
- *This is the type of the message. Each subprotocol specifies its own message types. This field determines the format of
+ *This is the type of the message. Each sub protocol specifies its own message types. This field determines the format of
  * the message and what actions its receivers should perform. This is encoded as a variable length sequence of ASCII characters.
  *
  *<Version>

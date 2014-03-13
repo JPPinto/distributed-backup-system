@@ -11,6 +11,15 @@ public class Chunk {
     private int chunkNo;
     private byte chunkData[];
 
+    public Chunk(String fId, int cNo) throws IllegalStateException {
+        if (cNo < 0 || cNo > 999999) {
+            throw new IllegalStateException("Invalid chunk number!");
+        }
+
+        fileId = fId;
+        chunkNo = cNo;
+    }
+
     public int getChunkNo() {
         return chunkNo;
     }
