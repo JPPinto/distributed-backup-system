@@ -17,18 +17,18 @@ public class Client {
             System.exit(0);
         }
 
+        /*Parse Input Arguments*/
         int port = Integer.parseInt(args[1]);
         String address = args[0];
+
         DatagramPacket packet_initial;
 
         // Create multicast socket, Used only for the first received packet
         MulticastSocket mSocket = new MulticastSocket(port);
 
+        /*Joining Multicast Group*/
         InetAddress iAddress = InetAddress.getByName(address);
         mSocket.joinGroup(iAddress);
-
-        /*Composing string which forms the server request/verify the correct usage of the server commands*/
-        String request = getRequest(args);
 
         /*Initial message receive in order to determine the IP and Port on which to send*/
         byte[] buf_initial = new byte[512];
@@ -43,6 +43,9 @@ public class Client {
 
         mSocket.leaveGroup(iAddress);
         mSocket.close();
+
+        /*Composing string which forms the server request/verify the correct usage of the server commands*/
+        String request = getRequest(args);
 
         //Unicast, UDP request
         String received = sendRequest(packet_initial, request);

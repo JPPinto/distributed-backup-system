@@ -36,10 +36,17 @@ public class ServerThreadMulticast extends Thread {
         mcastPort = mcast_port;
 
         try {
+            //initializeConnection();
+
+            socket = new MulticastSocket(Integer.parseInt(serverPort));
+            socket.setTimeToLive(1);
+
+            destinationAddress = new InetSocketAddress(mcastAddress, Integer.parseInt(mcastPort));
+
             helloPacket = new DatagramPacket(helloMessage, helloMessage.length, destinationAddress);
-            initializeConnection();
         } catch (IOException e) {
             System.out.println("Could not create server.");
+            e.printStackTrace();
         }
 
         serverIsRunning = true;

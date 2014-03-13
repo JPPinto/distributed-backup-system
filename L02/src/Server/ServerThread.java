@@ -32,7 +32,8 @@ public class ServerThread extends Thread {
     public ServerThread() {
 
         try {
-            initializeConnection();
+            //initializeConnection();
+            socket = new DatagramSocket(60000);
         } catch (IOException e) {
             System.out.println("Cannot create server");
         }
