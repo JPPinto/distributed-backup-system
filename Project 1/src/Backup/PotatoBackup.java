@@ -33,13 +33,14 @@ public class PotatoBackup {
     }
 
     /* Convert byte array to hex string Stack Overflow*/
-    public static String toHex(byte[] bytes) {
+    public static String convertByteArrayToHex(byte[] bytes) {
         BigInteger bi = new BigInteger(1, bytes);
         return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
 
     /* Calculate file SHA256 sum */
-    public static String hash(File inputFile) throws IOException, NoSuchAlgorithmException {
+    public static String getHashFromFile(File inputFile) throws IOException, NoSuchAlgorithmException {
+        // Get buffered stream from file
         FileInputStream fileInputStream = new FileInputStream(inputFile);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
@@ -58,7 +59,7 @@ public class PotatoBackup {
         byte[] hash = digest.digest();
 
         /* Convert to string */
-        String hexString = toHex(hash);
+        String hexString = convertByteArrayToHex(hash);
         return hexString;
     }
 
@@ -74,7 +75,7 @@ public class PotatoBackup {
         for (int i = 0; i < listOfFiles.length; i++) {
 
             if (listOfFiles[i].isFile()) {
-                String hashT = hash(listOfFiles[i]);
+                String hashT = getHashFromFile(listOfFiles[i]);
 
                 fileName = listOfFiles[i].getName();
                 System.out.print(hashT + "  ");
