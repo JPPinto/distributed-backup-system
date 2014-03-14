@@ -1,10 +1,12 @@
+package Backup;
+
 /**
  * SDIS TP1
  *
  * Eduardo Fernandes
  * José Pinto
  *
- * Chunk class
+ * Backup.Chunk class
  */
 public class Chunk {
     private String fileId;
@@ -15,6 +17,8 @@ public class Chunk {
         if (cNo < 0 || cNo > 999999) {
             throw new IllegalStateException("Invalid chunk number!");
         }
+
+        /* Max chunk size 64000 */
 
         fileId = fId;
         chunkNo = cNo;

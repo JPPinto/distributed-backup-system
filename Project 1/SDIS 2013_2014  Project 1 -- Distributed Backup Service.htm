@@ -157,7 +157,7 @@ should be configurable via the 6 first command line arguments of the
 server program, in the following order MC, MDB, MDR, with the IP 
 multicast address before the port number.</p>
 
-<h3>3.1 Message Format and Field Encoding</h3>
+<h3>3.1 Backup.Message Format and Field Encoding</h3>
 
 <p>In this subsection we define a generic format for all messages. 
 Below, in the subprotocol description, we specifiy the format of each 
@@ -228,7 +228,7 @@ of the body is variable. As stated above, if it is smaller than the
 maximum chunk size, 64KByte, it is the last chunk in a file. The 
 protocol does not interpret the contents of the <code>Body</code>. For the protocol its value is just a byte sequence. </p>
 
-<h3>3.2 Chunk backup subprotocol</h3>
+<h3>3.2 Backup.Chunk backup subprotocol</h3>
 
 <p>To backup a chunk, the initiator-peer sends to the MDB multicast data
  channel a message whose body is the contents of that chunk. This 
@@ -277,7 +277,7 @@ desired replication degree, avoids these problems, and, nevertheless,
 can interoperate with peers that execute the chunk backup protocol 
 described above?</p>
 
-<h3>3.3 Chunk restore protocol</h3>
+<h3>3.3 Backup.Chunk restore protocol</h3>
 
 <p>This protocol uses the same multicast control channel (MC) as the 
 backup protocol, but uses a different multicast channel for data, the 
