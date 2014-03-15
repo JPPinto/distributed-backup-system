@@ -8,6 +8,8 @@ package Backup; /**
  */
 
 import java.lang.reflect.Array;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *Header
@@ -62,6 +64,10 @@ public class Message {
         validMessage = decodeHeaderString("");
     }
 
+    public Message(String input) {
+        validMessage = decodeHeaderString(input);
+    }
+
     private boolean decodeHeaderString(String input){
 
         /* Split input */
@@ -73,33 +79,40 @@ public class Message {
             return false;
         }
 
-
-
         type = argArray[0];
         version = argArray[1];
         fileId = argArray[2];
         chunkNo = Integer.getInteger(argArray[3]);
         replicationDeg = Integer.getInteger(argArray[4]);
 
-        if (!(validateMsgType() && validateVersion() && validateFileId() && validateChunkNo() && validateReplicationDeg())){
+        if (!(validateMsgType(type) && validateVersion(version) && validateFileId(fileId) && validateChunkNo() && validateReplicationDeg())){
             return false;
         }
 
         return true;
     }
 
-    private boolean validateMsgType(){
-        return true;
+    private boolean validateMsgType(String m){
+
+        Pattern p = Pattern.compile("\\p{Upper}+");
+
+        return p.matcher(m).matches();
     }
 
-    private boolean validateVersion(){
-        // '1''.''0'
-        return true;
+    private boolean validateVersion(String v){
+
+        /* Make use of pattern to check if input string (e.g.: 1.0, 2.4, 1.0.1)*/
+        Pattern p = Pattern.compile("[0-9]+(\\.[0-9])+");
+
+        return p.matcher(v).matches();
     }
 
-    private boolean validateFileId(){
+    private boolean validateFileId(String f){
+
         // 64 ASCII character sequence
-        return true;
+        Pattern p = Pattern.compile("\\p{ASCII}{64}");
+
+        return p.matcher(f).matches();
     }
 
     /*
@@ -108,19 +121,17 @@ public class Message {
     private boolean validateChunkNo(){
         if (chunkNo < 0 || chunkNo > 999999){
             return false;
-        } else {
-            return true;
         }
+            return true;
     }
 
     /*
-     * Validate replication degree (NOT COMPLETED check lower bond)
+     * Validate replication degree (NOT COMPLETED check lower bond)?
      */
     private boolean validateReplicationDeg(){
         if (replicationDeg < 0 || replicationDeg > 9){
             return false;
-        } else {
-            return true;
         }
+            return true;
     }
 }
