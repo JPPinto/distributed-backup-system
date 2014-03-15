@@ -14,8 +14,9 @@ import java.security.NoSuchAlgorithmException;
  * Entry point
  */
 public class PotatoBackup {
-    /* Buffer size for hashing operations */
-    private static int bufferSize = 65536;
+    /* Buffer size for hashing operations 1MiB*/
+    private static int bufferSize = 1048576;
+    private static int chunkDataSize = 64000;
 
     public static void main(String[] args) {
         System.out.println("Welcome to Potato Backup");
@@ -63,6 +64,38 @@ public class PotatoBackup {
         return hexString;
     }
 
+    public static void readChunks(File inputFile) throws IOException {
+        // Get buffered stream from file
+        FileInputStream fileInputStream = new FileInputStream(inputFile);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+
+        long fileSize = inputFile.length();
+
+        byte[] buffer = new byte[chunkDataSize];
+
+        int sizeRead;
+
+        while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
+
+            System.out.print(".");
+
+            // Last chunk if file size not a multiple
+            if (sizeRead < chunkDataSize) {
+                // It's the final chunkdown
+            }
+        }
+        bufferedInputStream.close();
+
+        if (fileSize % chunkDataSize == 0) {
+            System.out.println("An empty chunk is needed");
+            //TODO ADD final empty chunk
+        } else {
+            System.out.println("");
+            //TODO Do the helicopter dick!
+        }
+
+    }
+
     private static void listFiles() throws NoSuchAlgorithmException, IOException {
         // Directory path here
         String path = ".";
@@ -76,10 +109,10 @@ public class PotatoBackup {
 
             if (listOfFiles[i].isFile()) {
                 String hashT = getHashFromFile(listOfFiles[i]);
-
                 fileName = listOfFiles[i].getName();
                 System.out.print(hashT + "  ");
                 System.out.println(fileName);
+                readChunks(listOfFiles[i]);
 
             }
 
