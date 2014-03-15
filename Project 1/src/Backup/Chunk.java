@@ -65,4 +65,8 @@ public class Chunk implements Serializable {
     public byte[] getChunkData(){
         return chunkData;
     }
+
+    public String getChunkFileName(){
+        return fileId + "-" + chunkNo + ".bin";
+    }
 }
