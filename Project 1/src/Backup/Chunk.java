@@ -36,7 +36,6 @@ public class Chunk implements Serializable {
         } else {
             throw new IllegalStateException("Invalid file hash!");
         }
-
     }
 
     private void setChunkNo(int chunkNoIn){
