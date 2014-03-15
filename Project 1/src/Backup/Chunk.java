@@ -21,6 +21,7 @@ public class Chunk implements Serializable {
     public Chunk(String fId, int cNo) throws IllegalStateException {
         setFileId(fId);
         setChunkNo(cNo);
+        chunkData = null;
     }
 
     public Chunk(String fId, int cNo, byte[] data) throws IllegalStateException {
