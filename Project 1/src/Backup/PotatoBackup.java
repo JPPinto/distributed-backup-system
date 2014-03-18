@@ -5,8 +5,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import Backup.Chunk;
-
 /**
  * SDIS TP1
  *
@@ -105,13 +103,8 @@ public class PotatoBackup {
 
         if (fileSize % chunkDataSize == 0) {
             System.out.println("An empty chunk is needed");
-            //TODO ADD final empty chunk
             Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
             finalChunk.save("FinalChunk.bin");
-
-        } else {
-            System.out.println("");
-            //TODO Do the helicopter dick!
         }
 
     }
