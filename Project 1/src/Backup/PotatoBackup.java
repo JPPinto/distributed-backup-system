@@ -61,8 +61,7 @@ public class PotatoBackup {
             byte[] hash = digest.digest();
 
             /* Convert to string */
-            String hexString = convertByteArrayToHex(hash);
-            return hexString;
+            return convertByteArrayToHex(hash);
 
         } catch (NoSuchAlgorithmException e) {
             System.out.println("SHA-256 Algorithm Not found! Aborting execution.");
@@ -93,11 +92,12 @@ public class PotatoBackup {
 
         while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
             Chunk currentChunk = new Chunk(fileID, currentChunkNumber, buffer);
-            currentChunkNumber++;
 
             // Last chunk if file size not a multiple
             if (sizeRead < chunkDataSize) {
                 // It's the final chunkdown
+            } else {
+                currentChunkNumber++;
             }
 
         }
@@ -125,15 +125,16 @@ public class PotatoBackup {
         File[] listOfFiles = folder.listFiles();
 
 
-        for (int i = 0; i < listOfFiles.length; i++) {
+        assert listOfFiles != null;
+        for (File listOfFile : listOfFiles) {
 
-            if (listOfFiles[i].isFile()) {
-                String hashT = getHashFromFile(listOfFiles[i]);
-                fileName = listOfFiles[i].getName();
+            if (listOfFile.isFile()) {
+                String hashT = getHashFromFile(listOfFile);
+                fileName = listOfFile.getName();
                 System.out.print(hashT + "  ");
                 System.out.println(fileName);
 
-                readChunks(listOfFiles[i]);
+                readChunks(listOfFile);
 
             }
 
