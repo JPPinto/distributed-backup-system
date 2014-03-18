@@ -7,78 +7,62 @@ import java.net.*;
  * SDIS Lab 01
  * Eduardo Fernandes
  * José Pinto
- *
+ * <p/>
  * Server Thread
- *
+ * <p/>
  * register
  * to register the association of a plate number to the owner. Returns -1 if the plate
  * number has already been registered; otherwise, returns the number of vehicles in the database.
- *
+ * <p/>
  * lookup
  * to obtain the owner of a given plate number. Returns the owner's name or the string
  * NOT_FOUND if the plate number was never registered.
  */
 public class ServerThreadMulticast extends Thread {
-    // Params
-    private String serverPort, mcastAddress, mcastPort;
+	// Params
+	private String mcastAddress, mcastPort;
+	public final int PORT = 60000;
+	public final String adr = new String("230.0.0.1"); //any class D address
 
-    private byte[] helloMessage = ("HELLO").getBytes();
-    private InetSocketAddress destinationAddress = null;
-    private DatagramPacket helloPacket = null;
-
-    protected MulticastSocket socket = null;
-    protected boolean serverIsRunning = false;
+	protected boolean serverIsRunning = false;
 
 
-    public ServerThreadMulticast(String srvc_port, String mcast_addr, String mcast_port) {
-        serverPort = srvc_port;
-        mcastAddress = mcast_addr;
-        mcastPort = mcast_port;
+	public ServerThreadMulticast(String mcast_addr, String mcast_port) {
+		mcastAddress = mcast_addr;
+		mcastPort = mcast_port;
+		serverIsRunning = true;
+	}
 
-        try {
-            //initializeConnection();
+	public void run() {
 
-            socket = new MulticastSocket(Integer.parseInt(serverPort));
-            socket.setTimeToLive(1);
+		InetAddress address;
+		DatagramPacket packet;
+		DatagramSocket socket;
 
-            destinationAddress = new InetSocketAddress(mcastAddress, Integer.parseInt(mcastPort));
+		try {
+			address = InetAddress.getByName(mcastAddress);
+			socket = new DatagramSocket();
 
-            helloPacket = new DatagramPacket(helloMessage, helloMessage.length, destinationAddress);
-        } catch (IOException e) {
-            System.out.println("Could not create server.");
-            e.printStackTrace();
-        }
+			byte[] data;
 
-        serverIsRunning = true;
-    }
+			while (true) {
+				Thread.sleep(1000);
 
-    public void run(){
-        while(serverIsRunning) {
-            try {
-                sleep(1000);
-                socket.send(helloPacket);
+				String str = new String("PORT:60001");
+				data = str.getBytes();
+				packet = new DatagramPacket(data, str.length(), address, Integer.parseInt(mcastPort));
+				System.out.println("Sending <" + str + ">");
+				socket.send(packet);
+			}
 
-            } catch (IOException e) {
-                serverIsRunning = false;
-                e.printStackTrace();
+		} catch (IOException e) {
+			serverIsRunning = false;
+			e.printStackTrace();
 
-            } catch (InterruptedException e) {
-                serverIsRunning = false;
-                e.printStackTrace();
-            }
-        }
-
-        closeConnection();
-    }
-
-    private void initializeConnection() throws IOException {
-        socket = new MulticastSocket(Integer.parseInt(serverPort));
-        socket.setTimeToLive(1);
-
-        destinationAddress = new InetSocketAddress(mcastAddress, Integer.parseInt(mcastPort));
-    }
-
-    private void closeConnection(){
-        socket.close();
-    }
+		} catch (InterruptedException e) {
+			serverIsRunning = false;
+			e.printStackTrace();
+		}
+	}
 }
+

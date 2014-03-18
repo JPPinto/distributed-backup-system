@@ -33,7 +33,7 @@ public class ServerThread extends Thread {
 
         try {
             //initializeConnection();
-            socket = new DatagramSocket(60000);
+            socket = new DatagramSocket(60001);
         } catch (IOException e) {
             System.out.println("Cannot create server");
         }
@@ -90,12 +90,12 @@ public class ServerThread extends Thread {
                 System.out.println("Response: " + response);
                 /* DEBUG END */
 
-                buf = response.getBytes();
+                byte[] buf_responce = response.getBytes();
 
                 /* send the response to the client at "address" and "port" */
                 InetAddress address = packet.getAddress();
                 int port = packet.getPort();
-                packet = new DatagramPacket(buf, buf.length, address, port);
+                packet = new DatagramPacket(buf_responce, buf_responce.length, address, port);
                 socket.send(packet);
 
             } catch (IOException e) {

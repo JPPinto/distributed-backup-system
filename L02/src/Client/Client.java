@@ -12,8 +12,8 @@ import java.net.*;
 public class Client {
     public static void main(String[] args) throws IOException {
 
-        if (args.length < 5) {
-            System.out.println("Usage: java mcast_addr mcast_port command param1 param2");
+        if (args.length < 4) {
+            System.out.println("Usage: java mcast_addr mcast_port command param1 (param2)");
             System.exit(0);
         }
 
@@ -39,7 +39,7 @@ public class Client {
         // print connection
         String str = new String(packet_initial.getData());
         String mPort[] = str.split(":");
-        System.out.print("Connect to MultiCast Server: " + "Port" + ":" + mPort[1]);
+        System.out.print("Connect to MultiCast Server: " + "Port" + ":" + mPort[1] + "\n");
 
         mSocket.leaveGroup(iAddress);
         mSocket.close();
@@ -48,26 +48,28 @@ public class Client {
         String request = getRequest(args);
 
         //Unicast, UDP request
-        String received = sendRequest(packet_initial, request);
+        String received = sendRequest(mPort[1], request);
 
         /*The server response becomes "ERROR" given the following conditions
         * Handles and prints the server response */
         printServerResponse(request, received);
     }
 
-    private static String sendRequest(DatagramPacket packet_initial, String request) throws IOException {
+    private static String sendRequest(String port, String request) throws IOException {
 
         // get a datagram socket
         DatagramSocket socket = new DatagramSocket();
+		InetAddress IPAddress = InetAddress.getByName("localhost");
 
         // send request
         byte[] buf = request.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, packet_initial.getAddress(), packet_initial.getPort());
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, IPAddress, Integer.parseInt(port.substring(0,5)));
         socket.send(packet);
 
         // get response
-        byte[] buf_received = new byte[1000];
+        byte[] buf_received = new byte[1024];
         packet = new DatagramPacket(buf_received, buf_received.length);
+
         socket.receive(packet);
 
         socket.close();
@@ -77,7 +79,7 @@ public class Client {
     }
 
     private static void printServerResponse(String request, String received) {
-        if(!received.matches("[0-9]+") && received.equals("NOT_FOUND"))
+        if(received.equals("NOT_FOUND") || received.equals("-1"))
             received = "ERROR";
         System.out.println(request.replace('_', ' ') + " " +  received);
     }

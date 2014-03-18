@@ -71,7 +71,7 @@ public class Server {
             System.exit(0);
         }
 
-        new ServerThread().start();
-        new ServerThreadMulticast(args[0], args[1], args[2]).start();
+        new ServerThreadMulticast(args[1], args[2]).start();
+		new ServerThread().start();
     }
 }
