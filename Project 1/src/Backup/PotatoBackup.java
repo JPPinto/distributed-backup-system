@@ -18,6 +18,10 @@ public class PotatoBackup {
     private static int bufferSize = 1048576;
     private static int chunkDataSize = 64000;
 
+    /**
+     * Entry Point
+     * @param args Arguments
+     */
     public static void main(String[] args) {
         System.out.println("Welcome to Potato Backup");
 
@@ -30,13 +34,20 @@ public class PotatoBackup {
         }
     }
 
-    /* Convert byte array to hex string Stack Overflow*/
+    /**
+     * Convert byte array to hex string (Stack Overflow)
+     * @param bytes Byte array to be converted to hex string
+     */
     public static String convertByteArrayToHex(byte[] bytes) {
         BigInteger bi = new BigInteger(1, bytes);
         return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
 
-    /* Calculate file SHA256 sum */
+    /**
+     * Calculate file SHA256 sum
+     * @param inputFile Input file
+     * @return Returns file SHA-256 hash.
+     * */
     public static String getHashFromFile(File inputFile) throws IOException {
         // Get buffered stream from file
         FileInputStream fileInputStream = new FileInputStream(inputFile);
@@ -71,6 +82,7 @@ public class PotatoBackup {
 
     /**
      * Reads a file and creates chunks
+     * @param inputFile Input file
      **/
     public static void readChunks(File inputFile) throws IOException {
         // Get fileId
@@ -109,9 +121,10 @@ public class PotatoBackup {
 
     }
 
-    /*
-    * Lists local files
-    * */
+    /**
+     * Lists local files
+     * @param path Folder path
+     */
     private static File[] listFiles(String path) throws IOException {
         File folder = new File(path);
         return folder.listFiles();
