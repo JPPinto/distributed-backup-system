@@ -111,7 +111,7 @@ public class PotatoBackup {
 
         } else {
             System.out.println("");
-            //TODO Do the helicopter dick!
+            //TODO Do the helicopter d*ck!
         }
 
     }
@@ -123,7 +123,6 @@ public class PotatoBackup {
         String fileName;
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
-
 
         assert listOfFiles != null;
         for (File listOfFile : listOfFiles) {
