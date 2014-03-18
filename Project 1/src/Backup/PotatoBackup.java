@@ -107,6 +107,7 @@ public class PotatoBackup {
             System.out.println("An empty chunk is needed");
             //TODO ADD final empty chunk
             Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
+            finalChunk.save("FinalChunk.bin");
 
         } else {
             System.out.println("");

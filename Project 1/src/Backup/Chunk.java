@@ -1,5 +1,8 @@
 package Backup;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -51,6 +54,18 @@ public class Chunk implements Serializable {
             chunkData = in;
         } else {
             throw new IllegalStateException("Data too big for chunk!");
+        }
+    }
+
+    public void save(String fileName){
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+        } catch(IOException i) {
+            i.printStackTrace();
         }
     }
 
