@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import Backup.Chunk;
+
 /**
  * SDIS TP1
  *
@@ -24,8 +26,6 @@ public class PotatoBackup {
 
         try {
             listFiles();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -40,31 +40,46 @@ public class PotatoBackup {
     }
 
     /* Calculate file SHA256 sum */
-    public static String getHashFromFile(File inputFile) throws IOException, NoSuchAlgorithmException {
+    public static String getHashFromFile(File inputFile) throws IOException {
         // Get buffered stream from file
         FileInputStream fileInputStream = new FileInputStream(inputFile);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-        byte[] buffer = new byte[bufferSize];
+            byte[] buffer = new byte[bufferSize];
 
-        int sizeRead;
+            int sizeRead;
 
-        while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
-            digest.update(buffer, 0, sizeRead);
+            while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
+                digest.update(buffer, 0, sizeRead);
+            }
+
+            bufferedInputStream.close();
+
+            byte[] hash = digest.digest();
+
+            /* Convert to string */
+            String hexString = convertByteArrayToHex(hash);
+            return hexString;
+
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("SHA-256 Algorithm Not found! Aborting execution.");
+            System.exit(-1);
         }
 
-        bufferedInputStream.close();
-
-        byte[] hash = digest.digest();
-
-        /* Convert to string */
-        String hexString = convertByteArrayToHex(hash);
-        return hexString;
+        // Make the compiler happy, since we never get to return the empty string
+        return "";
     }
 
+    /**
+     * Reads a file and creates chunks
+     **/
     public static void readChunks(File inputFile) throws IOException {
+        // Get fileId
+        String fileID = getHashFromFile(inputFile);
+
         // Get buffered stream from file
         FileInputStream fileInputStream = new FileInputStream(inputFile);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
@@ -74,21 +89,25 @@ public class PotatoBackup {
         byte[] buffer = new byte[chunkDataSize];
 
         int sizeRead;
+        int currentChunkNumber = 0;
 
         while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
-
-            System.out.print(".");
+            Chunk currentChunk = new Chunk(fileID, currentChunkNumber, buffer);
+            currentChunkNumber++;
 
             // Last chunk if file size not a multiple
             if (sizeRead < chunkDataSize) {
                 // It's the final chunkdown
             }
+
         }
         bufferedInputStream.close();
 
         if (fileSize % chunkDataSize == 0) {
             System.out.println("An empty chunk is needed");
             //TODO ADD final empty chunk
+            Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
+
         } else {
             System.out.println("");
             //TODO Do the helicopter dick!
@@ -96,7 +115,7 @@ public class PotatoBackup {
 
     }
 
-    private static void listFiles() throws NoSuchAlgorithmException, IOException {
+    private static void listFiles() throws IOException {
         // Directory path here
         String path = ".";
 
@@ -112,6 +131,7 @@ public class PotatoBackup {
                 fileName = listOfFiles[i].getName();
                 System.out.print(hashT + "  ");
                 System.out.println(fileName);
+
                 readChunks(listOfFiles[i]);
 
             }
