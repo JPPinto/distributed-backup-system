@@ -8,3 +8,4 @@
 # IntelliJ workspace
 workspace.xml
 L01/.idea/workspace.xml
+*.bin
