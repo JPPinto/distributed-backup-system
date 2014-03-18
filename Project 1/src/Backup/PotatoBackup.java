@@ -101,6 +101,7 @@ public class PotatoBackup {
 
         while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
             Chunk currentChunk = new Chunk(fileID, currentChunkNumber, buffer);
+            currentChunk.save("./backup");
 
             // Last chunk if file size not a multiple
             if (sizeRead < chunkDataSize) {
@@ -116,7 +117,7 @@ public class PotatoBackup {
         if (fileSize % chunkDataSize == 0) {
             System.out.println("An empty chunk is needed");
             Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
-            finalChunk.save("FinalChunk.bin");
+            finalChunk.save("./backup");
         }
 
     }

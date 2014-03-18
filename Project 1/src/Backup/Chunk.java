@@ -39,11 +39,12 @@ public class Chunk implements Serializable {
      * @param fId file hash
      * */
     private void setFileId(String fId){
-        Pattern hashPattern = Pattern.compile("\\[0-9A-F]{64}");
+        Pattern hashPattern = Pattern.compile("[0-9A-F]{64}");
 
         if (fId.length() == 64 && hashPattern.matcher(fId).matches()){
             fileId = fId;
         } else {
+            System.out.println(fId);
             throw new IllegalStateException("Invalid file hash!");
         }
     }
@@ -74,12 +75,11 @@ public class Chunk implements Serializable {
 
     /**
      * Saves the chunk to a file
-     * @param fileName file name
+     * @param outputFolderName output folder name
      * */
-    public void save(String fileName){
-        // TODO use the getChunkFileName Method
+    public void save(String outputFolderName){
         try {
-            FileOutputStream fileOut = new FileOutputStream(fileName);
+            FileOutputStream fileOut = new FileOutputStream(outputFolderName + "/" + getChunkFileName());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();

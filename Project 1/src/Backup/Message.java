@@ -109,7 +109,7 @@ public class Message {
 
     private boolean validateFileId(String f){
         // 64 ASCII (Hex A to F) character sequence
-        Pattern p = Pattern.compile("\\[0-9A-F]{64}");
+        Pattern p = Pattern.compile("[0-9A-F]{64}");
 
         return p.matcher(f).matches();
     }
