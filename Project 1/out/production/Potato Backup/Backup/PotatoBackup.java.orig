@@ -18,15 +18,12 @@ public class PotatoBackup {
     private static int bufferSize = 1048576;
     private static int chunkDataSize = 64000;
 
-    /**
-     * Entry Point
-     * @param args Arguments
-     */
     public static void main(String[] args) {
         System.out.println("Welcome to Potato Backup");
 
+
         try {
-            processFileList(listFiles("."));
+            listFiles();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -34,20 +31,13 @@ public class PotatoBackup {
         }
     }
 
-    /**
-     * Convert byte array to hex string (Stack Overflow)
-     * @param bytes Byte array to be converted to hex string
-     */
+    /* Convert byte array to hex string Stack Overflow*/
     public static String convertByteArrayToHex(byte[] bytes) {
         BigInteger bi = new BigInteger(1, bytes);
         return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
 
-    /**
-     * Calculate file SHA256 sum
-     * @param inputFile Input file
-     * @return Returns file SHA-256 hash.
-     * */
+    /* Calculate file SHA256 sum */
     public static String getHashFromFile(File inputFile) throws IOException {
         // Get buffered stream from file
         FileInputStream fileInputStream = new FileInputStream(inputFile);
@@ -82,7 +72,6 @@ public class PotatoBackup {
 
     /**
      * Reads a file and creates chunks
-     * @param inputFile Input file
      **/
     public static void readChunks(File inputFile) throws IOException {
         // Get fileId
@@ -101,12 +90,10 @@ public class PotatoBackup {
 
         while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
             Chunk currentChunk = new Chunk(fileID, currentChunkNumber, buffer);
-            currentChunk.save("./backup");
 
             // Last chunk if file size not a multiple
             if (sizeRead < chunkDataSize) {
                 // It's the final chunkdown
-                // TODO SOMETHING
             } else {
                 currentChunkNumber++;
             }
@@ -117,43 +104,27 @@ public class PotatoBackup {
         if (fileSize % chunkDataSize == 0) {
             System.out.println("An empty chunk is needed");
             Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
-            finalChunk.save("./backup");
+            finalChunk.save("FinalChunk.bin");
+<<<<<<< HEAD
+=======
+
+        } else {
+            System.out.println("");
+            //TODO Do the helicopter d*ck!
+>>>>>>> 3df52ba9e223dc856919d0dd2ecaee4660b8077c
         }
 
     }
 
-    public static void writeFileFromChunks(File output) throws IOException {
-        // Get buffered stream from file
-        FileOutputStream fileOutputStream = new FileOutputStream(output);
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-
-        byte[] buffer = new byte[chunkDataSize];
-
-        int sizeWritten;
-        int currentChunkNumber = 0;
-
-        while (true) {
-            bufferedOutputStream.write(buffer);
-
-            break;
-        }
-        bufferedOutputStream.close();
-    }
-
-    /**
-     * Lists local files
-     * @param path Folder path
-     */
-    private static File[] listFiles(String path) throws IOException {
-        File folder = new File(path);
-        return folder.listFiles();
-    }
-
-    private static void processFileList(File[] listOfFiles) throws IOException {
-        assert listOfFiles != null;
+    private static void listFiles() throws IOException {
+        // Directory path here
+        String path = ".";
 
         String fileName;
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
 
+        assert listOfFiles != null;
         for (File listOfFile : listOfFiles) {
 
             if (listOfFile.isFile()) {
