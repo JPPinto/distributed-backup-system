@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.regex.Pattern;
 
 /**
  * SDIS TP1
@@ -33,14 +34,24 @@ public class Chunk implements Serializable {
         storeData(data);
     }
 
+    /**
+     * Sets the file id (sha256 hash)
+     * @param fId file hash
+     * */
     private void setFileId(String fId){
-        if (fId.length() == 64){
+        Pattern hashPattern = Pattern.compile("\\[0-9A-F]{64}");
+
+        if (fId.length() == 64 && hashPattern.matcher(fId).matches()){
             fileId = fId;
         } else {
             throw new IllegalStateException("Invalid file hash!");
         }
     }
 
+    /**
+     * Sets the chunk number
+     * @param chunkNoIn chunk number
+     * */
     private void setChunkNo(int chunkNoIn){
         if (chunkNoIn < 0 || chunkNoIn > 999999) {
             throw new IllegalStateException("Invalid chunk number!");
@@ -49,6 +60,10 @@ public class Chunk implements Serializable {
         }
     }
 
+    /**
+     * Sets the chunk data
+     * @param in chunk data
+     * */
     public void storeData(byte[] in){
         if (in.length <= chunkDataSize) {
             chunkData = in;
@@ -57,7 +72,12 @@ public class Chunk implements Serializable {
         }
     }
 
+    /**
+     * Saves the chunk to a file
+     * @param fileName file name
+     * */
     public void save(String fileName){
+        // TODO use the getChunkFileName Method
         try {
             FileOutputStream fileOut = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -69,18 +89,34 @@ public class Chunk implements Serializable {
         }
     }
 
+    /**
+     * Returns the chunk number
+     * @return chunk number
+     * */
     public int getChunkNo() {
         return chunkNo;
     }
 
-    public String getFileId() {
+    /**
+     * Returns the file hash
+     * @return original file hash
+     * */
+     public String getFileId() {
         return fileId;
     }
 
+    /**
+     * Returns the chunk data
+     * @return chunk data
+     * */
     public byte[] getChunkData(){
         return chunkData;
     }
 
+    /**
+     * Returns the chunk file name
+     * @return chunk file name
+     * */
     public String getChunkFileName(){
         return fileId + "-" + chunkNo + ".bin";
     }
