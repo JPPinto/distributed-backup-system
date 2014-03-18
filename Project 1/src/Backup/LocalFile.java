@@ -11,15 +11,18 @@ import java.util.Date;
  * Backup.LocalFile class
  */
 public class LocalFile {
-    String fileName;
+    String fileName, fileHash;
     Date creationDate, modificationDate;
 
-    LocalFile(String fN){
-        if (fN.length() <1) {
+    LocalFile(String fileName, String fileHash, Date creationDate, Date modificationDate){
+        if (fileName.length() <1) {
             throw new IllegalStateException("Invalid file name!");
         }
 
-        fileName = fN;
+        this.fileName = fileName;
+        this.fileHash = fileHash;
+        this.creationDate = creationDate;
+        this.modificationDate = modificationDate;
     }
 
     public String getFileName() {
