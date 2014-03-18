@@ -117,7 +117,6 @@ public class PotatoBackup {
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
 
-
         assert listOfFiles != null;
         for (File listOfFile : listOfFiles) {
 
