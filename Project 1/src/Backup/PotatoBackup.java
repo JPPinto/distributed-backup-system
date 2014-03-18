@@ -21,9 +21,8 @@ public class PotatoBackup {
     public static void main(String[] args) {
         System.out.println("Welcome to Potato Backup");
 
-
         try {
-            listFiles();
+            processFileList(listFiles("."));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -94,6 +93,7 @@ public class PotatoBackup {
             // Last chunk if file size not a multiple
             if (sizeRead < chunkDataSize) {
                 // It's the final chunkdown
+                // TODO SOMETHING
             } else {
                 currentChunkNumber++;
             }
@@ -109,15 +109,19 @@ public class PotatoBackup {
 
     }
 
-    private static void listFiles() throws IOException {
-        // Directory path here
-        String path = ".";
+    /*
+    * Lists local files
+    * */
+    private static File[] listFiles(String path) throws IOException {
+        File folder = new File(path);
+        return folder.listFiles();
+    }
+
+    private static void processFileList(File[] listOfFiles) throws IOException {
+        assert listOfFiles != null;
 
         String fileName;
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
 
-        assert listOfFiles != null;
         for (File listOfFile : listOfFiles) {
 
             if (listOfFile.isFile()) {
