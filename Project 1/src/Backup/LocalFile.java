@@ -10,9 +10,11 @@ import java.util.Date;
  *
  * Backup.LocalFile class
  */
-public class LocalFile {
-    String fileName, fileHash;
-    Date creationDate, modificationDate;
+class LocalFile {
+    private String fileName;
+    private String fileHash;
+    private Date creationDate;
+    private Date modificationDate;
 
     LocalFile(String fileName, String fileHash, Date creationDate, Date modificationDate){
         if (fileName.length() <1) {

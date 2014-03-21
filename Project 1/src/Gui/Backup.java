@@ -3,7 +3,7 @@ package Gui;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class Backup extends JDialog {
+class Backup extends JDialog {
     private JPanel contentPane;
     private JButton buttonEXIT;
     private JButton backupFileButton;

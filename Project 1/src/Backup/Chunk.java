@@ -1,9 +1,6 @@
 package Backup;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.regex.Pattern;
 
 /**
@@ -15,8 +12,9 @@ import java.util.regex.Pattern;
  * Backup.Chunk class
  */
 
-public class Chunk implements Serializable {
-    private static int chunkDataSize = 64000;
+class Chunk implements Serializable {
+
+    private static final int chunkDataSize = 64000;
 
     private String fileId;
     private int chunkNo;
@@ -65,7 +63,7 @@ public class Chunk implements Serializable {
      * Sets the chunk data
      * @param in chunk data
      * */
-    public void storeData(byte[] in){
+    void storeData(byte[] in){
         if (in.length <= chunkDataSize) {
             chunkData = in;
         } else {
@@ -74,10 +72,29 @@ public class Chunk implements Serializable {
     }
 
     /**
+     * Loads chunk from file
+     * @param chunkFileName output folder name
+     * */
+    public void readObject(String chunkFileName){
+        try {
+            FileInputStream fileIn = new FileInputStream(chunkFileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+
+            // TODO FIX THIS
+            //in.re(this);
+
+            in.close();
+            fileIn.close();
+        } catch(IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    /**
      * Saves the chunk to a file
      * @param outputFolderName output folder name
      * */
-    public void save(String outputFolderName){
+    public void writeObject(String outputFolderName){
         try {
             FileOutputStream fileOut = new FileOutputStream(outputFolderName + "/" + getChunkFileName());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -117,7 +134,7 @@ public class Chunk implements Serializable {
      * Returns the chunk file name
      * @return chunk file name
      * */
-    public String getChunkFileName(){
+    String getChunkFileName(){
         return fileId + "-" + chunkNo + ".bin";
     }
 }

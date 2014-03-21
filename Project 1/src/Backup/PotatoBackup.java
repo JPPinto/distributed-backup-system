@@ -13,10 +13,14 @@ import java.security.NoSuchAlgorithmException;
  *
  * Entry point
  */
-public class PotatoBackup {
+class PotatoBackup {
     /* Buffer size for hashing operations 1MiB*/
-    private static int bufferSize = 1048576;
-    private static int chunkDataSize = 64000;
+    private static final int bufferSize = 1048576;
+    private static final int chunkDataSize = 64000;
+
+    /* Path constants */
+    private static final String backupDirectory = "./backup";
+    private static final String temporaryDirectory = "./temporary";
 
     /**
      * Entry Point
@@ -101,7 +105,7 @@ public class PotatoBackup {
 
         while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
             Chunk currentChunk = new Chunk(fileID, currentChunkNumber, buffer);
-            currentChunk.save("./backup");
+            currentChunk.writeObject(backupDirectory);
 
             // Last chunk if file size not a multiple
             if (sizeRead < chunkDataSize) {
@@ -117,34 +121,47 @@ public class PotatoBackup {
         if (fileSize % chunkDataSize == 0) {
             System.out.println("An empty chunk is needed");
             Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
-            finalChunk.save("./backup");
+            finalChunk.writeObject(backupDirectory);
         }
 
     }
 
+    /**
+     * Write file from chunks
+     * @param output
+     * @throws IOException
+     */
     public static void writeFileFromChunks(File output) throws IOException {
         // Get buffered stream from file
         FileOutputStream fileOutputStream = new FileOutputStream(output);
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
 
-        byte[] buffer = new byte[chunkDataSize];
-
-        int sizeWritten;
         int currentChunkNumber = 0;
+        int numberOfChunksToWrite = 0;
+        Chunk currentChunk = null;
 
-        while (true) {
-            bufferedOutputStream.write(buffer);
+        for (; currentChunkNumber < numberOfChunksToWrite; currentChunkNumber++) {
 
+
+            bufferedOutputStream.write(currentChunk.getChunkData());
+
+            currentChunkNumber++;
             break;
         }
         bufferedOutputStream.close();
+    }
+
+    private static File[] listChunksByHash() {
+        File folder = new File(temporaryDirectory);
+        return folder.listFiles();
+
     }
 
     /**
      * Lists local files
      * @param path Folder path
      */
-    private static File[] listFiles(String path) throws IOException {
+    private static File[] listFiles(String path) {
         File folder = new File(path);
         return folder.listFiles();
     }
