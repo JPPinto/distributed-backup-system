@@ -138,9 +138,11 @@ class PotatoBackup {
 
         int currentChunkNumber = 0;
         int numberOfChunksToWrite = 0;
+        String chunkFileName = "";
         Chunk currentChunk = null;
 
         for (; currentChunkNumber < numberOfChunksToWrite; currentChunkNumber++) {
+            // currentChunk.loadChunk(chunkFileName);
 
 
             bufferedOutputStream.write(currentChunk.getChunkData());
