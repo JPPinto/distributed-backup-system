@@ -122,6 +122,24 @@ public class PotatoBackup {
 
     }
 
+    public static void writeFileFromChunks(File output) throws IOException {
+        // Get buffered stream from file
+        FileOutputStream fileOutputStream = new FileOutputStream(output);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+        byte[] buffer = new byte[chunkDataSize];
+
+        int sizeWritten;
+        int currentChunkNumber = 0;
+
+        while (true) {
+            bufferedOutputStream.write(buffer);
+
+            break;
+        }
+        bufferedOutputStream.close();
+    }
+
     /**
      * Lists local files
      * @param path Folder path
