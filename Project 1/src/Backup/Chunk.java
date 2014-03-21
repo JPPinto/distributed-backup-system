@@ -75,19 +75,24 @@ class Chunk implements Serializable {
      * Loads chunk from file
      * @param chunkFileName output folder name
      * */
-    public void read(String chunkFileName){
+    public static Chunk loadChunk(String chunkFileName){
         try {
             FileInputStream fileIn = new FileInputStream(chunkFileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
-            // TODO FIX THIS
-            //in.re(this);
-
+            Chunk temp = (Chunk) in.readObject();
             in.close();
             fileIn.close();
+
+            return temp;
+
         } catch(IOException i) {
             i.printStackTrace();
+        } catch (ClassNotFoundException i) {
+            i.printStackTrace();
         }
+
+        return null;
     }
 
     /**
