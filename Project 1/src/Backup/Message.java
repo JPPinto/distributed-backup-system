@@ -8,7 +8,6 @@ package Backup; /**
  */
 
 import java.lang.reflect.Array;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -54,11 +53,14 @@ import java.util.regex.Pattern;
  *  up to 9. It takes one byte, which is the ASCII code of that digit.
  */
 
-public class Message {
+class Message {
     // <MessageType> <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF>
-    String type, version, fileId;
-    int chunkNo, replicationDeg;
-    Boolean validMessage;
+    private String type;
+    private String version;
+    private String fileId;
+    private int chunkNo;
+    private int replicationDeg;
+    private Boolean validMessage;
 
     public Message(){
         validMessage = decodeHeaderString("");
@@ -85,11 +87,7 @@ public class Message {
         chunkNo = Integer.getInteger(argArray[3]);
         replicationDeg = Integer.getInteger(argArray[4]);
 
-        if (!(validateMsgType(type) && validateVersion(version) && validateFileId(fileId) && validateChunkNo() && validateReplicationDeg())){
-            return false;
-        }
-
-        return true;
+        return validateMsgType(type) && validateVersion(version) && validateFileId(fileId) && validateChunkNo() && validateReplicationDeg();
     }
 
     private boolean validateMsgType(String m){
@@ -118,19 +116,13 @@ public class Message {
      * Validate chunk number
      */
     private boolean validateChunkNo(){
-        if (chunkNo < 0 || chunkNo > 999999){
-            return false;
-        }
-            return true;
+        return !(chunkNo < 0 || chunkNo > 999999);
     }
 
     /*
      * Validate replication degree (NOT COMPLETED check lower bond)?
      */
     private boolean validateReplicationDeg(){
-        if (replicationDeg < 0 || replicationDeg > 9){
-            return false;
-        }
-            return true;
+        return !(replicationDeg < 0 || replicationDeg > 9);
     }
 }
