@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 
 class Chunk implements Serializable {
-
+    private static final long serialVersionUID = -1665082267372566163L;
     private static final int chunkDataSize = 64000;
 
     private String fileId;
@@ -75,7 +75,7 @@ class Chunk implements Serializable {
      * Loads chunk from file
      * @param chunkFileName output folder name
      * */
-    public void readObject(String chunkFileName){
+    public void read(String chunkFileName){
         try {
             FileInputStream fileIn = new FileInputStream(chunkFileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -94,7 +94,7 @@ class Chunk implements Serializable {
      * Saves the chunk to a file
      * @param outputFolderName output folder name
      * */
-    public void writeObject(String outputFolderName){
+    public void write(String outputFolderName){
         try {
             FileOutputStream fileOut = new FileOutputStream(outputFolderName + "/" + getChunkFileName());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
