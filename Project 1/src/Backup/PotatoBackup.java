@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
  * Entry point
  */
 class PotatoBackup {
-    /* Buffer size for hashing operations 1MiB*/
+    /* Buffer size for hashing operations 1MiB */
     private static final int bufferSize = 1048576;
     private static final int chunkDataSize = 64000;
 
@@ -78,10 +78,10 @@ class PotatoBackup {
         } catch (NoSuchAlgorithmException e) {
             System.out.println("SHA-256 Algorithm Not found! Aborting execution.");
             System.exit(-1);
-        }
 
-        // Make the compiler happy, since we never get to return the empty string
-        return "";
+            // Make the compiler happy, since we never get to return the empty string
+            return "";
+        }
     }
 
     /**
