@@ -62,8 +62,11 @@ class PBMessage {
     private int replicationDeg;
     private Boolean validMessage;
 
-    public PBMessage(){
-        validMessage = decodeHeaderString("");
+    public PBMessage(byte[] inputData){
+        // inputData
+
+        String messageHeader = null;
+        validMessage = decodeHeaderString(messageHeader);
     }
 
     public PBMessage(String input) {

@@ -44,7 +44,7 @@ public class PeerThread extends Thread{
 			// receive the packets
 			mSocket.receive(packet);
 
-            PBPacket receivedPacket = new PBPacket(packet.getData());
+            //ket receivedPacket = new ket(packet.getData());
 
 			mSocket.leaveGroup(iAddress);
 
