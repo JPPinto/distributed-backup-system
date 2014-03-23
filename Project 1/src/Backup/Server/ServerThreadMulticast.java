@@ -22,10 +22,11 @@ public class ServerThreadMulticast extends Thread {
 	// Params
 	private String mcastAddress, mcastPort;
 	public final int PORT = 60000;
-	public final String adr = new String("230.0.0.1"); //any class D address
+	public final String adr = new String("230.0.0.1"); 	//any class D address
+	public final String adr2 = new String("231.0.0.1"); //any class D address
+	public final String adr3 = new String("232.0.0.1"); //any class D address
 
 	protected boolean serverIsRunning = false;
-
 
 	public ServerThreadMulticast(String mcast_addr, String mcast_port) {
 		mcastAddress = mcast_addr;

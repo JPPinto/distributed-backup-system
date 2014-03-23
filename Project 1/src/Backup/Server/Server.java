@@ -38,7 +38,7 @@ import java.io.IOException;
 //                 .O@0.                                                                    Bi
 //                    XB@r                                                                  @
 //                      i@BM.                                                              rB
-//                         L@.                                                             O@
+//                         L@.                      I AM A STEGOSAURUS                     O@
 //                          Bi                                                             @i
 //                          @P                                                            iB
 //                          i@                                                            B@
@@ -72,6 +72,5 @@ public class Server {
         }
 
         new ServerThreadMulticast(args[1], args[2]).start();
-		new ServerThread().start();
     }
 }
