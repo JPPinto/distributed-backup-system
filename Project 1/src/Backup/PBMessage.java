@@ -54,7 +54,11 @@ import java.util.regex.Pattern;
  */
 
 class PBMessage {
+    // Header
     // <MessageType> <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF>
+
+    // Data
+    // <CRLF> <CHUNK_DATA>
     private String type;
     private String version;
     private String fileId;
@@ -63,10 +67,34 @@ class PBMessage {
     private Boolean validMessage;
 
     public PBMessage(byte[] inputData){
-        // inputData
 
-        String messageHeader = null;
+        int it = 0;
+        String messageHeader = "";
+
+        while (true) {
+
+            messageHeader = messageHeader + String.valueOf(inputData[it]);
+            it++;
+
+            /* Stop on first 0xD 0xA */
+            if(inputData[it] == 0xDA) {
+                break;
+            }
+        }
+
+        /* Decode message header */
         validMessage = decodeHeaderString(messageHeader);
+
+        /* Get data block */
+        if (validMessage) {
+            it++;
+
+            if (inputData[it] == 0xDA) {
+                /* Data might be present */
+
+
+            }
+        }
     }
 
     public PBMessage(String input) {
@@ -123,7 +151,7 @@ class PBMessage {
     }
 
     /*
-     * Validate replication degree (NOT COMPLETED check lower bond)?
+     * Validate replication degree (NOT COMPLETED check upper bond)?
      */
     private boolean validateReplicationDeg(){
         return !(replicationDeg < 0 || replicationDeg > 9);
