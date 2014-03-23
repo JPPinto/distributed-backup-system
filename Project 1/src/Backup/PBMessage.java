@@ -8,6 +8,7 @@ package Backup; /**
  */
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -92,6 +93,8 @@ class PBMessage {
             if (inputData[it] == 0xDA) {
                 /* Data might be present */
 
+                it++;
+                byte[] data = Arrays.copyOfRange(inputData, it, inputData.length);
 
             }
         }
