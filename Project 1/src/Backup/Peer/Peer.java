@@ -1,4 +1,4 @@
-package Backup.Client;
+package Backup.Peer;
 
 /**
  * SDIS Lab 01
