@@ -1,24 +1,27 @@
-package Backup.Client;
+package Backup;
 
 /**
  * SDIS Lab 01
  * Eduardo Fernandes
  * José Pinto
+ *
+ * Peer Thread
  */
 
 import java.io.*;
 import java.net.*;
 
-public class Peer extends Thread{
+public class PeerThread extends Thread{
 
-	private int mcast_port;
-	private String mcast_addr;
+	private int mCastPort;
+	private String mCastAddress;
 
-	private static final int MIN_PACKET_SIZE = 1024;
+	private static final int packetSize = 65536;
 
-	Peer(int p, String ad){
-		mcast_port = p;
-		mcast_addr = ad;
+
+	PeerThread(int port, String address){
+		mCastPort = port;
+		mCastAddress = address;
 	}
 
 	public void run(){
@@ -29,25 +32,19 @@ public class Peer extends Thread{
 		try{
 			DatagramPacket packet;
 
-			mSocket = new MulticastSocket(mcast_port);
+			mSocket = new MulticastSocket(mCastPort);
 
-			/*Joining Multicast Group*/
-			iAddress = InetAddress.getByName(mcast_addr);
+			/* Join the Multicast Group */
+			iAddress = InetAddress.getByName(mCastAddress);
 			mSocket.joinGroup(iAddress);
 
-			byte[] buf = new byte[1024];
+			byte[] buf = new byte[packetSize];
 			packet = new DatagramPacket(buf, buf.length);
 
-			while(true){
-				// receive the packets
-				mSocket.receive(packet);
+			// receive the packets
+			mSocket.receive(packet);
 
-				String str = new String(packet.getData());
-
-				if(false){
-					break;
-				}
-			}
+            //ket receivedPacket = new ket(packet.getData());
 
 			mSocket.leaveGroup(iAddress);
 
@@ -65,8 +62,8 @@ public class Peer extends Thread{
 		byte[] buf = request.getBytes();
 
         DatagramSocket socket = new DatagramSocket();
-		InetAddress IPAddress = InetAddress.getByName(mcast_addr);
-		DatagramPacket packet = new DatagramPacket(buf, buf.length, IPAddress, mcast_port);
+		InetAddress IPAddress = InetAddress.getByName(mCastAddress);
+		DatagramPacket packet = new DatagramPacket(buf, buf.length, IPAddress, mCastPort);
 
         // send request
         socket.send(packet);

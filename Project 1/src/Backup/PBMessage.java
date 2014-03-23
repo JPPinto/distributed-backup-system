@@ -4,10 +4,11 @@ package Backup; /**
  * Eduardo Fernandes
  * José Pinto
  *
- * Backup.Message class
+ * Backup.PBMessage class
  */
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -53,8 +54,12 @@ import java.util.regex.Pattern;
  *  up to 9. It takes one byte, which is the ASCII code of that digit.
  */
 
-class Message {
+class PBMessage {
+    // Header
     // <MessageType> <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF>
+
+    // Data
+    // <CRLF> <CHUNK_DATA>
     private String type;
     private String version;
     private String fileId;
@@ -62,11 +67,40 @@ class Message {
     private int replicationDeg;
     private Boolean validMessage;
 
-    public Message(){
-        validMessage = decodeHeaderString("");
+    public PBMessage(byte[] inputData){
+
+        int it = 0;
+        String messageHeader = "";
+
+        while (true) {
+
+            messageHeader = messageHeader + String.valueOf(inputData[it]);
+            it++;
+
+            /* Stop on first 0xD 0xA */
+            if(inputData[it] == 0xDA) {
+                break;
+            }
+        }
+
+        /* Decode message header */
+        validMessage = decodeHeaderString(messageHeader);
+
+        /* Get data block */
+        if (validMessage) {
+            it++;
+
+            if (inputData[it] == 0xDA) {
+                /* Data might be present */
+
+                it++;
+                byte[] data = Arrays.copyOfRange(inputData, it, inputData.length);
+
+            }
+        }
     }
 
-    public Message(String input) {
+    public PBMessage(String input) {
         validMessage = decodeHeaderString(input);
     }
 
@@ -120,7 +154,7 @@ class Message {
     }
 
     /*
-     * Validate replication degree (NOT COMPLETED check lower bond)?
+     * Validate replication degree (NOT COMPLETED check upper bond)?
      */
     private boolean validateReplicationDeg(){
         return !(replicationDeg < 0 || replicationDeg > 9);
