@@ -4,7 +4,7 @@ package Backup; /**
  * Eduardo Fernandes
  * José Pinto
  *
- * Backup.Message class
+ * Backup.PBMessage class
  */
 
 import java.lang.reflect.Array;
@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  *  up to 9. It takes one byte, which is the ASCII code of that digit.
  */
 
-class Message {
+class PBMessage {
     // <MessageType> <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF>
     private String type;
     private String version;
@@ -62,11 +62,11 @@ class Message {
     private int replicationDeg;
     private Boolean validMessage;
 
-    public Message(){
+    public PBMessage(){
         validMessage = decodeHeaderString("");
     }
 
-    public Message(String input) {
+    public PBMessage(String input) {
         validMessage = decodeHeaderString(input);
     }
 
