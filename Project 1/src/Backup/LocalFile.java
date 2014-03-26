@@ -28,6 +28,27 @@ class LocalFile {
     }
 
     public void restoreFile(){
+        // TODO Get all chunks
+
+        // TODO Create output stream
+
+        // TODO Join the chunks
+        int currentChunkNo = 0;
+        int numberOfChunks = 99;
+        String currentChunkName = null;
+        Chunk currentChunk = null;
+
+        while (numberOfChunks < currentChunkNo){
+            // Load chunk from file
+            currentChunkName = fileHash + "-" + currentChunk;
+            currentChunk = new Chunk(currentChunkName);
+
+            // Write chunk data to output stream
+
+
+            // On to the next one
+            currentChunkNo++;
+        }
 
     }
 

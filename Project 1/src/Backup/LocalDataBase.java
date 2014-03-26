@@ -16,6 +16,7 @@ public class LocalDataBase {
 
     public boolean addFileToDatabase(LocalFile fileToAdd) {
 
+        /* Check if the file already exists in the database */
         if (getFileFromId(fileToAdd.getFileHash()) == null) {
             files.put(fileToAdd.getFileHash(), fileToAdd);
             return true;
@@ -30,6 +31,9 @@ public class LocalDataBase {
         return files.get(hash);
     }
 
+    /***
+     * Calls the file chunk delete and removes the file from the database
+     */
     public boolean removeFile(String hash){
         LocalFile temp = getFileFromId(hash);
 

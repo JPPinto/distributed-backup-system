@@ -20,16 +20,28 @@ class Chunk implements Serializable {
     private int chunkNo;
     private byte chunkData[];
 
-    public Chunk(String fId, int cNo) throws IllegalStateException {
-        setFileId(fId);
-        setChunkNo(cNo);
-        chunkData = null;
-    }
-
+    /**
+     * Constructor for a chunk with data
+     * */
     public Chunk(String fId, int cNo, byte[] data) throws IllegalStateException {
         setFileId(fId);
         setChunkNo(cNo);
         storeData(data);
+    }
+
+    /**
+     * Constructor for a chunk with no data
+     * */
+    public Chunk(String fId, int cNo) throws IllegalStateException {
+        this(fId, cNo, null);
+    }
+
+    /**
+     * Constructor for chunk loading
+     * @param fileName File name for loading
+     * */
+    public Chunk(String fileName){
+        loadChunk(fileName);
     }
 
     /**
