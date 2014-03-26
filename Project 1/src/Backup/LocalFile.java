@@ -88,6 +88,12 @@ class LocalFile {
         }
     }
 
+    public boolean deleteFileChunks(){
+        // TODO Delete chunks
+
+        return true;
+    }
+
     public String getFileHash(){
         return fileHash;
     }

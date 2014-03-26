@@ -34,20 +34,20 @@ public class LocalDataBase {
     /***
      * Calls the file chunk delete and removes the file from the database
      */
-    public boolean removeFile(String hash){
+    public boolean removeFileFromBackup(String hash){
         LocalFile temp = getFileFromId(hash);
 
         /* File doesn't exist */
         if (temp == null) {
             return false;
         } else {
-            return removeFile(temp);
+            return removeFileFromBackup(temp);
         }
     }
 
-    public boolean removeFile(LocalFile fileToDelete){
+    public boolean removeFileFromBackup(LocalFile fileToDelete){
         // Delete file
-        // fileToDelete.delete();
+        fileToDelete.deleteFileChunks();
 
         // Remove from data base
         files.remove(fileToDelete.getFileHash());
