@@ -27,6 +27,14 @@ class LocalFile {
         this.modificationDate = modificationDate;
     }
 
+    public void restoreFile(){
+
+    }
+
+    public String getFileHash(){
+        return fileHash;
+    }
+
     public String getFileName() {
         return fileName;
     }
