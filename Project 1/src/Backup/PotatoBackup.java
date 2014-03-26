@@ -156,7 +156,6 @@ class PotatoBackup {
     private static File[] listChunksByHash() {
         File folder = new File(temporaryDirectory);
         return folder.listFiles();
-
     }
 
     /**

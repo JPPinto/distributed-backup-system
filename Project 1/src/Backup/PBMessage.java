@@ -60,17 +60,23 @@ class PBMessage {
 
     // Data
     // <CRLF> <CHUNK_DATA>
-    private String type;
-    private String version;
-    private String fileId;
-    private int chunkNo;
-    private int replicationDeg;
-    private Boolean validMessage;
+    public String type;
+	public String version;
+	public String fileId;
+	public int chunkNo;
+	public int replicationDeg;
+	public byte[] raw_data;
+ 	public Boolean validMessage;
 
-    public PBMessage(byte[] inputData){
+	public static final String PUTCHUNK = "PUTCHUNK";
+	public static final String STORED = "STORED";
+
+
+	public PBMessage(byte[] inputData){
 
         int it = 0;
         String messageHeader = "";
+		raw_data = inputData;
 
         while (true) {
 

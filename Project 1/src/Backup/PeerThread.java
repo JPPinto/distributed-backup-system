@@ -10,26 +10,29 @@ package Backup;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
-public class PeerThread extends Thread{
+public class PeerThread extends Thread {
 
 	private int mCastPort;
 	private String mCastAddress;
+	private ArrayList<PBMessage> incoming_messages;
 
 	private static final int packetSize = 65536;
 
 
-	PeerThread(int port, String address){
+	PeerThread(int port, String address) {
+		incoming_messages = new ArrayList<PBMessage>();
 		mCastPort = port;
 		mCastAddress = address;
 	}
 
-	public void run(){
+	public void run() {
 
 		MulticastSocket mSocket = null;
 		InetAddress iAddress;
 
-		try{
+		try {
 			DatagramPacket packet;
 
 			mSocket = new MulticastSocket(mCastPort);
@@ -38,17 +41,21 @@ public class PeerThread extends Thread{
 			iAddress = InetAddress.getByName(mCastAddress);
 			mSocket.joinGroup(iAddress);
 
-			byte[] buf = new byte[packetSize];
-			packet = new DatagramPacket(buf, buf.length);
+			while (true) {
+				byte[] buf = new byte[packetSize];
+				packet = new DatagramPacket(buf, buf.length);
 
-			// receive the packets
-			mSocket.receive(packet);
+				// receive the packets
+				mSocket.receive(packet);
 
-            //ket receivedPacket = new ket(packet.getData());
+				incoming_messages.add(new PBMessage(packet.getData()));
+
+				if (false) break;
+			}
 
 			mSocket.leaveGroup(iAddress);
 
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 
 			mSocket.close();
@@ -57,26 +64,27 @@ public class PeerThread extends Thread{
 
 	}
 
-    public String sendRequest(String request) throws IOException {
+	public void sendRequest(String request) throws IOException {
 
-		byte[] buf = request.getBytes();
-
-        DatagramSocket socket = new DatagramSocket();
+		PBMessage temp_message = new PBMessage(request.getBytes());
+		DatagramSocket socket = new DatagramSocket();
 		InetAddress IPAddress = InetAddress.getByName(mCastAddress);
-		DatagramPacket packet = new DatagramPacket(buf, buf.length, IPAddress, mCastPort);
 
-        // send request
-        socket.send(packet);
+		if (temp_message.type == PBMessage.PUTCHUNK) {
 
-        // get response
-        byte[] buf_received = new byte[1024];
-        packet = new DatagramPacket(buf_received, buf_received.length);
+			DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddress, mCastPort);
+			socket.send(packet);
 
-        socket.receive(packet);
+			while (true) {
 
-        socket.close();
+			}
 
-        // return response/result
-        return new String(packet.getData(), 0, packet.getLength());
-    }
+		} else if (temp_message.type == PBMessage.STORED) {
+
+			DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddress, mCastPort);
+			socket.send(packet);
+		}
+
+		socket.close();
+	}
 }
