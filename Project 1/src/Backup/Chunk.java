@@ -124,6 +124,14 @@ class Chunk implements Serializable {
         }
     }
 
+    public boolean isTheFinalChunk(){
+        if (chunkData == null || chunkData.length < chunkDataSize){
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Returns the chunk number
      * @return chunk number

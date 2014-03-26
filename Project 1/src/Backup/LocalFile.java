@@ -1,6 +1,9 @@
 package Backup;
 
+import java.io.*;
 import java.util.Date;
+
+import static Backup.PotatoBackup.getHashFromFile;
 
 /**
  * SDIS TP1
@@ -27,30 +30,62 @@ class LocalFile {
         this.modificationDate = modificationDate;
     }
 
-    public void restoreFile(){
-        // TODO Get all chunks
-
-        // TODO Create output stream
+    public boolean restoreFileFromChunks(String restoredFileLocation) throws IOException {
+        // TODO Check if all chunks exist
 
 
-        // TODO Join the chunks
+        final String filePath = restoredFileLocation + fileName;
+
+        // Get buffered output stream for file writing
+        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+        // The Chunk Joiner
         int currentChunkNo = 0;
-        int numberOfChunks = 99;
-        String currentChunkName = null;
+        String currentChunkName;
         Chunk currentChunk = null;
 
-        while (numberOfChunks < currentChunkNo){
+        do {
             // Load chunk from file
             currentChunkName = fileHash + "-" + currentChunk;
             currentChunk = new Chunk(currentChunkName);
 
-            // Write chunk data to output stream
+            // Check if this is the final chunk
+            if (currentChunk.isTheFinalChunk()){
+                // Check if the final chunk still has data
+                if (currentChunk.getChunkData() != null){
+                    bufferedOutputStream.write(currentChunk.getChunkData());
+                }
 
+                break;
+            }
+
+            // Write chunk data to output stream
+            bufferedOutputStream.write(currentChunk.getChunkData());
 
             // On to the next one
             currentChunkNo++;
-        }
 
+            // Every 100nth chunk flush the buffer
+            if (currentChunkNo % 100 == 0) {
+                bufferedOutputStream.flush();
+                fileOutputStream.flush();
+            }
+        } while (true);
+
+        bufferedOutputStream.close();
+        fileOutputStream.close();
+
+        // Check hash on the restored file
+        File destination = new File(filePath);
+        String writtenFileHash = getHashFromFile(destination);
+
+        if (fileHash.equals(writtenFileHash)){
+            return true;
+        } else {
+            System.out.println("The restored file hash doesn't match the original file hash.");
+            return false;
+        }
     }
 
     public String getFileHash(){
