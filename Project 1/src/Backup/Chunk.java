@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 class Chunk implements Serializable {
     private static final long serialVersionUID = -1665082267372566163L;
     private static final int chunkDataSize = 64000;
+    private static final String chunkFileExtension = ".bin";
 
     private String fileId;
     private int chunkNo;
@@ -89,7 +90,7 @@ class Chunk implements Serializable {
      * */
     public static Chunk loadChunk(String chunkFileName){
         try {
-            FileInputStream fileIn = new FileInputStream(chunkFileName);
+            FileInputStream fileIn = new FileInputStream(chunkFileName + chunkFileExtension);
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
             Chunk temp = (Chunk) in.readObject();
@@ -152,6 +153,6 @@ class Chunk implements Serializable {
      * @return chunk file name
      * */
     String getChunkFileName(){
-        return fileId + "-" + chunkNo + ".bin";
+        return fileId + "-" + chunkNo + chunkFileExtension;
     }
 }
