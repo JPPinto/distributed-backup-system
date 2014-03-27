@@ -4,6 +4,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 
 /**
  * SDIS TP1
@@ -27,15 +28,41 @@ class PotatoBackup {
      * @param args Arguments
      */
     public static void main(String[] args) {
-        System.out.println("Welcome to Potato Backup");
+        int suchChoice;
+        System.out.println("Welcome to Potaturu Backupuru");
+        System.out.println("Choose an optionuru:\n" +
+                "1) List all files and create chunks\n" +
+                "2) Decode sample message\n" +
+                "9) Exit");
 
-        try {
-            processFileList(listFiles("."));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        Scanner in = new Scanner(System.in);
+        suchChoice = in.nextInt();
+
+        while (true) {
+            switch (suchChoice) {
+                default:
+                    System.out.println("Invalid choice!");
+
+                case 1:
+                    try {
+                        processFileList(listFiles("."));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case 2:
+                    break;
+
+                case 9:
+                    System.exit(0);
+                    break;
+
+            }
         }
+
     }
 
     /**
