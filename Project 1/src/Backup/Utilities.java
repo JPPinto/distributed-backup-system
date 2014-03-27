@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -74,5 +75,16 @@ public class Utilities {
         }
 
         return newString;
+    }
+
+    public static byte[] convertStringToByteArray(String in){
+        return in.getBytes(Charset.forName("UTF-8"));
+    }
+
+    public static byte[] joinTwoArrays(byte[] arrayA, byte[] arrayB){
+        byte[] merged = new byte[arrayA.length + arrayB.length];
+        System.arraycopy(arrayA, 0, merged, 0, arrayA.length);
+        System.arraycopy(arrayB, 0, merged, arrayA.length, arrayB.length);
+        return merged;
     }
 }

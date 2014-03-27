@@ -4,8 +4,7 @@ import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.Arrays;
 
-import static Backup.Utilities.convertByteArrayToSring;
-
+import static Backup.Utilities.*;
 
 public class Msg_Putchunk extends PBMessage {
     private byte[] headerData;
@@ -86,13 +85,20 @@ public class Msg_Putchunk extends PBMessage {
                 PBMessage.CRLF + PBMessage.SEPARATOR +
                 PBMessage.CRLF + PBMessage.SEPARATOR;
 
-        //dataToBeSent =
+        headerData = convertStringToByteArray(header);
+        chunkData = chunk.getChunkData();
 
         //<Body>
-        if (chunk.getChunkData() != null){
-            
+        if (chunkData != null){
+            dataToBeSent = joinTwoArrays(headerData, chunkData);
+        } else {
+            dataToBeSent = headerData;
         }
 
+    }
+
+    public byte[] getData(){
+        return dataToBeSent;
     }
 
     @Override
