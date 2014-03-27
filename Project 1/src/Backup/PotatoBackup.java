@@ -36,9 +36,9 @@ class PotatoBackup {
                 "9) Exit");
 
         Scanner in = new Scanner(System.in);
-        suchChoice = in.nextInt();
 
         while (true) {
+            suchChoice = in.nextInt();
             switch (suchChoice) {
                 default:
                     System.out.println("Invalid choice!");
@@ -66,6 +66,7 @@ class PotatoBackup {
                     break;
 
             }
+
         }
 
     }
