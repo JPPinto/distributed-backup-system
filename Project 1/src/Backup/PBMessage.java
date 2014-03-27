@@ -56,30 +56,20 @@ import static Backup.PotatoBackup.convertByteArrayToHex;
  *  up to 9. It takes one byte, which is the ASCII code of that digit.
  */
 
-class PBMessage {
+abstract class PBMessage {
     // Header
     // <MessageType> <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF>
 
     // Data
     // <CRLF> <CHUNK_DATA>
-    public String type;
+    //public String type;
 	public String version;
 	public String fileId;
 	public int chunkNo;
 	public int replicationDeg;
 	public byte[] raw_data;
  	private boolean validMessage;
-	//
-	private int messageType;
-	// 0 PUTCHUNK
-	// 1 STORED
-	// 2 GETCHUNK
-	// 3 CHUNK
-	// 4 DELETE
-	// 5 REMOVED
 
-	public static final String PUTCHUNK = "PUTCHUNK";
-	public static final String STORED = "STORED";
     public static final byte TERMINATOR = (byte) Integer.parseInt("DA",16);
 
 
@@ -122,8 +112,6 @@ class PBMessage {
 
 	// STORED <Version> <FileId> <ChunkNo> <CRLF> <CRLF>
 	public PBMessage(int typeN, String ver, String fId, int chunkNumber){
-		messageType = typeN;
-		setTypeString();
 		version = ver;
 		fileId = fId;
 		chunkNo = chunkNumber;
@@ -133,38 +121,9 @@ class PBMessage {
         validMessage = decodeHeaderString(input);
     }
 
-	private void setTypeString(){
-		switch (messageType){
-			case 0:
-				type = "PUTCHUNK";
-				break;
+	abstract public String getType();
 
-			case 1:
-				type = "STORED";
-				break;
-
-			case 2:
-				type = "GETCHUNK";
-				break;
-
-			case 3:
-				type = "CHUNK";
-				break;
-
-			case 4:
-				type = "DELETE";
-				break;
-
-			case 5:
-				type = "REMOVED";
-				break;
-
-			default:
-				break;
-		}
-	}
-
-    private boolean decodeHeaderString(String input){
+	private boolean decodeHeaderString(String input){
 
         /* Split input */
         String[] argArray = input.split(" ");
@@ -221,6 +180,6 @@ class PBMessage {
     }
 
 	public byte[] getMessage(){
-
+		return this.raw_data;
 	}
 }
