@@ -53,6 +53,8 @@ abstract class PBMessage {
         return "INVALID_MSG";
     }
 
+	abstract public byte[] getData(int type);
+
     public static PBMessage createMessageFromType(byte[] data) {
         String type = getType(data);
 
