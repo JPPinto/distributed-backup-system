@@ -5,22 +5,21 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Jose on 26-03-2014.
  */
 public class SocketMCReceiver extends Thread {
 
-	public HashMap<String, PBMessage> received_putchunk;
-	public HashMap<String, PBMessage> received_stored;
+	public HashMap<String, PBMessage> received;
 	public String mcast_adrr;
 	public int mcast_port;
 
 	SocketMCReceiver(String ma, int mp) {
 		mcast_adrr = ma;
 		mcast_port = mp;
-		received_putchunk = new HashMap<String, PBMessage>();
-		received_stored = new HashMap<String, PBMessage>();
+		received = new HashMap<String, PBMessage>();
 	}
 
 	public void run() {
@@ -45,17 +44,13 @@ public class SocketMCReceiver extends Thread {
 				// receive the packets
 				mSocket.receive(packet);
 
-                /*PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
+				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
 
-				if (!received_stored.containsKey(packet.getAddress()) && temp_message.getType() == PBMessage.STORED) {
-					received_stored.put(packet.getAddress().toString(), temp_message);
+				if (!received.containsKey(packet.getAddress().getHostAddress())) {
+					received.put(packet.getAddress().getHostAddress(), temp_message);
 				}
 
-				if (!received_putchunk.containsKey(packet.getAddress()) && temp_message.type == PBMessage.PUTCHUNK) {
-					received_putchunk.put(packet.getAddress().toString(), temp_message);
-				}*/
-
-				//System.out.println("RECEIVED FROM " + packet.getAddress().toString() + " TYPE: " + temp_message.getT);
+				System.out.println("RECEIVED FROM " + packet.getAddress().toString() + " TYPE: " + temp_message.getType());
 
 				if (false) break;
 			}
@@ -64,16 +59,31 @@ public class SocketMCReceiver extends Thread {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-
 			mSocket.close();
 		}
+		mSocket.close();
 	}
 
 	public int numStoredByIP() {
-		return received_stored.size();
+
+		int num = 0;
+
+		for (Map.Entry<String, PBMessage> entry : received.entrySet()) {
+
+			if (entry.getValue().getType() == "STORED")
+				num++;
+		}
+		return num;
 	}
 
 	public int numPutByIP() {
-		return received_putchunk.size();
+		int num = 0;
+
+		for (Map.Entry<String, PBMessage> entry : received.entrySet()) {
+
+			if (entry.getValue().getType() == "PUTCHUNK")
+				num++;
+		}
+		return num;
 	}
 }

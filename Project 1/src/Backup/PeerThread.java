@@ -35,12 +35,12 @@ public class PeerThread extends Thread {
 		socReceiver = new SocketMCReceiver(addressMC, portMC);
 	}
 
-	/*public void run() {
+/*	public void run() {
 		boolean running = true;
 		socReceiver.run();
 
 
-		while (running) for (Map.Entry<String, PBMessage> entry : socReceiver.received_putchunk.entrySet()) {
+		while (running) for (Map.Entry<String, PBMessage> entry : socReceiver.received.entrySet()) {
 
 			PBMessage temp_message = entry.getValue();
 
@@ -49,9 +49,10 @@ public class PeerThread extends Thread {
 			String temp_request = "STORED " + temp_message.version + " " + temp_message.fileId + " " + temp_message.chunkNo + PBMessage.TERMINATOR;
 			sendRequest(temp_request);                                // Responde to message
 
-			socReceiver.received_putchunk.remove(entry.getKey());    // Remove message from queue
+			socReceiver.received.remove(entry.getKey());    // Remove message from queue
 		}
 	}
+
 
 	public void sendRequest(String request) {
 
