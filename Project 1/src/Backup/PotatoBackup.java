@@ -2,6 +2,7 @@ package Backup;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
@@ -30,15 +31,16 @@ class PotatoBackup {
      */
     public static void main(String[] args) {
         int suchChoice;
-        System.out.println("Welcome to Potaturu Backupuru");
-        System.out.println("Choose an optionuru:\n" +
-                "1) List all files and create chunks\n" +
-                "2) Decode sample message\n" +
-                "9) Exit");
 
         Scanner in = new Scanner(System.in);
 
         while (true) {
+            System.out.println("Welcome to Potaturu Backupuru");
+            System.out.println("Choose an optionuru:\n" +
+                    "1) List all files and create chunks\n" +
+                    "2) Decode sample message\n" +
+                    "9) Exit");
+
             suchChoice = in.nextInt();
             switch (suchChoice) {
                 default:
@@ -75,7 +77,9 @@ class PotatoBackup {
     public static void decodeTestMessage() throws IOException{
         FileInputStream fileIn = new FileInputStream("message.test");
         BufferedInputStream in = new BufferedInputStream(fileIn);
-        byte [] testMessage = new byte[66000];
+
+        // Nasty hack for testing purposes only
+        byte [] testMessage = new byte[(int) Files.size(new File("message.test").toPath())];
 
         int sizeRead = 0;
         while ((sizeRead = in.read(testMessage)) != -1) {
