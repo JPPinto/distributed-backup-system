@@ -9,4 +9,8 @@ public class Msg_Delete extends PBMessage {
         super("DELETE");
     }
 
+    @Override
+    public byte[] getData(int type){
+        return null;
+    }
 }

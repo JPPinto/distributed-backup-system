@@ -8,4 +8,9 @@ public class Msg_Getchunk extends PBMessage {
     public Msg_Getchunk(byte[] inputData){
         super("GETCHUNK");
     }
+
+    @Override
+    public byte[] getData(int type){
+        return null;
+    }
 }

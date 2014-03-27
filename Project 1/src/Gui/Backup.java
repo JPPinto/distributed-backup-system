@@ -2,9 +2,12 @@ package Gui;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
 
 class Backup extends JDialog {
     private JPanel contentPane;
+    private final JFileChooser fc = new JFileChooser();
+
     private JButton buttonEXIT;
     private JButton backupFileButton;
     private JButton restoreFileButton;
@@ -36,6 +39,20 @@ class Backup extends JDialog {
                 onExit();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        backupFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int returnVal = fc.showOpenDialog(Backup.this);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    //This is where a real application would open the file.
+                } else {
+                    // Do nothing
+                }
+            }
+        });
     }
 
     private void onExit() {
