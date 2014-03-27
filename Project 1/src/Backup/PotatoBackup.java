@@ -54,6 +54,11 @@ class PotatoBackup {
                     break;
 
                 case 2:
+                    try {
+                        decodeTestMessage();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 case 9:
@@ -63,6 +68,22 @@ class PotatoBackup {
             }
         }
 
+    }
+
+    public static void decodeTestMessage() throws IOException{
+        FileInputStream fileIn = new FileInputStream("message.test");
+        BufferedInputStream in = new BufferedInputStream(fileIn);
+        byte [] testMessage = new byte[66000];
+
+        int sizeRead = 0;
+        while ((sizeRead = in.read(testMessage)) != -1) {
+            // Reading where
+        }
+
+        in.close();
+        fileIn.close();
+
+        PBMessage temp = new PBMessage(testMessage);
     }
 
     /**
