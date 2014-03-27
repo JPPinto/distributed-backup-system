@@ -33,70 +33,92 @@ public class PeerThread extends Thread {
 		portMDB = pMDB;
 		//portMDR = pMDR;
 		socReceiver = new SocketMCReceiver(addressMC, portMC);
+		socReceiver.run();
 	}
 
-/*	public void run() {
+	public void run() {
 		boolean running = true;
-		socReceiver.run();
-
 
 		while (running) for (Map.Entry<String, PBMessage> entry : socReceiver.received.entrySet()) {
 
 			PBMessage temp_message = entry.getValue();
 
-			// TODO Guardar chunk
-
-			String temp_request = "STORED " + temp_message.version + " " + temp_message.fileId + " " + temp_message.chunkNo + PBMessage.TERMINATOR;
-			sendRequest(temp_request);                                // Responde to message
+			handleProtocol(temp_message);  //TODO Guardar chunk
 
 			socReceiver.received.remove(entry.getKey());    // Remove message from queue
 		}
 	}
 
+	public void handleProtocol(PBMessage msg){
 
-	public void sendRequest(String request) {
+		if(msg.getType().equals("PUTCHUNK")){
+			System.out.println("HANDLED PUTCHUNK!");
+		} else
+			if(msg.getType().equals("DELETE")){
+				System.out.println("HANDLED DELETE!");
+		} else
+			if(msg.getType().equals("STORED")){
+				System.out.println("HANDLED STORED!");
+		} else
+			if(msg.getType().equals("REMOVED")){
+				System.out.println("HANDLED REMOVED!");
+		} else
+			if(msg.getType().equals("CHUNK")){
+				System.out.println("HANDLED CHUNK!");
+		} else
+			if(msg.getType().equals("GETCHUNK")){
+				System.out.println("HANDLED GETCHUNK!");
+		}
 
-		PBMessage temp_message = new PBMessage(request.getBytes());
+	}
+
+
+	public void sendRequest(PBMessage msg, String mcast_addr, int mcast_port) {
 
 		try {
-			DatagramSocket socketMDB = new DatagramSocket();
-			DatagramSocket socketMC = new DatagramSocket();
-			InetAddress IPAddressMDB = InetAddress.getByName(addressMDB);
-			InetAddress IPAddressMC = InetAddress.getByName(addressMC);
+			DatagramSocket socket = new DatagramSocket();
+			InetAddress IPAddress = InetAddress.getByName(mcast_addr);
+			DatagramPacket packet;
 
-			if (temp_message.type == PBMessage.PUTCHUNK) {
+			if (msg.getType() == PBMessage.PUTCHUNK) {
 
-				DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddressMDB, portMDB);
-				socketMDB.send(packet);
+				//packet = new DatagramPacket(msg.raw_data, msg.raw_data.length, IPAddress, mcast_port);
+				//socket.send(packet);
 
 				while (true) {
-					*//**//*TO COMPLETE*//**//*
+					//**//*TO COMPLETE*//**//
 				}
 
-			} else if (temp_message.type == PBMessage.STORED) {
+			} else if (msg.getType() == PBMessage.STORED) {
 
-				DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddressMC, portMC);
-				socketMC.send(packet);
+				//packet = new DatagramPacket(msg.raw_data, msg.raw_data.length, IPAddress, mcast_port);
+				//socket.send(packet);
 			}
 
-			socketMDB.close();
-			socketMC.close();
+			socket.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	public static void main (String[] args) throws IOException {
 
 		PeerThread peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001);
 
 		peer.start();
 
-		peer.sendRequest("STORED 1.0 1 1\r\n");
+		String msg = "STORED 1.0 1 1 \r\n \r\n";
+		PBMessage message = PBMessage.createMessageFromType(msg.getBytes());
+
+		if(message != null)
+			peer.sendRequest(message,peer.addressMC, peer.portMC);
+		else
+		System.out.println("Message is invalid. Exiting...");
 
 		BufferedInputStream y = new BufferedInputStream(System.in);
 		y.read();
-	}*/
+	}
 }
 
 
