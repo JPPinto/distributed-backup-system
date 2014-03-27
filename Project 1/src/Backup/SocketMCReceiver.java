@@ -9,14 +9,14 @@ import java.util.HashMap;
 /**
  * Created by Jose on 26-03-2014.
  */
-public class SocketReceiver extends Thread {
+public class SocketMCReceiver extends Thread {
 
 	public HashMap<String, PBMessage> received_putchunk;
 	public HashMap<String, PBMessage> received_stored;
 	public String mcast_adrr;
 	public int mcast_port;
 
-	SocketReceiver(String ma, int mp) {
+	SocketMCReceiver(String ma, int mp) {
 		mcast_adrr = ma;
 		mcast_port = mp;
 		received_putchunk = new HashMap<String, PBMessage>();

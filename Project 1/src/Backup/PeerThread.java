@@ -10,26 +10,29 @@ package Backup;
 
 import java.io.*;
 import java.net.*;
-import java.security.cert.CRL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class PeerThread extends Thread {
 
-	private int mCastPort;
-	private String mCastAddress;
-	private SocketReceiver socReceiver;
+	private int portMC;
+	private String addressMC;
+	private int portMDB;
+	private String addressMDB;
+	//private int portMDR;
+	//private String addressMDR;
+	private SocketMCReceiver socReceiver;
 
 	public static final int packetSize = 65536;
-	public static final String CRLF = "\r\n";
+	public static final int CRLF = 218;
 
-	PeerThread(int port, String address) {
-		mCastPort = port;
-		mCastAddress = address;
-		socReceiver = new SocketReceiver(address, port);
-
+	PeerThread(String aMC, int pMC, String aMDB, int pMDB/*, String aMDR, int pMDR*/) {
+		addressMC = aMC;
+		addressMDB = aMDB;
+		//addressMDR = aMDR;
+		portMC = pMC;
+		portMDB = pMDB;
+		//portMDR = pMDR;
+		socReceiver = new SocketMCReceiver(addressMC, portMC);
 	}
 
 	public void run() {
@@ -37,20 +40,16 @@ public class PeerThread extends Thread {
 		socReceiver.run();
 
 
-		while (running) {
+		while (running) for (Map.Entry<String, PBMessage> entry : socReceiver.received_putchunk.entrySet()) {
 
-			for (Map.Entry<String, PBMessage> entry : socReceiver.received_putchunk.entrySet()) {
+			PBMessage temp_message = entry.getValue();
 
-				PBMessage temp_message = entry.getValue();
+			// TODO Guardar chunk
 
-				// TODO Guardar chunk
+			String temp_request = "STORED " + temp_message.version + " " + temp_message.fileId + " " + temp_message.chunkNo + PBMessage.TERMINATOR;
+			sendRequest(temp_request);                                // Responde to message
 
-				String temp_request = new String("STORED " + temp_message.version + " " + temp_message.fileId + " " + temp_message.chunkNo + " " + CRLF);
-				sendRequest(temp_request);								// Responde to message
-
-				socReceiver.received_putchunk.remove(entry.getKey());  	// Remove message from queue
-			}
-
+			socReceiver.received_putchunk.remove(entry.getKey());    // Remove message from queue
 		}
 	}
 
@@ -59,25 +58,28 @@ public class PeerThread extends Thread {
 		PBMessage temp_message = new PBMessage(request.getBytes());
 
 		try {
-			DatagramSocket socket = new DatagramSocket();
-			InetAddress IPAddress = InetAddress.getByName(mCastAddress);
+			DatagramSocket socketMDB = new DatagramSocket();
+			DatagramSocket socketMC = new DatagramSocket();
+			InetAddress IPAddressMDB = InetAddress.getByName(addressMDB);
+			InetAddress IPAddressMC = InetAddress.getByName(addressMC);
 
 			if (temp_message.type == PBMessage.PUTCHUNK) {
 
-				DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddress, mCastPort);
-				socket.send(packet);
+				DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddressMDB, portMDB);
+				socketMDB.send(packet);
 
 				while (true) {
-				/*TO COMPLETE*/
+					/*TO COMPLETE*/
 				}
 
 			} else if (temp_message.type == PBMessage.STORED) {
 
-				DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddress, mCastPort);
-				socket.send(packet);
+				DatagramPacket packet = new DatagramPacket(temp_message.raw_data, temp_message.raw_data.length, IPAddressMC, portMC);
+				socketMC.send(packet);
 			}
 
-			socket.close();
+			socketMDB.close();
+			socketMC.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,7 +87,12 @@ public class PeerThread extends Thread {
 	}
 	public static void main (String[] args) throws IOException {
 
-		System.out.println("STORED " + 0xDA);
+		PeerThread peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001);
+
+		peer.start();
+
+		peer.sendRequest("STORED 1.0 1 1\r\n");
+
 		BufferedInputStream y = new BufferedInputStream(System.in);
 		y.read();
 	}

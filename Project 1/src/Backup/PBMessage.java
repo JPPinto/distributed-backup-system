@@ -68,7 +68,15 @@ class PBMessage {
 	public int chunkNo;
 	public int replicationDeg;
 	public byte[] raw_data;
- 	public Boolean validMessage;
+ 	private boolean validMessage;
+	//
+	private int messageType;
+	// 0 PUTCHUNK
+	// 1 STORED
+	// 2 GETCHUNK
+	// 3 CHUNK
+	// 4 DELETE
+	// 5 REMOVED
 
 	public static final String PUTCHUNK = "PUTCHUNK";
 	public static final String STORED = "STORED";
@@ -112,9 +120,49 @@ class PBMessage {
 
     }
 
+	// STORED <Version> <FileId> <ChunkNo> <CRLF> <CRLF>
+	public PBMessage(int typeN, String ver, String fId, int chunkNumber){
+		messageType = typeN;
+		setTypeString();
+		version = ver;
+		fileId = fId;
+		chunkNo = chunkNumber;
+	}
+
     public PBMessage(String input) {
         validMessage = decodeHeaderString(input);
     }
+
+	private void setTypeString(){
+		switch (messageType){
+			case 0:
+				type = "PUTCHUNK";
+				break;
+
+			case 1:
+				type = "STORED";
+				break;
+
+			case 2:
+				type = "GETCHUNK";
+				break;
+
+			case 3:
+				type = "CHUNK";
+				break;
+
+			case 4:
+				type = "DELETE";
+				break;
+
+			case 5:
+				type = "REMOVED";
+				break;
+
+			default:
+				break;
+		}
+	}
 
     private boolean decodeHeaderString(String input){
 
@@ -171,4 +219,8 @@ class PBMessage {
     private boolean validateReplicationDeg(){
         return !(replicationDeg < 0 || replicationDeg > 9);
     }
+
+	public byte[] getMessage(){
+
+	}
 }
