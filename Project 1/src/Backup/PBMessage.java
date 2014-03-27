@@ -17,6 +17,8 @@ abstract class PBMessage {
 	protected static final String CHUNK = "CHUNK";
 	protected static final String GETCHUNK = "GETCHUNK";
 	protected static final String REMOVED = "REMOVED";
+    protected static final String SEPARATOR = " ";
+    protected static final String CRLF = "/r/n";
     // Constants
     protected static final byte TERMINATOR = (byte) Integer.parseInt("DA", 16);
     protected String version = "1.0";

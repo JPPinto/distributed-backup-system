@@ -12,7 +12,9 @@ public class Msg_Putchunk extends PBMessage {
     private byte[] chunkData;
     private int chunkNo;
     private int replicationDegree;
+    private byte[] dataToBeSent;
 
+    // Received message constructor
     Msg_Putchunk(byte[] inputData) throws InvalidStateException {
         super("PUTCHUNK");
 
@@ -58,16 +60,42 @@ public class Msg_Putchunk extends PBMessage {
 
         // Get the chunk data if it exists
         if (it == inputData.length || (it + 1) == inputData.length){
-            return;
+            Chunk receivedChunk = new Chunk(fileId, chunkNo);
+            //receivedChunk.write("pasta");
+
         } else {
             // Advance space between 0xDA and the body
             it++;
             chunkData = Arrays.copyOfRange(inputData, it, inputData.length);
-            System.out.print("LOL");
+
+            Chunk receivedChunk = new Chunk(fileId, chunkNo, chunkData);
+            //receivedChunk.write("pasta");
         }
 
     }
-	@Override
+
+    // Message to be sent constructor
+    Msg_Putchunk(Chunk chunk, int repDegree){
+        super(PBMessage.PUTCHUNK);
+
+        // PUTCHUNK <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF> <CRLF>
+        String header = PBMessage.PUTCHUNK + PBMessage.SEPARATOR +
+                chunk.getFileId() + PBMessage.SEPARATOR +
+                chunk.getChunkNo() + PBMessage.SEPARATOR +
+                repDegree + PBMessage.SEPARATOR +
+                PBMessage.CRLF + PBMessage.SEPARATOR +
+                PBMessage.CRLF + PBMessage.SEPARATOR;
+
+        //dataToBeSent =
+
+        //<Body>
+        if (chunk.getChunkData() != null){
+            
+        }
+
+    }
+
+    @Override
 	public byte[] getData(int type){
 		switch (type){
 			case 0:
