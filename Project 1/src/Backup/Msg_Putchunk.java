@@ -2,46 +2,43 @@ package Backup;
 
 import java.util.Arrays;
 
-/**
- * Created by Jose on 27-03-2014.
- */
+import static Backup.PotatoBackup.convertByteArrayToHex;
+
 public class Msg_Putchunk extends PBMessage {
-    private byte[] raw_data;
+    private byte[] headerData;
+    private byte[] chunkData;
 
     Msg_Putchunk(byte[] inputData){
         super("PUTCHUNK");
 
         int it = 0;
+        int terminators = 0;
         String messageHeader = "";
-        raw_data = inputData;
 
         while (true) {
             messageHeader = messageHeader + String.valueOf(inputData[it]);
             it++;
 
-            /* Stop on first 0xD 0xA */
+            /* 0xDA */
             if(inputData[it] == TERMINATOR) {
+                headerData = Arrays.copyOfRange(inputData, 0, it - 1);
                 System.out.println("FOUND IT");
+                terminators++;
+            }
+
+            if (terminators == 2) {
                 break;
             }
 
         }
 
-        System.out.println("Decode em");
-        /* Decode message header */
-        validMessage = false; //decodeHeaderString(messageHeader);
+        // Receive data
+        it++;
+        chunkData = Arrays.copyOfRange(inputData, it, inputData.length);
 
-        /* Get data block */
-        if (validMessage) {
-            it++;
+        // Decode header
+        String header = convertByteArrayToHex(headerData);
 
-            if (inputData[it] == 0xDA) {
-                /* Data might be present */
-
-                it++;
-                byte[] data = Arrays.copyOfRange(inputData, it, inputData.length);
-
-            }
-        }
+        String[] splitHeader = header.split(" ");
     }
 }

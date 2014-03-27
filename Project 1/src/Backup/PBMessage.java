@@ -45,7 +45,7 @@ abstract class PBMessage {
         return "INVALID_MSG";
     }
 
-    public static PBMessage createMessageFromType(byte[] data){
+    public static PBMessage createMessageFromType(byte[] data) {
         String type = getType(data);
 
         if(type.equals("PUTCHUNK")){
