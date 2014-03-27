@@ -95,6 +95,13 @@ class PotatoBackup {
         return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
 
+    public static String convertByteArrayToHex(byte Byte) {
+        byte [] bytes = new byte[1];
+        bytes[0] = Byte;
+        BigInteger bi = new BigInteger(1, bytes);
+        return String.format("%0" + (bytes.length << 1) + "X", bi);
+    }
+
     /**
      * Calculate file SHA256 sum
      * @param inputFile Input file

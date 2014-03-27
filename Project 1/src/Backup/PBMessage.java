@@ -11,6 +11,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import static Backup.PotatoBackup.convertByteArrayToHex;
+
 /**
  *Header
  *
@@ -70,6 +72,7 @@ class PBMessage {
 
 	public static final String PUTCHUNK = "PUTCHUNK";
 	public static final String STORED = "STORED";
+    public static final byte TERMINATOR = (byte) Integer.parseInt("DA",16);
 
 
 	public PBMessage(byte[] inputData){
@@ -79,16 +82,18 @@ class PBMessage {
 		raw_data = inputData;
 
         while (true) {
-
             messageHeader = messageHeader + String.valueOf(inputData[it]);
             it++;
 
             /* Stop on first 0xD 0xA */
-            if(inputData[it] == 0xDA) {
+            if(inputData[it] == TERMINATOR) {
+                System.out.println("FOUND IT");
                 break;
             }
+
         }
 
+        System.out.println("Decode em");
         /* Decode message header */
         validMessage = decodeHeaderString(messageHeader);
 
