@@ -51,25 +51,26 @@ abstract class PBMessage {
         if(type.equals("PUTCHUNK")){
             System.out.println("MESSAGE TYPE: PUTCHUNK");
             return new Msg_Putchunk(data);
+
         } else if(type.equals("DELETE")){
             System.out.println("MESSAGE TYPE: DELETE");
-            //return new Msg_Delete(data);
-        }
-        else if(type.equals("STORED")){
+            return new Msg_Delete(data);
+
+        } else if(type.equals("STORED")){
             System.out.println("MESSAGE TYPE: STORED");
-            //return new Msg_Stored(data);
-        }
-        else if(type.equals("REMOVED")){
+            return new Msg_Stored(data);
+
+        } else if(type.equals("REMOVED")){
             System.out.println("MESSAGE TYPE: REMOVED");
-            //return new Msg_Removed(data);
-        }
-        else if(type.equals("CHUNK")){
+            return new Msg_Removed(data);
+
+        } else if(type.equals("CHUNK")){
             System.out.println("MESSAGE TYPE: CHUNK");
-            //return new Msg_Chunk(data);
-        }
-        else if(type.equals("GETCHUNK")){
+            return new Msg_Chunk(data);
+
+        } else if(type.equals("GETCHUNK")){
             System.out.println("MESSAGE TYPE: GETCHUNK");
-            //return new Msg_Getchunk(data);
+            return new Msg_Getchunk(data);
         }
         return null;
     }

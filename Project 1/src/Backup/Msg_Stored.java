@@ -5,7 +5,7 @@ package Backup;
  */
 public class Msg_Stored extends PBMessage {
 
-    public Msg_Stored(){
+    public Msg_Stored(byte[] inputData){
         super("STORED");
     }
 }

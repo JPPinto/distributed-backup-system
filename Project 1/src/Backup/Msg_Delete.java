@@ -5,7 +5,7 @@ package Backup;
  */
 public class Msg_Delete extends PBMessage {
 
-    public Msg_Delete(){
+    public Msg_Delete(byte[] inputData){
         super("DELETE");
     }
 

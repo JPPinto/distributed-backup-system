@@ -6,7 +6,7 @@ package Backup;
 public class Msg_Chunk extends PBMessage {
 
 
-    public Msg_Chunk(String fId, int cNo, byte[] chunkData){
+    public Msg_Chunk(byte[] inputData){
         super("CHUNK");
 
     }

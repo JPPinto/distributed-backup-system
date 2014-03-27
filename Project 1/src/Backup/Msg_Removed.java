@@ -5,7 +5,7 @@ package Backup;
  */
 public class Msg_Removed extends PBMessage {
 
-    public Msg_Removed(){
+    public Msg_Removed(byte[] inputData){
         super("REMOVED");
     }
 }
