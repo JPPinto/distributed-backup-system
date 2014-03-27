@@ -83,6 +83,16 @@ abstract class PBMessage {
         return null;
     }
 
+    public static String convertByteArrayToSring(byte[] in){
+        String newString = "";
+
+        for (int i=0; i < in.length; i++){
+            newString = newString + (char) (in[i] & 0xFF);
+        }
+
+        return newString;
+    }
+
     private static boolean validateMsgType(String m) {
         System.out.println(m);
         Pattern p = Pattern.compile("DELETE|CHUNK|PUTCHUNK|GETCHUNK|STORED|REMOVED");
