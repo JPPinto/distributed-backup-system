@@ -3,7 +3,7 @@ package Backup;
 import java.io.*;
 import java.util.Date;
 
-import static Backup.PotatoBackup.getHashFromFile;
+import static Backup.Utilities.getHashFromFile;
 
 /**
  * SDIS TP1

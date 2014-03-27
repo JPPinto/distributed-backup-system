@@ -4,7 +4,8 @@ import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.Arrays;
 
-import static Backup.PotatoBackup.convertByteArrayToHex;
+import static Backup.Utilities.convertByteArrayToSring;
+
 
 public class Msg_Putchunk extends PBMessage {
     private byte[] headerData;
@@ -19,10 +20,16 @@ public class Msg_Putchunk extends PBMessage {
         int terminators = 0;
 
         while (true) {
+            if (it >= inputData.length){
+                throw new InvalidStateException("Message Error!");
+            }
+
             /* 0xDA */
             if(inputData[it] == TERMINATOR) {
-                // -2 ignore space + 0xDA
-                headerData = Arrays.copyOfRange(inputData, 0, (it - 2));
+                if (terminators == 0){
+                    // -2 ignore space + 0xDA
+                    headerData = Arrays.copyOfRange(inputData, 0, (it - 1));
+                }
                 terminators++;
             }
 
@@ -43,8 +50,8 @@ public class Msg_Putchunk extends PBMessage {
         if (splitHeader.length == 5){
             version = splitHeader[1];
             fileId  = splitHeader[2];
-            chunkNo = Integer.getInteger(splitHeader[3]);
-            replicationDegree =  Integer.getInteger(splitHeader[4]);
+            chunkNo = Integer.parseInt(splitHeader[3]);
+            replicationDegree =  Integer.parseInt(splitHeader[4]);
         } else {
             throw new InvalidStateException("Invalid Message!");
         }
@@ -56,6 +63,7 @@ public class Msg_Putchunk extends PBMessage {
             // Advance space between 0xDA and the body
             it++;
             chunkData = Arrays.copyOfRange(inputData, it, inputData.length);
+            System.out.print("LOL");
         }
 
     }
