@@ -45,17 +45,17 @@ public class SocketMCReceiver extends Thread {
 				// receive the packets
 				mSocket.receive(packet);
 
-				PBMessage temp_message = new PBMessage(packet.getData());
+                /*PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
 
-				if (!received_stored.containsKey(packet.getAddress()) && temp_message.type == PBMessage.STORED) {
+				if (!received_stored.containsKey(packet.getAddress()) && temp_message.getType() == PBMessage.STORED) {
 					received_stored.put(packet.getAddress().toString(), temp_message);
 				}
 
 				if (!received_putchunk.containsKey(packet.getAddress()) && temp_message.type == PBMessage.PUTCHUNK) {
 					received_putchunk.put(packet.getAddress().toString(), temp_message);
-				}
+				}*/
 
-				System.out.println("RECEIVED FROM " + packet.getAddress().toString() + " TYPE: " + temp_message.type);
+				//System.out.println("RECEIVED FROM " + packet.getAddress().toString() + " TYPE: " + temp_message.getT);
 
 				if (false) break;
 			}

@@ -35,7 +35,7 @@ public class PeerThread extends Thread {
 		socReceiver = new SocketMCReceiver(addressMC, portMC);
 	}
 
-	public void run() {
+	/*public void run() {
 		boolean running = true;
 		socReceiver.run();
 
@@ -69,7 +69,7 @@ public class PeerThread extends Thread {
 				socketMDB.send(packet);
 
 				while (true) {
-					/*TO COMPLETE*/
+					*//**//*TO COMPLETE*//**//*
 				}
 
 			} else if (temp_message.type == PBMessage.STORED) {
@@ -95,7 +95,7 @@ public class PeerThread extends Thread {
 
 		BufferedInputStream y = new BufferedInputStream(System.in);
 		y.read();
-	}
+	}*/
 }
 
 

@@ -83,8 +83,8 @@ class PotatoBackup {
 
         in.close();
         fileIn.close();
+        PBMessage tempMessage = PBMessage.createMessageFromType(testMessage);
 
-        PBMessage temp = new PBMessage(testMessage);
     }
 
     /**

@@ -4,8 +4,8 @@ package Backup;
  * Created by Jose on 27-03-2014.
  */
 public class Msg_Removed extends PBMessage {
-	@Override
-	public String getType(){
-		return "REMOVED";
-	}
+
+    public Msg_Removed(){
+        super("REMOVED");
+    }
 }
