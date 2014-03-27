@@ -67,4 +67,16 @@ public class Msg_Putchunk extends PBMessage {
         }
 
     }
+	@Override
+	public byte[] getData(int type){
+		switch (type){
+			case 0:
+				return headerData;
+			case 1:
+				return chunkData;
+			default:
+				System.out.println("Valid OPTION!");
+		}
+		return new byte[0];
+	}
 }
