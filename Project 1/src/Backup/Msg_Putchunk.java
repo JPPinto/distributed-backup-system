@@ -1,7 +1,18 @@
 package Backup;
 
-import sun.plugin.dom.exception.InvalidStateException;
+/**
+ * SDIS TP1
+ *
+ * Eduardo Fernandes
+ * José Pinto
+ *
+ * Backup.Msg_Putchunk class
+ *
+ * Syntax:
+ * PUTCHUNK <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF><CRLF> <Body>
+ */
 
+import sun.plugin.dom.exception.InvalidStateException;
 import java.util.Arrays;
 
 import static Backup.Utilities.*;
@@ -15,7 +26,7 @@ public class Msg_Putchunk extends PBMessage {
 
     // Received message constructor
     Msg_Putchunk(byte[] inputData) throws InvalidStateException {
-        super("PUTCHUNK");
+        super(PBMessage.PUTCHUNK);
 
         int it = 0;
         int terminators = 0;

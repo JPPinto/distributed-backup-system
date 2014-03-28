@@ -1,13 +1,30 @@
 package Backup;
 
 /**
- * Created by Jose on 27-03-2014.
+ * SDIS TP1
+ *
+ * Eduardo Fernandes
+ * José Pinto
+ *
+ * Backup.Msg_Chunk class
+ *
+ * Syntax:
+ * CHUNK <Version> <FileId> <ChunkNo> <CRLF><CRLF> <Body>
  */
 public class Msg_Chunk extends PBMessage {
+    private byte[] data;
+    //CHUNK <Version> <FileId> <ChunkNo> <CRLF><CRLF> <Body>
 
-
+    // Received message constructor
     public Msg_Chunk(byte[] inputData){
-        super("CHUNK");
+        super(PBMessage.CHUNK);
+        inputData = data;
+
+    }
+
+    // Message to be sent constructor
+    public Msg_Chunk(){
+        super(PBMessage.CHUNK);
 
     }
 
@@ -18,6 +35,6 @@ public class Msg_Chunk extends PBMessage {
 
     @Override
     public byte[] getData(int type){
-        return null;
+        return data;
     }
 }

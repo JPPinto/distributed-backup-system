@@ -1,12 +1,20 @@
 package Backup;
 
 /**
- * Created by Jose on 27-03-2014.
+ * SDIS TP1
+ *
+ * Eduardo Fernandes
+ * José Pinto
+ *
+ * Backup.Msg_Delete class
+ *
+ * Syntax:
+ * DELETE <FileId> <CRLF><CRLF>
  */
 public class Msg_Delete extends PBMessage {
 
     public Msg_Delete(byte[] inputData){
-        super("DELETE");
+        super(PBMessage.DELETE);
     }
 
 	@Override

@@ -7,11 +7,14 @@ package Backup;
  * José Pinto
  *
  * Backup.Msg_Getchunk class
+ *
+ * Syntax:
+ * GETCHUNK <Version> <FileId> <ChunkNo> <CRLF><CRLF>
  */
 public class Msg_Getchunk extends PBMessage {
 
     public Msg_Getchunk(byte[] inputData){
-        super("GETCHUNK");
+        super(PBMessage.GETCHUNK);
     }
 
 	@Override

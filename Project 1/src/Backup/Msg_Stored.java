@@ -9,14 +9,17 @@ import sun.plugin.dom.exception.InvalidStateException;
  * José Pinto
  *
  * Backup.Msg_Stored class
+ *
+ * Message syntax:
+ * STORED <Version> <FileId> <ChunkNo> <CRLF><CRLF>
  */
 public class Msg_Stored extends PBMessage {
     private byte[] data;
 	private int chunkNo;
 
-    // STORED <Version> <FileId> <ChunkNo> <CRLF><CRLF>
+    // Received message constructor
     public Msg_Stored(byte[] inputData) throws  InvalidStateException {
-        super("STORED");
+        super(PBMessage.STORED);
 
         //Header
         data = inputData;
@@ -52,12 +55,13 @@ public class Msg_Stored extends PBMessage {
 
     // Message to be sent constructor
     public Msg_Stored(String fId, int cNo){
-        super("STORED");
+        super(PBMessage.STORED);
+        chunkNo = cNo;
 
         String headerString = PBMessage.STORED + PBMessage.SEPARATOR +
                 version + PBMessage.SEPARATOR +
                 fId + PBMessage.SEPARATOR +
-                cNo + PBMessage.SEPARATOR +
+                chunkNo + PBMessage.SEPARATOR +
                 PBMessage.CRLF + PBMessage.CRLF;
 
         data = Utilities.convertStringToByteArray(headerString);

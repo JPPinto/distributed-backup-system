@@ -1,12 +1,21 @@
 package Backup;
 
 /**
- * Created by Jose on 27-03-2014.
+ * SDIS TP1
+ *
+ * Eduardo Fernandes
+ * José Pinto
+ *
+ * Backup.Msg_Removed class
+ *
+ * Message syntax:
+ * REMOVED <Version> <FileId> <ChunkNo> <CRLF><CRLF>
  */
+
 public class Msg_Removed extends PBMessage {
 
     public Msg_Removed(byte[] inputData){
-        super("REMOVED");
+        super(PBMessage.REMOVED);
     }
 
 	@Override
