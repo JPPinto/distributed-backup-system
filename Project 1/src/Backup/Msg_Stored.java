@@ -65,7 +65,6 @@ public class Msg_Stored extends PBMessage {
                 PBMessage.CRLF + PBMessage.CRLF;
 
         data = Utilities.convertStringToByteArray(headerString);
-
     }
 
 	@Override

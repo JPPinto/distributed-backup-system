@@ -108,8 +108,8 @@ public class Msg_Putchunk extends PBMessage {
     Msg_Putchunk(Chunk chunk, int repDegree){
         super(PBMessage.PUTCHUNK);
 
-        // PUTCHUNK <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF><CRLF>
         String header = PBMessage.PUTCHUNK + PBMessage.SEPARATOR +
+                version + PBMessage.SEPARATOR +
                 chunk.getFileId() + PBMessage.SEPARATOR +
                 chunk.getChunkNo() + PBMessage.SEPARATOR +
                 repDegree + PBMessage.SEPARATOR +
