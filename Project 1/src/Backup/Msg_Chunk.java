@@ -30,36 +30,10 @@ public class Msg_Chunk extends PBMessage {
         receivedMessage = true;
         inputData = data;
 
-        int it = 0;
-        int terminators = 0;
-
-        while (true) {
-            if (it >= inputData.length){
-                throw new InvalidStateException("Message Error!");
-            }
-
-            /* 0xDA */
-            if(inputData[it] == TERMINATOR) {
-                if (terminators == 0){
-                    // -1 ignore space + 0xDA
-                    headerData = Arrays.copyOfRange(inputData, 0, (it - 1));
-                }
-                terminators++;
-            }
-
-            if (terminators == 2) {
-            /* Advance the last terminator */
-                it++;
-                break;
-            }
-
-            it++;
-        }
-
-        String messageHeader = convertByteArrayToSring(headerData);
+        header = getHeaderFromMessage(inputData);
 
         // Decode header
-        String[] splitHeader = messageHeader.split(" ");
+        String[] splitHeader = header.split(" ");
 
         if (splitHeader.length == 4){
             if (!splitHeader[0].equals(PUTCHUNK)){
@@ -89,16 +63,13 @@ public class Msg_Chunk extends PBMessage {
             throw new InvalidStateException("Invalid Message!");
         }
 
+        byte[] body = getBodyFromMessage(inputData);
         // Get the chunk data if it exists
-        if (it == inputData.length || (it + 1) == inputData.length){
+        if (body == null){
             Chunk receivedChunk = new Chunk(fileId, chunkNo);
             //receivedChunk.write("pasta");
 
         } else {
-            // Advance space between 0xDA and the body
-            it++;
-            chunkData = Arrays.copyOfRange(inputData, it, inputData.length);
-
             Chunk receivedChunk = new Chunk(fileId, chunkNo, chunkData);
             //receivedChunk.write("pasta");
         }

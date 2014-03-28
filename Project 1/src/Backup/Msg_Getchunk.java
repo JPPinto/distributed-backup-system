@@ -28,37 +28,10 @@ public class Msg_Getchunk extends PBMessage {
         super(GETCHUNK);
         receivedMessage = true;
 
-        int it = 0;
-        int terminators = 0;
-
-        // Split body from header
-        while (true) {
-            if (it >= inputData.length){
-                throw new InvalidStateException("Message Error!");
-            }
-
-            /* 0xDA */
-            if(inputData[it] == TERMINATOR) {
-                if (terminators == 0){
-                    // -1 ignore space + 0xDA
-                    data = Arrays.copyOfRange(inputData, 0, (it - 1));
-                }
-                terminators++;
-            }
-
-            if (terminators == 2) {
-            /* Advance the last terminator */
-                it++;
-                break;
-            }
-
-            it++;
-        }
-
-        String messageHeader = convertByteArrayToSring(data);
+        header = getHeaderFromMessage(inputData);
 
         // Decode header
-        String[] splitHeader = messageHeader.split(" ");
+        String[] splitHeader = header.split(" ");
 
         if (splitHeader.length == 4){
             if (!splitHeader[0].equals(GETCHUNK)){

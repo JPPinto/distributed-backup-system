@@ -1,5 +1,9 @@
 package Backup;
 
+import sun.plugin.dom.exception.InvalidStateException;
+
+import java.util.Arrays;
+
 /**
  * SDIS TP1
  *
@@ -18,6 +22,8 @@ public class Msg_Delete extends PBMessage {
     public Msg_Delete(byte[] inputData){
         super(DELETE);
         receivedMessage = true;
+
+        header = getHeaderFromMessage(inputData);
     }
 
     // Message to be sent constructor

@@ -24,10 +24,10 @@ public class Msg_Stored extends PBMessage {
 
         //Header
         data = inputData;
-        String headerString = Utilities.convertByteArrayToSring(data);
+        header = Utilities.convertByteArrayToSring(data);
 
         // Decode header
-        String[] splitHeader = headerString.split(" ");
+        String[] splitHeader = header.split(" ");
 
         if (splitHeader.length == 5) {											//Corrected size of string
             if (!splitHeader[0].equals(PBMessage.STORED)){

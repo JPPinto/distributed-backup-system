@@ -10,7 +10,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
+ * SDIS TP1
+ *
  * Eduardo Fernandes
+ * José Pinto
+ *
+ * Misc Utilities
  */
 public class Utilities {
     private static final int bufferSize = 1048576;
@@ -87,4 +92,5 @@ public class Utilities {
         System.arraycopy(arrayB, 0, merged, arrayA.length, arrayB.length);
         return merged;
     }
+
 }

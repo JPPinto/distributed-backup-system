@@ -20,6 +20,8 @@ public class Msg_Removed extends PBMessage {
         super(REMOVED);
         receivedMessage = true;
         data = inputData;
+
+        header = getHeaderFromMessage(inputData);
     }
 
     // Message to be sent constructor

@@ -6,7 +6,12 @@ package Backup; /**
  *
  * Backup.PBMessage class
  */
+import sun.plugin.dom.exception.InvalidStateException;
+
+import java.util.Arrays;
 import java.util.regex.Pattern;
+
+import static Backup.Utilities.convertByteArrayToSring;
 
 abstract class PBMessage {
 
@@ -24,6 +29,7 @@ abstract class PBMessage {
     protected String version = "1.0";
     // Message Type
     protected String messageType;
+    protected String header;
     public String fileId;
     protected boolean receivedMessage;
 
@@ -129,4 +135,71 @@ abstract class PBMessage {
         return receivedMessage;
     }
 
+    public static String getHeaderFromMessage(byte[] inputData) throws InvalidStateException {
+        int it = 0;
+        int terminators = 0;
+
+        byte[] headerData = null;
+
+        while (true) {
+            if (it >= inputData.length){
+                throw new InvalidStateException("Message Error!");
+            }
+
+            /* 0xDA */
+            if(inputData[it] == PBMessage.TERMINATOR) {
+                if (terminators == 0){
+                    // -1 ignore space + 0xDA
+                    headerData = Arrays.copyOfRange(inputData, 0, (it - 1));
+                }
+                terminators++;
+            }
+
+            if (terminators == 2) {
+            /* Advance the last terminator */
+                it++;
+                break;
+            }
+
+            it++;
+        }
+
+        return Utilities.convertByteArrayToSring(headerData);
+    }
+
+    public static byte[] getBodyFromMessage(byte[] inputData) throws InvalidStateException {
+        int it = 0;
+        int terminators = 0;
+
+        while (true) {
+            if (it >= inputData.length){
+                throw new InvalidStateException("Message Error!");
+            }
+
+            /* 0xDA */
+            if(inputData[it] == TERMINATOR) {
+                terminators++;
+            }
+
+            if (terminators == 2) {
+            /* Advance the last terminator */
+                it++;
+                break;
+            }
+
+            it++;
+        }
+
+        // Get the body data if it exists
+        if (it == inputData.length || (it + 1) == inputData.length){
+            // No body found
+            return null;
+
+        } else {
+            // Advance space between 0xDA and the body
+            it++;
+            return Arrays.copyOfRange(inputData, it, inputData.length);
+        }
+
+    }
 }
