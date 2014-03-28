@@ -16,18 +16,18 @@ public class Msg_Delete extends PBMessage {
 
     // Received message constructor
     public Msg_Delete(byte[] inputData){
-        super(PBMessage.DELETE);
+        super(DELETE);
         receivedMessage = true;
     }
 
     // Message to be sent constructor
     public Msg_Delete(String fId){
-        super(PBMessage.DELETE);
+        super(DELETE);
         receivedMessage = false;
 
-        String header = PBMessage.DELETE + PBMessage.SEPARATOR +
-                fId + PBMessage.SEPARATOR +
-                PBMessage.CRLF + PBMessage.CRLF;
+        String header = DELETE + SEPARATOR +
+                fId + SEPARATOR +
+                CRLF + CRLF;
 
         data = Utilities.convertStringToByteArray(header);
     }

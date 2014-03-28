@@ -1,5 +1,7 @@
 package Backup;
 
+import static Backup.Utilities.joinTwoArrays;
+
 /**
  * SDIS TP1
  *
@@ -24,9 +26,19 @@ public class Msg_Chunk extends PBMessage {
     }
 
     // Message to be sent constructor
-    public Msg_Chunk(){
+    public Msg_Chunk(Chunk chunk){
         super(PBMessage.CHUNK);
         receivedMessage = false;
+
+        String header = CHUNK + SEPARATOR +
+                version + SEPARATOR +
+                chunk.getFileId() + SEPARATOR +
+                chunk.getChunkNo() + SEPARATOR +
+                CRLF + CRLF + SEPARATOR;
+
+        byte[] headerData = Utilities.convertStringToByteArray(header);
+
+        data = joinTwoArrays(headerData, chunk.getChunkData());
 
     }
 

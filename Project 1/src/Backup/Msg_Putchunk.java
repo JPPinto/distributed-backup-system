@@ -26,7 +26,7 @@ public class Msg_Putchunk extends PBMessage {
 
     // Received message constructor
     Msg_Putchunk(byte[] inputData) throws InvalidStateException {
-        super(PBMessage.PUTCHUNK);
+        super(PUTCHUNK);
         receivedMessage = true;
 
         int it = 0;
@@ -61,7 +61,7 @@ public class Msg_Putchunk extends PBMessage {
         String[] splitHeader = messageHeader.split(" ");
 
         if (splitHeader.length == 5){
-            if (!splitHeader[0].equals(PBMessage.PUTCHUNK)){
+            if (!splitHeader[0].equals(PUTCHUNK)){
                 throw new InvalidStateException("Invalid Message!");
             }
 
@@ -107,15 +107,15 @@ public class Msg_Putchunk extends PBMessage {
 
     // Message to be sent constructor
     Msg_Putchunk(Chunk chunk, int repDegree){
-        super(PBMessage.PUTCHUNK);
+        super(PUTCHUNK);
         receivedMessage = false;
 
-        String header = PBMessage.PUTCHUNK + PBMessage.SEPARATOR +
-                version + PBMessage.SEPARATOR +
-                chunk.getFileId() + PBMessage.SEPARATOR +
-                chunk.getChunkNo() + PBMessage.SEPARATOR +
-                repDegree + PBMessage.SEPARATOR +
-                PBMessage.CRLF + PBMessage.CRLF + PBMessage.SEPARATOR;
+        String header = PUTCHUNK + SEPARATOR +
+                version + SEPARATOR +
+                chunk.getFileId() + SEPARATOR +
+                chunk.getChunkNo() + SEPARATOR +
+                repDegree + SEPARATOR +
+                CRLF + CRLF + SEPARATOR;
 
         headerData = convertStringToByteArray(header);
         chunkData = chunk.getChunkData();

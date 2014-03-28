@@ -25,7 +25,7 @@ public class Msg_Getchunk extends PBMessage {
 
     // Received message constructor
     public Msg_Getchunk(byte[] inputData){
-        super(PBMessage.GETCHUNK);
+        super(GETCHUNK);
         receivedMessage = true;
 
         int it = 0;
@@ -61,7 +61,7 @@ public class Msg_Getchunk extends PBMessage {
         String[] splitHeader = messageHeader.split(" ");
 
         if (splitHeader.length == 4){
-            if (!splitHeader[0].equals(PBMessage.GETCHUNK)){
+            if (!splitHeader[0].equals(GETCHUNK)){
                 throw new InvalidStateException("Invalid Message!");
             }
 
@@ -87,14 +87,14 @@ public class Msg_Getchunk extends PBMessage {
 
     // Message to be sent constructor
     public Msg_Getchunk(Chunk chunk){
-        super(PBMessage.GETCHUNK);
+        super(GETCHUNK);
         receivedMessage = false;
 
-        String header = PBMessage.GETCHUNK + PBMessage.SEPARATOR +
-                version + PBMessage.SEPARATOR +
-                chunk.getFileId() + PBMessage.SEPARATOR +
-                chunk.getChunkNo() + PBMessage.SEPARATOR +
-                PBMessage.CRLF + PBMessage.CRLF + PBMessage.SEPARATOR;
+        String header = GETCHUNK + SEPARATOR +
+                version + SEPARATOR +
+                chunk.getFileId() + SEPARATOR +
+                chunk.getChunkNo() + SEPARATOR +
+                CRLF + CRLF + SEPARATOR;
 
         data = convertStringToByteArray(header);
 

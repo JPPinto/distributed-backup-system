@@ -56,15 +56,15 @@ public class Msg_Stored extends PBMessage {
 
     // Message to be sent constructor
     public Msg_Stored(String fId, int cNo){
-        super(PBMessage.STORED);
+        super(STORED);
         receivedMessage = false;
         chunkNo = cNo;
 
-        String headerString = PBMessage.STORED + PBMessage.SEPARATOR +
-                version + PBMessage.SEPARATOR +
-                fId + PBMessage.SEPARATOR +
-                chunkNo + PBMessage.SEPARATOR +
-                PBMessage.CRLF + PBMessage.CRLF;
+        String headerString = STORED + SEPARATOR +
+                version + SEPARATOR +
+                fId + SEPARATOR +
+                chunkNo + SEPARATOR +
+                CRLF + CRLF;
 
         data = Utilities.convertStringToByteArray(headerString);
     }
