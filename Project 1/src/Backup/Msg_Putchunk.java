@@ -109,6 +109,9 @@ public class Msg_Putchunk extends PBMessage {
     Msg_Putchunk(Chunk chunk, int repDegree){
         super(PUTCHUNK);
         receivedMessage = false;
+		fileId = chunk.getFileId();
+		chunkNo = chunk.getChunkNo();
+		replicationDegree = repDegree;
 
         String header = PUTCHUNK + SEPARATOR +
                 version + SEPARATOR +

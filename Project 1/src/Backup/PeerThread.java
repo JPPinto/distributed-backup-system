@@ -33,7 +33,6 @@ public class PeerThread extends Thread {
 		portMDB = pMDB;
 		//portMDR = pMDR;
 		socReceiver = new SocketMCReceiver(addressMC, portMC);
-
 	}
 
 	public void run() {
@@ -93,8 +92,8 @@ public class PeerThread extends Thread {
 
 			} else if (msg.getType() == PBMessage.STORED) {
 
-				//packet = new DatagramPacket(msg.getData(2), msg.getData(2).length, IPAddress, mcast_port);
-				//socket.send(packet);
+				packet = new DatagramPacket(msg.getData(0), msg.getData(0).length, IPAddress, mcast_port);
+				socket.send(packet);
 			}
 
 			socket.close();
@@ -127,16 +126,40 @@ public class PeerThread extends Thread {
 		this.interrupt();
 	}
 
+	public static void sendPUTCHUNK(String filepath) throws IOException {
+
+		PotatoBackup.readChunks(new File(filepath), PotatoBackup.temporaryDirectory);
+		System.out.println("DONE!");
+
+		File[] chucksToSend = PotatoBackup.listFiles(PotatoBackup.temporaryDirectory);
+
+		//Chunk temp_chunk = Chunk.loadChunk(chucksToSend[0].getPath());
+
+
+		for (File file : chucksToSend) {
+			if (file.isFile()) {
+				Chunk temp_chunk = Chunk.loadChunk(file.getPath());
+				PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk,1);
+
+				//TODO Send PUTCHUNK
+				System.out.println(temp_chunk.getChunkNo());  //Debug Purposes
+			}
+		}
+
+		for (File file : chucksToSend) {
+			if (file.isFile()) {
+				file.delete();
+			}
+		}
+
+		System.out.println("DONE!");
+	}
+
 	public static void main (String[] args) throws IOException {
 
 		PeerThread peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001);
 
 		peer.start();
-
-		String msg = "STORED 1.0 1 1 \r\n \r\n";
-		String msg2 = "PUTCHUNK 1.0 1 1 ";
-
-		//PBMessage message = PBMessage.createMessageFromType(msg.getBytes());
 
 		try {
 			//Give time to start the threads
@@ -144,8 +167,13 @@ public class PeerThread extends Thread {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		peer.sendRequest(msg,peer.addressMC, peer.portMC);
-		peer.sendRequest(msg2,peer.addressMC, peer.portMC);
+
+		String msg2 = "PUTCHUNK 1.0 1 1 ";
+		//PBMessage message = new Msg_Stored("2ACE2D72832ACE2D72832ACE2D72832ACE2D72832ACE2D72832ACE2D72831234",1); Works
+
+		sendPUTCHUNK("./binary.test");
+
+		//peer.sendRequest(message2,peer.addressMC, peer.portMC);
 	}
 }
 

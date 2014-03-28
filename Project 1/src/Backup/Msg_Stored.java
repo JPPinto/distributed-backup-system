@@ -29,7 +29,7 @@ public class Msg_Stored extends PBMessage {
         // Decode header
         String[] splitHeader = headerString.split(" ");
 
-        if (splitHeader.length == 4) {
+        if (splitHeader.length == 5) {											//Corrected size of string
             if (!splitHeader[0].equals(PBMessage.STORED)){
                 throw new InvalidStateException("Invalid Message!");
             }

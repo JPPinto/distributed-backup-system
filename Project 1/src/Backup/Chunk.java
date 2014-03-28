@@ -41,9 +41,9 @@ class Chunk implements Serializable {
      * Constructor for chunk loading
      * @param fileName File name for loading
      * */
-    public Chunk(String fileName){
+    /*public Chunk(String fileName){
         loadChunk(fileName);
-    }
+    }*/
 
     /**
      * Sets the file id (sha256 hash)
@@ -90,10 +90,10 @@ class Chunk implements Serializable {
      * */
     public static Chunk loadChunk(String chunkFileName){
         try {
-            FileInputStream fileIn = new FileInputStream(chunkFileName + chunkFileExtension);
+            FileInputStream fileIn = new FileInputStream(chunkFileName/* + chunkFileExtension*/); //MINOR CHANGE
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
-            Chunk temp = (Chunk) in.readObject();
+			Chunk temp = (Chunk) in.readObject();
             in.close();
             fileIn.close();
 

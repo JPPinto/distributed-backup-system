@@ -22,8 +22,8 @@ class PotatoBackup {
     private static final int chunkDataSize = 64000;
 
     /* Path constants */
-    private static final String backupDirectory = "./backup";
-    private static final String temporaryDirectory = "./temporary";
+    public static final String backupDirectory = "./backup";
+    public static final String temporaryDirectory = "./temporary";
 
     /**
      * Entry Point
@@ -96,7 +96,7 @@ class PotatoBackup {
      * Reads a file and creates chunks
      * @param inputFile Input file
      **/
-    public static void readChunks(File inputFile) throws IOException {
+    public static void readChunks(File inputFile,String directory) throws IOException {
         // Get fileId
         String fileID = getHashFromFile(inputFile);
 
@@ -113,7 +113,7 @@ class PotatoBackup {
 
         while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
             Chunk currentChunk = new Chunk(fileID, currentChunkNumber, buffer);
-            currentChunk.write(backupDirectory);
+            currentChunk.write(directory);
 
             // Last chunk if file size not a multiple
             if (sizeRead < chunkDataSize) {
@@ -129,9 +129,8 @@ class PotatoBackup {
         if (fileSize % chunkDataSize == 0) {
             System.out.println("An empty chunk is needed");
             Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
-            finalChunk.write(backupDirectory);
+            finalChunk.write(directory);
         }
-
     }
 
     /**
@@ -170,7 +169,7 @@ class PotatoBackup {
      * Lists local files
      * @param path Folder path
      */
-    private static File[] listFiles(String path) {
+    public static File[] listFiles(String path) {
         File folder = new File(path);
         return folder.listFiles();
     }
@@ -180,15 +179,15 @@ class PotatoBackup {
 
         String fileName;
 
-        for (File listOfFile : listOfFiles) {
+        for (File file : listOfFiles) {
 
-            if (listOfFile.isFile()) {
-                String hashT = getHashFromFile(listOfFile);
-                fileName = listOfFile.getName();
+            if (file.isFile()) {
+                String hashT = getHashFromFile(file);
+                fileName = file.getName();
                 System.out.print(hashT + "  ");
                 System.out.println(fileName);
 
-                readChunks(listOfFile);
+                readChunks(file, backupDirectory);
 
             }
 

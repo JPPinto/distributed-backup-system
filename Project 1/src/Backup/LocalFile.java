@@ -48,7 +48,7 @@ class LocalFile {
         do {
             // Load chunk from file
             currentChunkName = fileHash + "-" + currentChunk;
-            currentChunk = new Chunk(currentChunkName);
+            currentChunk = Chunk.loadChunk(currentChunkName);
 
             // Check if this is the final chunk
             if (currentChunk.isTheFinalChunk()){
