@@ -1,8 +1,9 @@
-package Gui;
+package Backup;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 
 class Backup extends JDialog {
     private JPanel contentPane;
@@ -48,6 +49,11 @@ class Backup extends JDialog {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
                     //This is where a real application would open the file.
+                    try {
+                        PotatoBackup.readChunks(file, PotatoBackup.temporaryDirectory);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 } else {
                     // Do nothing
                 }
