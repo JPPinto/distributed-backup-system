@@ -38,14 +38,6 @@ class Chunk implements Serializable {
     }
 
     /**
-     * Constructor for chunk loading
-     * @param fileName File name for loading
-     * */
-    /*public Chunk(String fileName){
-        loadChunk(fileName);
-    }*/
-
-    /**
      * Sets the file id (sha256 hash)
      * @param fId file hash
      * */
