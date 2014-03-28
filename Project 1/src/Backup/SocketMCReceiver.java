@@ -50,7 +50,8 @@ public class SocketMCReceiver extends Thread {
 					received.put(packet.getAddress().getHostAddress(), temp_message);
 				}
 
-				System.out.println("RECEIVED FROM " + packet.getAddress().toString() + " TYPE: " + temp_message.getType());
+				System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
+
 
 				if (false) break;
 			}

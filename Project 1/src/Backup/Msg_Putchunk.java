@@ -108,6 +108,8 @@ public class Msg_Putchunk extends PBMessage {
 				return headerData;
 			case 1:
 				return chunkData;
+			case 2:
+				return getData();
 			default:
 				System.out.println("Valid OPTION!");
 		}
