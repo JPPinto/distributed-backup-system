@@ -71,7 +71,7 @@ public class Utilities {
         String newString = "";
 
         for (int i=0; i < in.length; i++){
-            newString = newString + (char) (in[i] & 0xFF);
+            newString += (char) (in[i] & 0xFF);
         }
 
         return newString;
