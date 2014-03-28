@@ -26,6 +26,7 @@ public class Msg_Getchunk extends PBMessage {
     // Received message constructor
     public Msg_Getchunk(byte[] inputData){
         super(PBMessage.GETCHUNK);
+        receivedMessage = true;
 
         int it = 0;
         int terminators = 0;
@@ -87,6 +88,7 @@ public class Msg_Getchunk extends PBMessage {
     // Message to be sent constructor
     public Msg_Getchunk(Chunk chunk){
         super(PBMessage.GETCHUNK);
+        receivedMessage = false;
 
         String header = PBMessage.GETCHUNK + PBMessage.SEPARATOR +
                 version + PBMessage.SEPARATOR +

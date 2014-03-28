@@ -20,6 +20,7 @@ public class Msg_Stored extends PBMessage {
     // Received message constructor
     public Msg_Stored(byte[] inputData) throws  InvalidStateException {
         super(PBMessage.STORED);
+        receivedMessage = true;
 
         //Header
         data = inputData;
@@ -56,6 +57,7 @@ public class Msg_Stored extends PBMessage {
     // Message to be sent constructor
     public Msg_Stored(String fId, int cNo){
         super(PBMessage.STORED);
+        receivedMessage = false;
         chunkNo = cNo;
 
         String headerString = PBMessage.STORED + PBMessage.SEPARATOR +

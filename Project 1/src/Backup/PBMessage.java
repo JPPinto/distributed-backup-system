@@ -25,6 +25,7 @@ abstract class PBMessage {
     // Message Type
     protected String messageType;
     public String fileId;
+    protected boolean receivedMessage;
 
 
     public PBMessage(String kind) {
@@ -122,6 +123,10 @@ abstract class PBMessage {
      */
     protected boolean validateReplicationDeg(int replicationDeg) {
         return !(replicationDeg < 0 || replicationDeg > 9);
+    }
+
+    public boolean getMessageReceivedBool(){
+        return receivedMessage;
     }
 
 }

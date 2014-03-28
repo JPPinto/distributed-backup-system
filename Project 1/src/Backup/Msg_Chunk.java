@@ -18,6 +18,7 @@ public class Msg_Chunk extends PBMessage {
     // Received message constructor
     public Msg_Chunk(byte[] inputData){
         super(PBMessage.CHUNK);
+        receivedMessage = true;
         inputData = data;
 
     }
@@ -25,6 +26,7 @@ public class Msg_Chunk extends PBMessage {
     // Message to be sent constructor
     public Msg_Chunk(){
         super(PBMessage.CHUNK);
+        receivedMessage = false;
 
     }
 

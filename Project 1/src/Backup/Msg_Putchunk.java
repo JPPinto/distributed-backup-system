@@ -27,6 +27,7 @@ public class Msg_Putchunk extends PBMessage {
     // Received message constructor
     Msg_Putchunk(byte[] inputData) throws InvalidStateException {
         super(PBMessage.PUTCHUNK);
+        receivedMessage = true;
 
         int it = 0;
         int terminators = 0;
@@ -107,6 +108,7 @@ public class Msg_Putchunk extends PBMessage {
     // Message to be sent constructor
     Msg_Putchunk(Chunk chunk, int repDegree){
         super(PBMessage.PUTCHUNK);
+        receivedMessage = false;
 
         String header = PBMessage.PUTCHUNK + PBMessage.SEPARATOR +
                 version + PBMessage.SEPARATOR +
