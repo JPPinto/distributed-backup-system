@@ -57,7 +57,6 @@ public class SocketReceiver extends Thread {
 
 				} catch(InvalidStateException e){
 					e.printStackTrace();
-					System.out.println("KEEP GOING");
 				}
 
 				if (false) break;

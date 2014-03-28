@@ -173,13 +173,13 @@ public class PeerThread extends Thread {
 				retransmission_count = 1;
 				while (retransmission_count < 6) {
 
-					sleep(500 * time_multiplier);
-
 					if (storesWaiting >= temp_putchunk.getIntAttribute(1)) {    //STORES received == replication degree
 						System.out.println("CONFIRMED CHUNK Nº: " + temp_chunk.getChunkNo());  //Debug Purposes
-						socMCReceiver.clearMessages();
+						storesWaiting = 0;
 						break;
 					}
+
+					sleep(500 * time_multiplier);
 
 					System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
 					sendRequest(temp_putchunk, addressMC, portMC);
@@ -187,9 +187,10 @@ public class PeerThread extends Thread {
 					retransmission_count++;
 				}
 
-				if (time_multiplier == 6)
+				if (time_multiplier == 6){
 					System.out.println("FAILED TO BACKUP FILE " + filepath + " WITH REPLICATION DEGREE OF: " + temp_putchunk.getIntAttribute(1));
-				break;
+					break;
+				}
 			}
 		}
 
