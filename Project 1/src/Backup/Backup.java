@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-class Backup extends JDialog {
+class Backup extends JFrame {
     private JPanel contentPane;
     private final JFileChooser fc = new JFileChooser();
 
@@ -16,8 +16,10 @@ class Backup extends JDialog {
     private JButton freeSomeSpaceButton;
 
     public Backup() {
+        setName("Potato Backup");
+        setTitle("Potato Backup");
+
         setContentPane(contentPane);
-        setModal(true);
         getRootPane().setDefaultButton(buttonEXIT);
 
         buttonEXIT.addActionListener(new ActionListener() {
@@ -27,7 +29,6 @@ class Backup extends JDialog {
         });
 
         // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onExit();
@@ -48,12 +49,17 @@ class Backup extends JDialog {
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
-                    //This is where a real application would open the file.
+
+                    // TODO Shove this into a thread
+                    // Create temporary chunks
                     try {
                         PotatoBackup.readChunks(file, PotatoBackup.temporaryDirectory);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+
+                    // Send the files
+
                 } else {
                     // Do nothing
                 }
@@ -62,14 +68,21 @@ class Backup extends JDialog {
     }
 
     private void onExit() {
-        // add your code here if necessary
+        // Destroy the GUI interface
         dispose();
+
+        // Close all threads here
+
+        // Bail out
+        System.exit(0);
     }
 
     public static void main(String[] args) {
         Backup dialog = new Backup();
         dialog.pack();
         dialog.setVisible(true);
-        System.exit(0);
+        // Run threads
+
+        //System.exit(0);
     }
 }
