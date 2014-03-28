@@ -11,6 +11,11 @@ public class Msg_Chunk extends PBMessage {
 
     }
 
+	@Override
+	public int getIntAttribute(int type){
+		return 0;
+	}
+
     @Override
     public byte[] getData(int type){
         return null;

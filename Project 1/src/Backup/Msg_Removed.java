@@ -9,6 +9,11 @@ public class Msg_Removed extends PBMessage {
         super("REMOVED");
     }
 
+	@Override
+	public int getIntAttribute(int type){
+		return 0;
+	}
+
     @Override
     public byte[] getData(int type){
         return null;

@@ -5,9 +5,16 @@ package Backup;
  */
 public class Msg_Stored extends PBMessage {
 
+	private int chunkNo;
+
     public Msg_Stored(byte[] inputData){
         super("STORED");
     }
+
+	@Override
+	public int getIntAttribute(int type){
+		return 0;
+	}
 
     @Override
     public byte[] getData(int type){

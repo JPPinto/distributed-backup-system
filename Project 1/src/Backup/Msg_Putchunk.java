@@ -101,6 +101,19 @@ public class Msg_Putchunk extends PBMessage {
         return dataToBeSent;
     }
 
+	@Override
+	public int getIntAttribute(int type){
+		switch (type){
+			case 0:
+				return chunkNo;
+			case 1:
+				return replicationDegree;
+			default:
+				System.out.println("Valid OPTION!");
+		}
+		return 0;
+	}
+
     @Override
 	public byte[] getData(int type){
 		switch (type){

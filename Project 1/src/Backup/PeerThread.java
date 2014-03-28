@@ -44,7 +44,7 @@ public class PeerThread extends Thread {
 
 			PBMessage temp_message = entry.getValue();
 
-			handleProtocol(temp_message);  //TODO Guardar chunk
+			handleProtocol(temp_message);
 
 			socReceiver.received.remove(entry.getKey());    // Remove message from queue
 		}
@@ -53,6 +53,10 @@ public class PeerThread extends Thread {
 	public void handleProtocol(PBMessage msg){
 
 		if(msg.getType().equals("PUTCHUNK")){
+			//TODO Guardar chunk
+			Chunk currentChunk = new Chunk(msg.fileId, msg.getIntAttribute(0), msg.getData(1));
+			//currentChunk.write(backupdirectory);
+			sendRequest(PBMessage.STORED + msg.version + PBMessage.SEPARATOR + msg.fileId + PBMessage.SEPARATOR + PBMessage.TERMINATOR + PBMessage.SEPARATOR + +PBMessage.TERMINATOR, addressMC, portMC);
 			System.out.println("HANDLED PUTCHUNK!");
 		} else
 			if(msg.getType().equals("DELETE")){
@@ -86,13 +90,10 @@ public class PeerThread extends Thread {
 				//packet = new DatagramPacket(msg.raw_data, msg.raw_data.length, IPAddress, mcast_port);
 				//socket.send(packet);
 
-				while (true) {
-					//**//*TO COMPLETE*//**//
-				}
 
 			} else if (msg.getType() == PBMessage.STORED) {
 
-				//packet = new DatagramPacket(msg.raw_data, msg.raw_data.length, IPAddress, mcast_port);
+				//packet = new DatagramPacket(msg.getData(2), msg.getData(2).length, IPAddress, mcast_port);
 				//socket.send(packet);
 			}
 
@@ -133,6 +134,8 @@ public class PeerThread extends Thread {
 		peer.start();
 
 		String msg = "STORED 1.0 1 1 \r\n \r\n";
+		String msg2 = "PUTCHUNK 1.0 1 1 ";
+
 		//PBMessage message = PBMessage.createMessageFromType(msg.getBytes());
 
 		try {
@@ -142,10 +145,7 @@ public class PeerThread extends Thread {
 			e.printStackTrace();
 		}
 		peer.sendRequest(msg,peer.addressMC, peer.portMC);
-
-
-
-		peer.closeThreads();
+		peer.sendRequest(msg2,peer.addressMC, peer.portMC);
 	}
 }
 

@@ -25,7 +25,6 @@ abstract class PBMessage {
     // Message Type
     protected String messageType;
     public String fileId;
-    protected boolean validMessage;
 
 
     public PBMessage(String kind) {
@@ -54,6 +53,8 @@ abstract class PBMessage {
 
         return "INVALID_MSG";
     }
+
+	public abstract int getIntAttribute(int type);
 
 	abstract public byte[] getData(int type);
 

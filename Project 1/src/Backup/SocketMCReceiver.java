@@ -1,5 +1,7 @@
 package Backup;
 
+import sun.plugin.dom.exception.InvalidStateException;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -44,6 +46,7 @@ public class SocketMCReceiver extends Thread {
 				// receive the packets
 				mSocket.receive(packet);
 
+				try {
 				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
 
 				if (!received.containsKey(packet.getAddress().getHostAddress())) {
@@ -52,6 +55,10 @@ public class SocketMCReceiver extends Thread {
 
 				System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
 
+				} catch(InvalidStateException e){
+					e.printStackTrace();
+					System.out.println("KEEP GOING");
+				}
 
 				if (false) break;
 			}
