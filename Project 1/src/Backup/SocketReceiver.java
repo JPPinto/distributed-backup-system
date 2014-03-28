@@ -12,13 +12,13 @@ import java.util.Map;
 /**
  * Created by Jose on 26-03-2014.
  */
-public class SocketMCReceiver extends Thread {
+public class SocketReceiver extends Thread {
 
 	public HashMap<String, PBMessage> received;
 	public String mcast_adrr;
 	public int mcast_port;
 
-	SocketMCReceiver(String ma, int mp) {
+	SocketReceiver(String ma, int mp) {
 		mcast_adrr = ma;
 		mcast_port = mp;
 		received = new HashMap<String, PBMessage>();
@@ -72,7 +72,7 @@ public class SocketMCReceiver extends Thread {
 		mSocket.close();
 	}
 
-	public int numStoredByIP() {
+	public int numMessagesByIP() {
 
 		int num = 0;
 
@@ -84,14 +84,7 @@ public class SocketMCReceiver extends Thread {
 		return num;
 	}
 
-	public int numPutByIP() {
-		int num = 0;
-
-		for (Map.Entry<String, PBMessage> entry : received.entrySet()) {
-
-			if (entry.getValue().getType() == "PUTCHUNK")
-				num++;
-		}
-		return num;
+	public void clearMessages(){
+		this.received.clear();
 	}
 }

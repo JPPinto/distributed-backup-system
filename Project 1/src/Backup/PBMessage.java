@@ -69,34 +69,33 @@ abstract class PBMessage {
         String type = getType(data);
 
         if(type.equals("PUTCHUNK")){
-            System.out.println("MESSAGE TYPE: PUTCHUNK");
+            //System.out.println("PROCESSING, MESSAGE TYPE: PUTCHUNK");
             return new Msg_Putchunk(data);
 
         } else if(type.equals("DELETE")){
-            System.out.println("MESSAGE TYPE: DELETE");
+            //System.out.println("PROCESSING, MESSAGE TYPE: DELETE");
             return new Msg_Delete(data);
 
         } else if(type.equals("STORED")){
-            System.out.println("MESSAGE TYPE: STORED");
+            //System.out.println("PROCESSING, MESSAGE TYPE: STORED");
             return new Msg_Stored(data);
 
         } else if(type.equals("REMOVED")){
-            System.out.println("MESSAGE TYPE: REMOVED");
+            //System.out.println("PROCESSING, MESSAGE TYPE: REMOVED");
             return new Msg_Removed(data);
 
         } else if(type.equals("CHUNK")){
-            System.out.println("MESSAGE TYPE: CHUNK");
+            //System.out.println("PROCESSING, MESSAGE TYPE: CHUNK");
             return new Msg_Chunk(data);
 
         } else if(type.equals("GETCHUNK")){
-            System.out.println("MESSAGE TYPE: GETCHUNK");
+            //System.out.println("PROCESSING, MESSAGE TYPE: GETCHUNK");
             return new Msg_Getchunk(data);
         }
         return null;
     }
 
     private static boolean validateMsgType(String m) {
-        System.out.println(m);
         Pattern p = Pattern.compile("DELETE|CHUNK|PUTCHUNK|GETCHUNK|STORED|REMOVED");
 
         return p.matcher(m).matches();
@@ -112,7 +111,7 @@ abstract class PBMessage {
 
     protected boolean validateFileId(String f) {
         // 64 ASCII (Hex A to F) character sequence
-        Pattern p = Pattern.compile("[0-9A-F]{64}");
+        Pattern p = Pattern.compile("[0-9a-fA-F]{64}");
 
         return p.matcher(f).matches();
     }

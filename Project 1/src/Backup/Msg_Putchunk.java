@@ -34,7 +34,7 @@ public class Msg_Putchunk extends PBMessage {
         // Decode header
         String[] splitHeader = header.split(" ");
 
-        if (splitHeader.length == 5){
+        //if (splitHeader.length == 5){
             if (!splitHeader[0].equals(PUTCHUNK)){
                 throw new InvalidStateException("Invalid Message!");
             }
@@ -59,9 +59,9 @@ public class Msg_Putchunk extends PBMessage {
             fileId  = splitHeader[2];
             chunkNo = Integer.parseInt(splitHeader[3]);
             replicationDegree =  Integer.parseInt(splitHeader[4]);
-        } else {
-            throw new InvalidStateException("Invalid Message!");
-        }
+        //} else {
+           //throw new InvalidStateException("Invalid Message!");
+        //}
 
         chunkData = getBodyFromMessage(inputData);
         // Get the chunk data if it exists

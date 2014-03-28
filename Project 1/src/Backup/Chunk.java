@@ -25,9 +25,10 @@ class Chunk implements Serializable {
      * Constructor for a chunk with data
      * */
     public Chunk(String fId, int cNo, byte[] data) throws IllegalStateException {
+		setChunkNo(cNo);
         setFileId(fId);
-        setChunkNo(cNo);
         storeData(data);
+		//System.out.println("FileID = " + fileId + " Chunk Nº " + this.chunkNo);
     }
 
     /**
@@ -44,7 +45,7 @@ class Chunk implements Serializable {
     private void setFileId(String fId){
         Pattern hashPattern = Pattern.compile("[0-9A-F]{64}");
 
-        if (fId.length() == 64 && hashPattern.matcher(fId).matches()){
+        if (hashPattern.matcher(fId).matches()){
             fileId = fId;
         } else {
             System.out.println(fId);
