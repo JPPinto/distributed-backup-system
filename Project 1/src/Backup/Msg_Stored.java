@@ -11,7 +11,7 @@ import sun.plugin.dom.exception.InvalidStateException;
  * Backup.Msg_Stored class
  */
 public class Msg_Stored extends PBMessage {
-    byte[] header;
+    private byte[] data;
 	private int chunkNo;
 
     // STORED <Version> <FileId> <ChunkNo> <CRLF><CRLF>
@@ -19,8 +19,8 @@ public class Msg_Stored extends PBMessage {
         super("STORED");
 
         //Header
-        header = inputData;
-        String headerString = Utilities.convertByteArrayToSring(header);
+        data = inputData;
+        String headerString = Utilities.convertByteArrayToSring(data);
 
         // Decode header
         String[] splitHeader = headerString.split(" ");
@@ -60,7 +60,7 @@ public class Msg_Stored extends PBMessage {
                 cNo + PBMessage.SEPARATOR +
                 PBMessage.CRLF + PBMessage.CRLF;
 
-        header = Utilities.convertStringToByteArray(headerString);
+        data = Utilities.convertStringToByteArray(headerString);
 
     }
 
@@ -71,6 +71,6 @@ public class Msg_Stored extends PBMessage {
 
     @Override
     public byte[] getData(int type){
-        return null;
+        return data;
     }
 }
