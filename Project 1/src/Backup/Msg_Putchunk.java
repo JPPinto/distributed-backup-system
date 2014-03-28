@@ -63,9 +63,9 @@ public class Msg_Putchunk extends PBMessage {
             throw new InvalidStateException("Invalid Message!");
         }
 
-        byte[] body = getBodyFromMessage(inputData);
+        chunkData = getBodyFromMessage(inputData);
         // Get the chunk data if it exists
-        if (body == null){
+        if (chunkData == null){
             Chunk receivedChunk = new Chunk(fileId, chunkNo);
             //receivedChunk.write("pasta");
 

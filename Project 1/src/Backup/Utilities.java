@@ -75,8 +75,8 @@ public class Utilities {
     public static String convertByteArrayToSring(byte[] in){
         String newString = "";
 
-        for (int i=0; i < in.length; i++){
-            newString += (char) (in[i] & 0xFF);
+        for (byte anIn : in) {
+            newString += (char) (anIn & 0xFF);
         }
 
         return newString;
