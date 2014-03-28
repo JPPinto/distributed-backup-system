@@ -1,7 +1,12 @@
 package Backup;
 
 /**
- * Created by Jose on 27-03-2014.
+ * SDIS TP1
+ *
+ * Eduardo Fernandes
+ * José Pinto
+ *
+ * Backup.Msg_Getchunk class
  */
 public class Msg_Getchunk extends PBMessage {
 

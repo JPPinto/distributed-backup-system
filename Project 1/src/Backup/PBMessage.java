@@ -95,7 +95,7 @@ abstract class PBMessage {
         return p.matcher(m).matches();
     }
 
-    private boolean validateVersion(String v) {
+    protected boolean validateVersion(String v) {
 
         /* Make use of pattern to check if input string (e.g.: 1.0, 2.4, 1.0.1)*/
         Pattern p = Pattern.compile("[0-9]+(\\.[0-9])+");
@@ -103,7 +103,7 @@ abstract class PBMessage {
         return p.matcher(v).matches();
     }
 
-    private boolean validateFileId(String f) {
+    protected boolean validateFileId(String f) {
         // 64 ASCII (Hex A to F) character sequence
         Pattern p = Pattern.compile("[0-9A-F]{64}");
 
@@ -113,14 +113,14 @@ abstract class PBMessage {
     /*
      * Validate chunk number
      */
-    private boolean validateChunkNo(int chunkNo) {
+    protected boolean validateChunkNo(int chunkNo) {
         return !(chunkNo < 0 || chunkNo > 999999);
     }
 
     /*
      * Validate replication degree (NOT COMPLETED check upper bond)?
      */
-    private boolean validateReplicationDeg(int replicationDeg) {
+    protected boolean validateReplicationDeg(int replicationDeg) {
         return !(replicationDeg < 0 || replicationDeg > 9);
     }
 

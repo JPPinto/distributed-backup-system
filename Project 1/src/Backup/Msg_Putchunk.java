@@ -28,7 +28,7 @@ public class Msg_Putchunk extends PBMessage {
             /* 0xDA */
             if(inputData[it] == TERMINATOR) {
                 if (terminators == 0){
-                    // -2 ignore space + 0xDA
+                    // -1 ignore space + 0xDA
                     headerData = Arrays.copyOfRange(inputData, 0, (it - 1));
                 }
                 terminators++;
@@ -49,6 +49,26 @@ public class Msg_Putchunk extends PBMessage {
         String[] splitHeader = messageHeader.split(" ");
 
         if (splitHeader.length == 5){
+            if (!splitHeader[0].equals(PBMessage.PUTCHUNK)){
+                throw new InvalidStateException("Invalid Message!");
+            }
+
+            if(!validateVersion(splitHeader[1])){
+                throw new InvalidStateException("Invalid Message Version!");
+            }
+
+            if(!validateFileId(splitHeader[2])){
+                throw new InvalidStateException("Invalid Message file ID!");
+            }
+
+            if(!validateChunkNo(Integer.parseInt(splitHeader[3]))){
+                throw new InvalidStateException("Invalid Message chunk number!");
+            }
+
+            if(!validateReplicationDeg(Integer.parseInt(splitHeader[4]))){
+                throw new InvalidStateException("Invalid Message replication degree!");
+            }
+
             version = splitHeader[1];
             fileId  = splitHeader[2];
             chunkNo = Integer.parseInt(splitHeader[3]);
@@ -77,13 +97,12 @@ public class Msg_Putchunk extends PBMessage {
     Msg_Putchunk(Chunk chunk, int repDegree){
         super(PBMessage.PUTCHUNK);
 
-        // PUTCHUNK <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF> <CRLF>
+        // PUTCHUNK <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF><CRLF>
         String header = PBMessage.PUTCHUNK + PBMessage.SEPARATOR +
                 chunk.getFileId() + PBMessage.SEPARATOR +
                 chunk.getChunkNo() + PBMessage.SEPARATOR +
                 repDegree + PBMessage.SEPARATOR +
-                PBMessage.CRLF + PBMessage.SEPARATOR +
-                PBMessage.CRLF + PBMessage.SEPARATOR;
+                PBMessage.CRLF + PBMessage.CRLF + PBMessage.SEPARATOR;
 
         headerData = convertStringToByteArray(header);
         chunkData = chunk.getChunkData();
