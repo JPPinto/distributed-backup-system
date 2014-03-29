@@ -147,7 +147,6 @@ abstract class PBMessage {
 
 		while (true) {
 			if (it >= inputData.length) {
-                System.out.println(Utilities.convertByteArrayToHex(inputData));
 				throw new InvalidStateException("Message Error!");
 			}
 
@@ -165,6 +164,8 @@ abstract class PBMessage {
 	}
 
 	public static byte[] getBodyFromMessage(byte[] inputData, int length) throws InvalidStateException {
+        System.out.println(Utilities.convertByteArrayToHex(inputData));
+
 		int it = 0;
 		int terminators = 0;
 
@@ -190,7 +191,6 @@ abstract class PBMessage {
 			return null;
 
 		} else {
-            System.out.println(Utilities.convertByteArrayToHex(inputData));
 			return Arrays.copyOfRange(inputData, it, length);
 		}
 
