@@ -44,7 +44,7 @@ class Chunk implements Serializable {
      * */
     private void setFileId(String fId){
         if (Utilities.validateFileId(fId)){
-            fileId = fId;
+            fileId = fId.toUpperCase();
         } else {
             throw new IllegalStateException("Invalid file hash!");
         }
