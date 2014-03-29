@@ -196,4 +196,24 @@ abstract class PBMessage {
 		}
 
 	}
+
+    protected static byte[] constructHeaderFromStringArray(String[] in){
+        String resultS="";
+        boolean first = true;
+
+        for (String a :in){
+            if(!first){
+                resultS+=" ";
+            } else {
+                first = false;
+            }
+
+            resultS+=a;
+        }
+
+        resultS+=TERMINATOR;
+        resultS+=TERMINATOR;
+
+        return(Utilities.convertStringToByteArray(resultS));
+    }
 }

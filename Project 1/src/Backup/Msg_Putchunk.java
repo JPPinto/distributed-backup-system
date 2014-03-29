@@ -84,14 +84,15 @@ public class Msg_Putchunk extends PBMessage {
 		chunkNo = chunk.getChunkNo();
 		replicationDegree = repDegree;
 
-        String header = PUTCHUNK + SEPARATOR +
-                version + SEPARATOR +
-                chunk.getFileId() + SEPARATOR +
-                chunk.getChunkNo() + SEPARATOR +
-                Integer.toString(repDegree) +
-				TERMINATOR + TERMINATOR;
+        String[] stringArray = new String[5];
 
-        headerData = convertStringToByteArray(header);
+        stringArray[0] = PUTCHUNK;
+        stringArray[1] = version;
+        stringArray[2] = fileId;
+        stringArray[3] = Integer.toString(chunkNo);
+        stringArray[4] = Integer.toString(replicationDegree);
+
+        headerData = constructHeaderFromStringArray(stringArray);
         chunkData = chunk.getChunkData();
 
         //<Body>

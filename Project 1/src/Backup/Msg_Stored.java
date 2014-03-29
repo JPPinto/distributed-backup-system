@@ -24,12 +24,12 @@ public class Msg_Stored extends PBMessage {
 
         //Header
         data = inputData;
-        header = Utilities.convertByteArrayToSring(data);
+        header = getHeaderFromMessage(data);
 
         // Decode header
         String[] splitHeader = header.split(" ");
 
-        if (splitHeader.length == 5) {											//Corrected size of string
+        if (splitHeader.length == 4) {											//Corrected size of string
             if (!splitHeader[0].equals(PBMessage.STORED)){
                 throw new InvalidStateException("Invalid Message!");
             }
@@ -60,13 +60,13 @@ public class Msg_Stored extends PBMessage {
         receivedMessage = false;
         chunkNo = cNo;
 
-        String headerString = STORED + SEPARATOR +
-                version + SEPARATOR +
-                fId + SEPARATOR +
-                chunkNo + SEPARATOR +
-				TERMINATOR + TERMINATOR;
+        String[] stringArray = new String[4];
+        stringArray[0] = STORED;
+        stringArray[1] = version;
+        stringArray[2] = fId;
+        stringArray[3] = Integer.toString(chunkNo);
 
-        data = Utilities.convertStringToByteArray(headerString);
+        data = constructHeaderFromStringArray(stringArray);
     }
 
 	@Override
