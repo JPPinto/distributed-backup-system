@@ -117,27 +117,6 @@ abstract class PBMessage {
 		return p.matcher(v).matches();
 	}
 
-	protected boolean validateFileId(String f) {
-		// 64 ASCII (Hex A to F) character sequence
-		Pattern p = Pattern.compile("[0-9a-fA-F]{64}");
-
-		return p.matcher(f).matches();
-	}
-
-	/*
-	 * Validate chunk number
-	 */
-	protected boolean validateChunkNo(int chunkNo) {
-		return !(chunkNo < 0 || chunkNo > 999999);
-	}
-
-	/*
-	 * Validate replication degree (NOT COMPLETED check upper bond)?
-	 */
-	protected boolean validateReplicationDeg(int replicationDeg) {
-		return !(replicationDeg < 0 || replicationDeg > 9);
-	}
-
 	public boolean getMessageReceivedBool() {
 		return receivedMessage;
 	}

@@ -43,15 +43,15 @@ public class Msg_Chunk extends PBMessage {
                 throw new InvalidStateException("Invalid Message Version!");
             }
 
-            if(!validateFileId(splitHeader[2])){
+            if(!Utilities.validateFileId(splitHeader[2])){
                 throw new InvalidStateException("Invalid Message file ID!");
             }
 
-            if(!validateChunkNo(Integer.parseInt(splitHeader[3]))){
+            if(!Utilities.validateChunkNo(Integer.parseInt(splitHeader[3]))){
                 throw new InvalidStateException("Invalid Message chunk number!");
             }
 
-            if(!validateReplicationDeg(Integer.parseInt(splitHeader[4]))){
+            if(!Utilities.validateReplicationDeg(Integer.parseInt(splitHeader[4]))){
                 throw new InvalidStateException("Invalid Message replication degree!");
             }
 

@@ -42,11 +42,11 @@ public class Msg_Getchunk extends PBMessage {
                 throw new InvalidStateException("Invalid Message Version!");
             }
 
-            if(!validateFileId(splitHeader[2])){
+            if(!Utilities.validateFileId(splitHeader[2])){
                 throw new InvalidStateException("Invalid Message file ID!");
             }
 
-            if(!validateChunkNo(Integer.parseInt(splitHeader[3]))){
+            if(!Utilities.validateChunkNo(Integer.parseInt(splitHeader[3]))){
                 throw new InvalidStateException("Invalid Message chunk number!");
             }
 

@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
 /**
  * SDIS TP1
@@ -91,6 +92,29 @@ public class Utilities {
         System.arraycopy(arrayA, 0, merged, 0, arrayA.length);
         System.arraycopy(arrayB, 0, merged, arrayA.length, arrayB.length);
         return merged;
+    }
+
+    /*
+     * Validate SHA-256 SUM
+     */
+    public static boolean validateFileId(String f) {
+        // 64 ASCII (Hex A to F) character sequence
+        Pattern p = Pattern.compile("[0-9a-fA-F]{64}");
+        return p.matcher(f).matches();
+    }
+
+    /*
+     * Validate chunk number
+     */
+    public static boolean validateChunkNo(int chunkNo) {
+        return !(chunkNo < 0 || chunkNo > 999999);
+    }
+
+    /*
+     * Validate replication degree (NOT COMPLETED check upper bond)?
+     */
+    public static boolean validateReplicationDeg(int replicationDeg) {
+        return !(replicationDeg < 0 || replicationDeg > 9);
     }
 
 }
