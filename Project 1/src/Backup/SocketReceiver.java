@@ -47,6 +47,7 @@ public class SocketReceiver extends Thread {
 				mSocket.receive(packet);
 
 				try {
+
 				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
 
 				if (!received.containsKey(packet.getAddress().getHostAddress())) {

@@ -33,7 +33,7 @@ public class Msg_Delete extends PBMessage {
 
         String header = DELETE + SEPARATOR +
                 fId + SEPARATOR +
-                CRLF + CRLF;
+				TERMINATOR + TERMINATOR;
 
         data = Utilities.convertStringToByteArray(header);
     }

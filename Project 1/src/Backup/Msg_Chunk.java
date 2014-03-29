@@ -84,7 +84,7 @@ public class Msg_Chunk extends PBMessage {
                 version + SEPARATOR +
                 chunk.getFileId() + SEPARATOR +
                 chunk.getChunkNo() + SEPARATOR +
-                CRLF + CRLF + SEPARATOR;
+				TERMINATOR + TERMINATOR + SEPARATOR;
 
         byte[] headerData = Utilities.convertStringToByteArray(header);
 

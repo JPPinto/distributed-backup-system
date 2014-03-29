@@ -33,7 +33,7 @@ public class Msg_Removed extends PBMessage {
                 version + SEPARATOR +
                 fId + SEPARATOR +
                 cNo + SEPARATOR +
-                CRLF + CRLF;
+				TERMINATOR + TERMINATOR;
 
         data = Utilities.convertStringToByteArray(header);
     }

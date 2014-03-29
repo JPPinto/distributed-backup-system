@@ -64,7 +64,7 @@ public class Msg_Stored extends PBMessage {
                 version + SEPARATOR +
                 fId + SEPARATOR +
                 chunkNo + SEPARATOR +
-                CRLF + CRLF;
+				TERMINATOR + TERMINATOR;
 
         data = Utilities.convertStringToByteArray(headerString);
     }
