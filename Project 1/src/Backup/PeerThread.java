@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Map;
 import java.util.Random;
+import java.util.Vector;
 
 public class PeerThread extends Thread {
 
@@ -25,19 +26,38 @@ public class PeerThread extends Thread {
 	private SocketReceiver socMDBReceiver;
 	private int storesWaiting;
 	private Random rand;
+	private Vector<String> addrs;
+	private Vector<Integer> ports;
 
 	public static final int packetSize = 65536;
 	public static final int CRLF = 218;
+	public static final int SOCKET_MC = 0;
+	public static final int SOCKET_MDB = 1;
 
 	PeerThread(String aMC, int pMC, String aMDB, int pMDB/*, String aMDR, int pMDR*/) {
+		addrs = new Vector<String>();
+		ports = new Vector<Integer>();
+
 		addressMC = aMC;
+		addrs.add(aMC);
+
 		addressMDB = aMDB;
+		addrs.add(aMDB);
+
 		//addressMDR = aMDR;
+		//addrs.add(aMDR);
+
 		portMC = pMC;
+		ports.add(pMC);
+
 		portMDB = pMDB;
+		ports.add(pMDB);
+
 		//portMDR = pMDR;
-		socMCReceiver = new SocketReceiver(addressMC, portMC);
-		socMDBReceiver = new SocketReceiver(addressMDB, portMDB);
+		//ports.add(pMDR);
+
+		socMCReceiver = new SocketReceiver(addrs, ports, SOCKET_MC);
+		socMDBReceiver = new SocketReceiver(addrs, ports, SOCKET_MDB);
 		rand = new Random();
 		storesWaiting = 0;
 	}
@@ -47,7 +67,7 @@ public class PeerThread extends Thread {
 		socMDBReceiver.start();
 
 		boolean running = true;
-		try {
+		/*try {
 			while (running) {
 
 				for (Map.Entry<String, PBMessage> entry : socMCReceiver.received.entrySet()) {
@@ -70,17 +90,13 @@ public class PeerThread extends Thread {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public void handleProtocol(PBMessage msg) throws InterruptedException {
 
 		if (msg.getType().equals("PUTCHUNK")) {
-
-			Chunk currentChunk = new Chunk(msg.fileId, msg.getIntAttribute(0), msg.getData(1));
-			//currentChunk.write(PotatoBackup.backupDirectory);
 			msg.saveChunk(PotatoBackup.backupDirectory);
-
 			//				rand.nextInt((MAX-MIN) + 1) + MIN;
 			int randomNum = rand.nextInt((400 - 0) + 1);
 
@@ -101,11 +117,10 @@ public class PeerThread extends Thread {
 		} else if (msg.getType().equals("GETCHUNK")) {
 			System.out.println("HANDLED GETCHUNK!");
 		}
-
 	}
 
 
-	public void sendRequest(PBMessage msg, String mcast_addr, int mcast_port) {
+	public static void sendRequest(PBMessage msg, String mcast_addr, int mcast_port) {
 
 		try {
 			DatagramSocket socket = new DatagramSocket();

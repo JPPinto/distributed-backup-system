@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -15,14 +14,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SocketReceiver extends Thread {
 
-	public ConcurrentHashMap<String, PBMessage> received;
+	public HashSet<PBMessage> received;
 	public String mcast_adrr;
 	public int mcast_port;
+	public Vector<String> addrs;
+	public Vector<Integer> ports;
 
-	SocketReceiver(String ma, int mp) {
-		mcast_adrr = ma;
-		mcast_port = mp;
-		received = new ConcurrentHashMap<String, PBMessage>();
+	SocketReceiver(Vector<String> a, Vector<Integer> p, int type) {
+		mcast_adrr = a.get(type);
+		mcast_port = p.get(type);
+		received = new HashSet<PBMessage>();
 	}
 
 	public void run() {
@@ -52,11 +53,11 @@ public class SocketReceiver extends Thread {
     				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData(), packet.getLength());
 
                     if (temp_message != null) {
-                        if (!received.containsKey(packet.getAddress().getHostAddress())) {
-                            received.put(packet.getAddress().getHostAddress(), temp_message);
+                        if (received.add(temp_message)) {
+                            //ProtocolHandler temp_handler = new ProtocolHandler(addrs, ports, temp_message); // TODO FINISH THE HANDLER
+							temp_handler.run();
+							System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
                         }
-
-                        System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
                     } else {
                         System.out.println("MESSAGE DISCARDED!");
                     }
