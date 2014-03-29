@@ -80,7 +80,8 @@ public class PeerThread extends Thread {
 			Chunk currentChunk = new Chunk(msg.fileId, msg.getIntAttribute(0), msg.getData(1));
 			currentChunk.write(PotatoBackup.backupDirectory);
 
-			int randomNum = rand.nextInt((400 - 0) + 1) + 0;
+			//				rand.nextInt((MAX-MIN) + 1) + MIN;
+			int randomNum = rand.nextInt((400 - 0) + 1);
 
 			PBMessage message = new Msg_Stored(msg.fileId, msg.getIntAttribute(0));
 			sleep(randomNum);
@@ -128,29 +129,6 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	/*public void sendRequest(String msg, String mcast_addr, int mcast_port) {
-
-		try {
-			DatagramSocket socket = new DatagramSocket();
-			InetAddress IPAddress = InetAddress.getByName(mcast_addr);
-			DatagramPacket packet;
-
-
-			packet = new DatagramPacket(msg.getBytes(), msg.getBytes().length, IPAddress, mcast_port);
-			socket.send(packet);
-
-			socket.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void closeThreads() {
-		socMCReceiver.interrupt();
-		this.interrupt();
-	}*/
-
 	public void sendPUTCHUNK(String filepath) throws IOException, InterruptedException {
 
 		int time_multiplier, retransmission_count;
@@ -187,10 +165,10 @@ public class PeerThread extends Thread {
 					retransmission_count++;
 				}
 
-				if (time_multiplier == 6){
+				/*if (retransmission_count == 6){
 					System.out.println("FAILED TO BACKUP FILE " + filepath + " WITH REPLICATION DEGREE OF: " + temp_putchunk.getIntAttribute(1));
 					break;
-				}
+				}*/
 			}
 		}
 
@@ -215,7 +193,7 @@ public class PeerThread extends Thread {
 
 			//PBMessage message = new Msg_Stored("2ACE2D72832ACE2D72832ACE2D72832ACE2D72832ACE2D72832ACE2D72831234",1); //Works
 
-
+			/*
 			PotatoBackup.readChunks(new File("./binary.test"), PotatoBackup.temporaryDirectory);
 			System.out.println("DONE!");
 			File[] chucksToSend = PotatoBackup.listFiles(PotatoBackup.temporaryDirectory);
@@ -223,8 +201,8 @@ public class PeerThread extends Thread {
 			PBMessage message = new Msg_Putchunk(Chunk.loadChunk(chucksToSend[0].getPath()), 1);
 			System.out.println("SENDING...");
 			peer.sendRequest(message, peer.addressMDB, peer.portMDB);
-
-			//peer.sendPUTCHUNK("./binary.test");
+			*/
+			peer.sendPUTCHUNK("./binary.test");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

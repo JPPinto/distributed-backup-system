@@ -54,8 +54,6 @@ public class SocketReceiver extends Thread {
                     if (temp_message != null) {
                         if (!received.containsKey(packet.getAddress().getHostAddress())) {
                             received.put(packet.getAddress().getHostAddress(), temp_message);
-
-
                         }
 
                         System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
