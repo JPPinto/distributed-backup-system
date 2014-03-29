@@ -43,12 +43,9 @@ class Chunk implements Serializable {
      * @param fId file hash
      * */
     private void setFileId(String fId){
-        Pattern hashPattern = Pattern.compile("[0-9A-F]{64}");
-
-        if (hashPattern.matcher(fId).matches()){
+        if (Utilities.validateFileId(fId)){
             fileId = fId;
         } else {
-            System.out.println(fId);
             throw new IllegalStateException("Invalid file hash!");
         }
     }
@@ -58,10 +55,10 @@ class Chunk implements Serializable {
      * @param chunkNoIn chunk number
      * */
     private void setChunkNo(int chunkNoIn){
-        if (chunkNoIn < 0 || chunkNoIn > 999999) {
-            throw new IllegalStateException("Invalid chunk number!");
-        } else {
+        if (Utilities.validateChunkNo(chunkNo)) {
             chunkNo = chunkNoIn;
+        } else {
+            throw new IllegalStateException("Invalid chunk number!");
         }
     }
 
