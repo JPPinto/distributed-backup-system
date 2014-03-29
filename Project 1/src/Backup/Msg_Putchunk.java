@@ -23,6 +23,7 @@ public class Msg_Putchunk extends PBMessage {
     private int chunkNo;
     private int replicationDegree;
     private byte[] dataToBeSent;
+    private Chunk receivedChunk;
 
     // Received message constructor
     Msg_Putchunk(byte[] inputData, int packetLenght) throws InvalidStateException {
@@ -66,11 +67,11 @@ public class Msg_Putchunk extends PBMessage {
         chunkData = getBodyFromMessage(inputData, packetLenght);
         // Get the chunk data if it exists
         if (chunkData == null){
-            Chunk receivedChunk = new Chunk(fileId, chunkNo);
+            receivedChunk = new Chunk(fileId, chunkNo);
             //receivedChunk.write("pasta");
 
         } else {
-            Chunk receivedChunk = new Chunk(fileId, chunkNo, chunkData);
+            receivedChunk = new Chunk(fileId, chunkNo, chunkData);
             //receivedChunk.write("pasta");
         }
 

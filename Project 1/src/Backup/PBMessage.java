@@ -25,7 +25,6 @@ abstract class PBMessage {
 	// Constants
     protected static final byte TERMINATOR_BYTE_1 = (byte) Integer.parseInt("D", 16);
     protected static final byte TERMINATOR_BYTE_2 = (byte) Integer.parseInt("A", 16);
-    // TODO FIX THIS
 	protected static String TERMINATOR = "\r\n";
 
 	protected String version = "1.0";
@@ -148,7 +147,6 @@ abstract class PBMessage {
 
 		while (true) {
 			if (it >= inputData.length) {
-                System.out.println(Utilities.convertByteArrayToHex(inputData));
 				throw new InvalidStateException("Message Error!");
 			}
 
@@ -166,6 +164,8 @@ abstract class PBMessage {
 	}
 
 	public static byte[] getBodyFromMessage(byte[] inputData, int length) throws InvalidStateException {
+        System.out.println(Utilities.convertByteArrayToHex(inputData));
+
 		int it = 0;
 		int terminators = 0;
 
@@ -191,7 +191,6 @@ abstract class PBMessage {
 			return null;
 
 		} else {
-            System.out.println(Utilities.convertByteArrayToHex(inputData));
 			return Arrays.copyOfRange(inputData, it, length);
 		}
 
