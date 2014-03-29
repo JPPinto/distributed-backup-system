@@ -26,7 +26,10 @@ abstract class PBMessage {
 	protected static final String REMOVED = "REMOVED";
 	protected static final String SEPARATOR = " ";
 	// Constants
-	protected static final byte TERMINATOR = (byte) Integer.parseInt("DA", 16);
+    protected static final byte TERMINATOR_BYTE = (byte) Integer.parseInt("DA", 16);
+    // TODO FIX THIS
+	protected static String TERMINATOR = "";
+
 	protected String version = "1.0";
 	// Message Type
 	protected String messageType;
@@ -152,7 +155,7 @@ abstract class PBMessage {
 			}
 
             /* 0xDA */
-			if (inputData[it] == PBMessage.TERMINATOR && inputData[it + 1] == PBMessage.TERMINATOR) {
+			if (inputData[it] == PBMessage.TERMINATOR_BYTE && inputData[it + 1] == PBMessage.TERMINATOR_BYTE) {
 				// -1 ignore space + 0xDA
 				headerData = Arrays.copyOfRange(inputData, 0, (it - 1));
 				break;
@@ -173,7 +176,7 @@ abstract class PBMessage {
 			}
 
             /* 0xDA */
-			if (inputData[it] == TERMINATOR) {
+			if (inputData[it] == TERMINATOR_BYTE) {
 				terminators++;
 			}
 
