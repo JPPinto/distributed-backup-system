@@ -9,11 +9,8 @@ package Backup; /**
 
 import sun.plugin.dom.exception.InvalidStateException;
 
-import javax.rmi.CORBA.Util;
 import java.util.Arrays;
 import java.util.regex.Pattern;
-
-import static Backup.Utilities.convertByteArrayToSring;
 
 abstract class PBMessage {
 
@@ -26,9 +23,10 @@ abstract class PBMessage {
 	protected static final String REMOVED = "REMOVED";
 	protected static final String SEPARATOR = " ";
 	// Constants
-    protected static final byte TERMINATOR_BYTE = (byte) Integer.parseInt("DA", 16);
+    protected static final byte TERMINATOR_BYTE_1 = (byte) Integer.parseInt("D", 16);
+    protected static final byte TERMINATOR_BYTE_2 = (byte) Integer.parseInt("A", 16);
     // TODO FIX THIS
-	protected static String TERMINATOR = "";
+	protected static String TERMINATOR = "\r\n";
 
 	protected String version = "1.0";
 	// Message Type
@@ -154,10 +152,11 @@ abstract class PBMessage {
 				throw new InvalidStateException("Message Error!");
 			}
 
-            /* 0xDA */
-			if (inputData[it] == PBMessage.TERMINATOR_BYTE && inputData[it + 1] == PBMessage.TERMINATOR_BYTE) {
-				// -1 ignore space + 0xDA
-				headerData = Arrays.copyOfRange(inputData, 0, (it - 1));
+            /* 0xD 0xA */
+			if (inputData[it] == PBMessage.TERMINATOR_BYTE_1 && inputData[it + 1] == PBMessage.TERMINATOR_BYTE_2 &&
+                    inputData[it+2] == PBMessage.TERMINATOR_BYTE_1 && inputData[it + 3] == PBMessage.TERMINATOR_BYTE_2) {
+				// ignore first 0xD
+				headerData = Arrays.copyOfRange(inputData, 0, (it));
 				break;
 			}
 			it++;
@@ -175,22 +174,19 @@ abstract class PBMessage {
 				throw new InvalidStateException("Message Error!");
 			}
 
-            /* 0xDA */
-			if (inputData[it] == TERMINATOR_BYTE) {
-				terminators++;
-			}
-
-			if (terminators == 2) {
-			/* Advance the last terminator */
-				it++;
-				break;
-			}
+            /* 0xD 0xA */
+            if (inputData[it] == PBMessage.TERMINATOR_BYTE_1 && inputData[it + 1] == PBMessage.TERMINATOR_BYTE_2 &&
+                    inputData[it+2] == PBMessage.TERMINATOR_BYTE_1 && inputData[it + 3] == PBMessage.TERMINATOR_BYTE_2) {
+                //
+                it+=3;
+                break;
+            }
 
 			it++;
 		}
 
 		// Get the body data if it exists
-		if (it == inputData.length || (it + 1) == inputData.length) {
+		if (it == inputData.length) {
 			// No body found
 			return null;
 

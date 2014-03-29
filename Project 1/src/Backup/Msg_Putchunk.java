@@ -60,7 +60,7 @@ public class Msg_Putchunk extends PBMessage {
             chunkNo = Integer.parseInt(splitHeader[3]);
             replicationDegree =  Integer.parseInt(splitHeader[4]);
         } else {
-           throw new InvalidStateException("Invalid Message!");
+           throw new InvalidStateException("Invalid Message too many fields: " + splitHeader.length);
         }
 
         chunkData = getBodyFromMessage(inputData);
