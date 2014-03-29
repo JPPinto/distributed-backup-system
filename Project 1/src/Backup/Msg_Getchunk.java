@@ -24,7 +24,7 @@ public class Msg_Getchunk extends PBMessage {
     private int chunkNo;
 
     // Received message constructor
-    public Msg_Getchunk(byte[] inputData){
+    public Msg_Getchunk(byte[] inputData, int packetLenght){
         super(GETCHUNK);
         receivedMessage = true;
 

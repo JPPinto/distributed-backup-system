@@ -49,7 +49,7 @@ public class SocketReceiver extends Thread {
 
 				try {
 
-    				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
+    				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData(), packet.getLength());
 
                     if (temp_message != null) {
                         if (!received.containsKey(packet.getAddress().getHostAddress())) {

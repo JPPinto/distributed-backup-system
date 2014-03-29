@@ -25,7 +25,7 @@ public class Msg_Chunk extends PBMessage {
     int chunkNo;
 
     // Received message constructor
-    public Msg_Chunk(byte[] inputData){
+    public Msg_Chunk(byte[] inputData, int packetLenght){
         super(PBMessage.CHUNK);
         receivedMessage = true;
         inputData = data;
@@ -63,7 +63,7 @@ public class Msg_Chunk extends PBMessage {
             throw new InvalidStateException("Invalid Message!");
         }
 
-        byte[] body = getBodyFromMessage(inputData);
+        byte[] body = getBodyFromMessage(inputData, packetLenght);
         // Get the chunk data if it exists
         if (body == null){
             Chunk receivedChunk = new Chunk(fileId, chunkNo);
@@ -83,8 +83,7 @@ public class Msg_Chunk extends PBMessage {
         String header = CHUNK + SEPARATOR +
                 version + SEPARATOR +
                 chunk.getFileId() + SEPARATOR +
-                chunk.getChunkNo() + SEPARATOR +
-				TERMINATOR + TERMINATOR + SEPARATOR;
+                chunk.getChunkNo() + TERMINATOR + TERMINATOR;
 
         byte[] headerData = Utilities.convertStringToByteArray(header);
 

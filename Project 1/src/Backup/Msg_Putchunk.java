@@ -25,7 +25,7 @@ public class Msg_Putchunk extends PBMessage {
     private byte[] dataToBeSent;
 
     // Received message constructor
-    Msg_Putchunk(byte[] inputData) throws InvalidStateException {
+    Msg_Putchunk(byte[] inputData, int packetLenght) throws InvalidStateException {
         super(PUTCHUNK);
         receivedMessage = true;
 
@@ -63,7 +63,7 @@ public class Msg_Putchunk extends PBMessage {
            throw new InvalidStateException("Invalid Message too many fields: " + splitHeader.length);
         }
 
-        chunkData = getBodyFromMessage(inputData);
+        chunkData = getBodyFromMessage(inputData, packetLenght);
         // Get the chunk data if it exists
         if (chunkData == null){
             Chunk receivedChunk = new Chunk(fileId, chunkNo);
@@ -88,8 +88,8 @@ public class Msg_Putchunk extends PBMessage {
                 version + SEPARATOR +
                 chunk.getFileId() + SEPARATOR +
                 chunk.getChunkNo() + SEPARATOR +
-                Integer.toString(repDegree) + SEPARATOR +
-				TERMINATOR + TERMINATOR + SEPARATOR;
+                Integer.toString(repDegree) +
+				TERMINATOR + TERMINATOR;
 
         headerData = convertStringToByteArray(header);
         chunkData = chunk.getChunkData();

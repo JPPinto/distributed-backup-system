@@ -16,7 +16,7 @@ public class Msg_Removed extends PBMessage {
     private byte[] data;
 
     // Received message constructor
-    public Msg_Removed(byte[] inputData){
+    public Msg_Removed(byte[] inputData, int packetLenght){
         super(REMOVED);
         receivedMessage = true;
         data = inputData;

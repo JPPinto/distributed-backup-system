@@ -67,33 +67,33 @@ abstract class PBMessage {
 
 	abstract public byte[] getData(int type);
 
-	public static PBMessage createMessageFromType(byte[] data) {
+	public static PBMessage createMessageFromType(byte[] data, int lenght) {
 		String type = getType(data);
 
 		try {
 			if (type.equals("PUTCHUNK")) {
 				//System.out.println("PROCESSING, MESSAGE TYPE: PUTCHUNK");
-				return new Msg_Putchunk(data);
+				return new Msg_Putchunk(data, lenght);
 
 			} else if (type.equals("DELETE")) {
 				//System.out.println("PROCESSING, MESSAGE TYPE: DELETE");
-				return new Msg_Delete(data);
+				return new Msg_Delete(data, lenght);
 
 			} else if (type.equals("STORED")) {
 				//System.out.println("PROCESSING, MESSAGE TYPE: STORED");
-				return new Msg_Stored(data);
+				return new Msg_Stored(data, lenght);
 
 			} else if (type.equals("REMOVED")) {
 				//System.out.println("PROCESSING, MESSAGE TYPE: REMOVED");
-				return new Msg_Removed(data);
+				return new Msg_Removed(data, lenght);
 
 			} else if (type.equals("CHUNK")) {
 				//System.out.println("PROCESSING, MESSAGE TYPE: CHUNK");
-				return new Msg_Chunk(data);
+				return new Msg_Chunk(data, lenght);
 
 			} else if (type.equals("GETCHUNK")) {
 				//System.out.println("PROCESSING, MESSAGE TYPE: GETCHUNK");
-				return new Msg_Getchunk(data);
+				return new Msg_Getchunk(data, lenght);
 			}
 		}catch(InvalidStateException e){
 			e.printStackTrace();
@@ -165,12 +165,12 @@ abstract class PBMessage {
 		return Utilities.convertByteArrayToSring(headerData);
 	}
 
-	public static byte[] getBodyFromMessage(byte[] inputData) throws InvalidStateException {
+	public static byte[] getBodyFromMessage(byte[] inputData, int length) throws InvalidStateException {
 		int it = 0;
 		int terminators = 0;
 
 		while (true) {
-			if (it >= inputData.length) {
+			if (it >= length) {
 				throw new InvalidStateException("Message Error!");
 			}
 
@@ -178,7 +178,7 @@ abstract class PBMessage {
             if (inputData[it] == PBMessage.TERMINATOR_BYTE_1 && inputData[it + 1] == PBMessage.TERMINATOR_BYTE_2 &&
                     inputData[it+2] == PBMessage.TERMINATOR_BYTE_1 && inputData[it + 3] == PBMessage.TERMINATOR_BYTE_2) {
                 //
-                it+=3;
+                it+=4;
                 break;
             }
 
@@ -186,14 +186,13 @@ abstract class PBMessage {
 		}
 
 		// Get the body data if it exists
-		if (it == inputData.length) {
+		if (it == length) {
 			// No body found
 			return null;
 
 		} else {
-			// Advance space between 0xDA and the body
-			it++;
-			return Arrays.copyOfRange(inputData, it, inputData.length);
+            System.out.println(Utilities.convertByteArrayToHex(inputData));
+			return Arrays.copyOfRange(inputData, it, length);
 		}
 
 	}

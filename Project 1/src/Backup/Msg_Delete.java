@@ -19,7 +19,7 @@ public class Msg_Delete extends PBMessage {
     byte[] data;
 
     // Received message constructor
-    public Msg_Delete(byte[] inputData){
+    public Msg_Delete(byte[] inputData, int packetLenght){
         super(DELETE);
         receivedMessage = true;
 

@@ -18,7 +18,7 @@ public class Msg_Stored extends PBMessage {
 	private int chunkNo;
 
     // Received message constructor
-    public Msg_Stored(byte[] inputData) throws  InvalidStateException {
+    public Msg_Stored(byte[] inputData, int packetLenght) throws  InvalidStateException {
         super(PBMessage.STORED);
         receivedMessage = true;
 
