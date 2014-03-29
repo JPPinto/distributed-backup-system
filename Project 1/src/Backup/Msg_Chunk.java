@@ -21,7 +21,6 @@ import static Backup.Utilities.joinTwoArrays;
 public class Msg_Chunk extends PBMessage {
     private byte[] data;
     private byte[] headerData;
-    private byte[] chunkData;
     int chunkNo;
 
     // Received message constructor
@@ -70,7 +69,7 @@ public class Msg_Chunk extends PBMessage {
             //receivedChunk.write("pasta");
 
         } else {
-            Chunk receivedChunk = new Chunk(fileId, chunkNo, chunkData);
+            Chunk receivedChunk = new Chunk(fileId, chunkNo, body);
             //receivedChunk.write("pasta");
         }
     }
@@ -80,15 +79,14 @@ public class Msg_Chunk extends PBMessage {
         super(PBMessage.CHUNK);
         receivedMessage = false;
 
-        String header = CHUNK + SEPARATOR +
-                version + SEPARATOR +
-                chunk.getFileId() + SEPARATOR +
-                chunk.getChunkNo() + TERMINATOR + TERMINATOR;
+        String[] stringArray = new String[4];
+        stringArray[0] = CHUNK;
+        stringArray[1] = version;
+        stringArray[2] = chunk.getFileId();
+        stringArray[3] = Integer.toString(chunk.getChunkNo());
 
-        byte[] headerData = Utilities.convertStringToByteArray(header);
-
+        headerData = constructHeaderFromStringArray(stringArray);
         data = joinTwoArrays(headerData, chunk.getChunkData());
-
     }
 
 	@Override

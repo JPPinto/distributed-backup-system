@@ -63,14 +63,13 @@ public class Msg_Getchunk extends PBMessage {
         super(GETCHUNK);
         receivedMessage = false;
 
-        String header = GETCHUNK + SEPARATOR +
-                version + SEPARATOR +
-                chunk.getFileId() + SEPARATOR +
-                chunk.getChunkNo() + SEPARATOR +
-				TERMINATOR + TERMINATOR + SEPARATOR;
+        String[] stringArray = new String[4];
+        stringArray[0] = STORED;
+        stringArray[1] = version;
+        stringArray[2] = chunk.getFileId();
+        stringArray[3] = Integer.toString(chunkNo);
 
-        data = convertStringToByteArray(header);
-
+        data = constructHeaderFromStringArray(stringArray);
     }
 
     @Override

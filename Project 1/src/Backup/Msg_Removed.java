@@ -29,13 +29,13 @@ public class Msg_Removed extends PBMessage {
         super(REMOVED);
         receivedMessage = false;
 
-        String header = REMOVED + SEPARATOR +
-                version + SEPARATOR +
-                fId + SEPARATOR +
-                cNo + SEPARATOR +
-				TERMINATOR + TERMINATOR;
+        String[] stringArray = new String[4];
+        stringArray[0] = REMOVED;
+        stringArray[1] = version;
+        stringArray[2] = fId;
+        stringArray[3] = Integer.toString(cNo);
 
-        data = Utilities.convertStringToByteArray(header);
+        data = constructHeaderFromStringArray(stringArray);
     }
 
 	@Override

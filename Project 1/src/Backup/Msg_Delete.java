@@ -31,11 +31,11 @@ public class Msg_Delete extends PBMessage {
         super(DELETE);
         receivedMessage = false;
 
-        String header = DELETE + SEPARATOR +
-                fId + SEPARATOR +
-				TERMINATOR + TERMINATOR;
+        String[] stringArray = new String[2];
+        stringArray[0] = DELETE;
+        stringArray[1] = fId;
 
-        data = Utilities.convertStringToByteArray(header);
+        data = constructHeaderFromStringArray(stringArray);
     }
 
 	@Override
