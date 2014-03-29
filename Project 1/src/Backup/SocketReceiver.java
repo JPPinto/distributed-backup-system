@@ -21,6 +21,8 @@ public class SocketReceiver extends Thread {
 	public Vector<Integer> ports;
 
 	SocketReceiver(Vector<String> a, Vector<Integer> p, int type) {
+		addrs = a;
+		ports = p;
 		mcast_adrr = a.get(type);
 		mcast_port = p.get(type);
 		received = new HashSet<PBMessage>();
@@ -50,21 +52,22 @@ public class SocketReceiver extends Thread {
 
 				try {
 
-    				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData(), packet.getLength());
+					PBMessage temp_message = PBMessage.createMessageFromType(packet.getData(), packet.getLength());
 
-                    if (temp_message != null) {
-                        if (received.add(temp_message)) {
-                            //ProtocolHandler temp_handler = new ProtocolHandler(addrs, ports, temp_message); // TODO FINISH THE HANDLER
+					if (temp_message != null) {
+						if (received.add(temp_message)) {
+							ProtocolHandler temp_handler = new ProtocolHandler(addrs, ports, temp_message);
 							temp_handler.run();
 							System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
-                        }
-                    } else {
-                        System.out.println("MESSAGE DISCARDED!");
-                    }
+						}
+					} else {
+						System.out.println("MESSAGE DISCARDED!");
+					}
 
-		    		} catch(InvalidStateException e){
-			    		e.printStackTrace();
-			    	}
+				} catch (InvalidStateException e) {
+					System.out.println("MESSAGE DISCARDED!");
+					e.printStackTrace();
+				}
 
 				if (false) break;
 			}
@@ -78,19 +81,7 @@ public class SocketReceiver extends Thread {
 		mSocket.close();
 	}
 
-	public int numMessagesByIP() {
-
-		int num = 0;
-
-		for (Map.Entry<String, PBMessage> entry : received.entrySet()) {
-
-			if (entry.getValue().getType() == "STORED")
-				num++;
-		}
-		return num;
-	}
-
-	public void clearMessages(){
+	public void clearMessages() {
 		this.received.clear();
 	}
 }

@@ -66,8 +66,8 @@ public class PeerThread extends Thread {
 		socMCReceiver.start();
 		socMDBReceiver.start();
 
-		boolean running = true;
-		/*try {
+		/*boolean running = true;
+		try {
 			while (running) {
 
 				for (Map.Entry<String, PBMessage> entry : socMCReceiver.received.entrySet()) {
@@ -90,6 +90,7 @@ public class PeerThread extends Thread {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			running = false;
 		}*/
 	}
 
