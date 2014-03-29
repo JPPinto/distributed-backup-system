@@ -39,6 +39,10 @@ public class Msg_Removed extends PBMessage {
     }
 
 	@Override
+	public void saveChunk(String dir){
+	}
+
+	@Override
 	public int getIntAttribute(int type){
 		return 0;
 	}

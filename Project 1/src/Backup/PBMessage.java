@@ -66,6 +66,8 @@ abstract class PBMessage {
 
 	abstract public byte[] getData(int type);
 
+	public abstract void saveChunk(String dir);
+
 	public static PBMessage createMessageFromType(byte[] data, int lenght) {
 		String type = getType(data);
 

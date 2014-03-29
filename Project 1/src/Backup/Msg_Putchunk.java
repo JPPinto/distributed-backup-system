@@ -110,6 +110,11 @@ public class Msg_Putchunk extends PBMessage {
     }
 
 	@Override
+	public void saveChunk(String dir){
+		this.receivedChunk.write(dir);
+	}
+
+	@Override
 	public int getIntAttribute(int type){
 		switch (type){
 			case 0:

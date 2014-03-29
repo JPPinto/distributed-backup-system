@@ -70,6 +70,10 @@ public class Msg_Stored extends PBMessage {
     }
 
 	@Override
+	public void saveChunk(String dir){
+	}
+
+	@Override
 	public int getIntAttribute(int type){
 		return 0;
 	}

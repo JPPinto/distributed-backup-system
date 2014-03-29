@@ -72,6 +72,10 @@ public class Msg_Getchunk extends PBMessage {
         data = constructHeaderFromStringArray(stringArray);
     }
 
+	@Override
+	public void saveChunk(String dir){
+	}
+
     @Override
 	public int getIntAttribute(int type){
 		return 0;

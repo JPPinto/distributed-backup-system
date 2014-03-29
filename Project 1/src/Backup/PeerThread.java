@@ -78,7 +78,8 @@ public class PeerThread extends Thread {
 		if (msg.getType().equals("PUTCHUNK")) {
 
 			Chunk currentChunk = new Chunk(msg.fileId, msg.getIntAttribute(0), msg.getData(1));
-			currentChunk.write(PotatoBackup.backupDirectory);
+			//currentChunk.write(PotatoBackup.backupDirectory);
+			msg.saveChunk(PotatoBackup.backupDirectory);
 
 			//				rand.nextInt((MAX-MIN) + 1) + MIN;
 			int randomNum = rand.nextInt((400 - 0) + 1);
@@ -149,7 +150,7 @@ public class PeerThread extends Thread {
 
 				time_multiplier = 1;
 				retransmission_count = 1;
-				while (retransmission_count < 6) {
+				while (retransmission_count < 7) {
 
 					sleep(500 * time_multiplier);
 
@@ -159,8 +160,10 @@ public class PeerThread extends Thread {
 						break;
 					}
 
-					System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
-					sendRequest(temp_putchunk, addressMC, portMC);
+					if (retransmission_count != 6) {
+						System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
+						sendRequest(temp_putchunk, addressMC, portMC);
+					}
 					time_multiplier *= 2;
 					retransmission_count++;
 				}
@@ -202,7 +205,7 @@ public class PeerThread extends Thread {
 			System.out.println("SENDING...");
 			peer.sendRequest(message, peer.addressMDB, peer.portMDB);
 			*/
-			peer.sendPUTCHUNK("./binary.test");
+			//peer.sendPUTCHUNK("./binary.test");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
