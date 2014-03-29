@@ -25,7 +25,6 @@ abstract class PBMessage {
 	// Constants
     protected static final byte TERMINATOR_BYTE_1 = (byte) Integer.parseInt("D", 16);
     protected static final byte TERMINATOR_BYTE_2 = (byte) Integer.parseInt("A", 16);
-    // TODO FIX THIS
 	protected static String TERMINATOR = "\r\n";
 
 	protected String version = "1.0";
