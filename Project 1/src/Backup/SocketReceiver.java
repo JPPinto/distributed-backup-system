@@ -8,20 +8,21 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Jose on 26-03-2014.
  */
 public class SocketReceiver extends Thread {
 
-	public HashMap<String, PBMessage> received;
+	public ConcurrentHashMap<String, PBMessage> received;
 	public String mcast_adrr;
 	public int mcast_port;
 
 	SocketReceiver(String ma, int mp) {
 		mcast_adrr = ma;
 		mcast_port = mp;
-		received = new HashMap<String, PBMessage>();
+		received = new ConcurrentHashMap<String, PBMessage>();
 	}
 
 	public void run() {
@@ -48,17 +49,23 @@ public class SocketReceiver extends Thread {
 
 				try {
 
-				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
+    				PBMessage temp_message = PBMessage.createMessageFromType(packet.getData());
 
-				if (!received.containsKey(packet.getAddress().getHostAddress())) {
-					received.put(packet.getAddress().getHostAddress(), temp_message);
-				}
+                    if (temp_message != null) {
+                        if (!received.containsKey(packet.getAddress().getHostAddress())) {
+                            received.put(packet.getAddress().getHostAddress(), temp_message);
 
-				System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
 
-				} catch(InvalidStateException e){
-					e.printStackTrace();
-				}
+                        }
+
+                        System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
+                    } else {
+                        System.out.println("MESSAGE DISCARDED!");
+                    }
+
+		    		} catch(InvalidStateException e){
+			    		e.printStackTrace();
+			    	}
 
 				if (false) break;
 			}

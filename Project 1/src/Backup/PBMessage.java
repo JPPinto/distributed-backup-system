@@ -9,6 +9,7 @@ package Backup; /**
 
 import sun.plugin.dom.exception.InvalidStateException;
 
+import javax.rmi.CORBA.Util;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -146,6 +147,7 @@ abstract class PBMessage {
 
 		while (true) {
 			if (it >= inputData.length) {
+                System.out.println(Utilities.convertByteArrayToHex(inputData));
 				throw new InvalidStateException("Message Error!");
 			}
 

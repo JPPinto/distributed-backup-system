@@ -88,7 +88,7 @@ public class Msg_Putchunk extends PBMessage {
                 version + SEPARATOR +
                 chunk.getFileId() + SEPARATOR +
                 chunk.getChunkNo() + SEPARATOR +
-                repDegree + SEPARATOR +
+                Integer.toString(repDegree) + SEPARATOR +
 				TERMINATOR + TERMINATOR + SEPARATOR;
 
         headerData = convertStringToByteArray(header);
