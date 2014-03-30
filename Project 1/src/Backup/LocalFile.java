@@ -88,12 +88,6 @@ class LocalFile implements Serializable{
         }
     }
 
-    public boolean deleteFileChunks(){
-        // TODO Delete chunks
-
-        return true;
-    }
-
     public String getFileHash(){
         return fileHash;
     }

@@ -48,8 +48,6 @@ public class LocalDataBase implements Serializable{
     }
 
     public boolean removeFileFromBackup(LocalFile fileToDelete){
-        // Delete file
-        fileToDelete.deleteFileChunks();
 
         // Remove from data base
         files.remove(fileToDelete.getFileHash());
