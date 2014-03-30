@@ -96,6 +96,7 @@ class LocalFile implements Serializable {
         String writtenFileHash = getHashFromFile(destination);
 
         if (fileHash.equals(writtenFileHash)){
+            System.out.println("The restored file hash matches!");
             return true;
         } else {
             System.out.println("The restored file hash doesn't match the original file hash.");
