@@ -251,6 +251,7 @@ public class PeerThread extends Thread {
 			}
 		}
 
+		local_file.restoreFileFromChunks("./");
 		System.out.println("File " + filepath + " recovery complete with " + i + " chunks received.");
 	}
 
@@ -262,7 +263,9 @@ public class PeerThread extends Thread {
 			return;
 		}
 
+
 		String sha_num = Utilities.getHashFromFile(file);
+		dataBase.removeFileFromBackup(sha_num);
 
 		PBMessage temp_delete = new Msg_Delete(sha_num);
 		sendRequest(temp_delete, addressMC, portMC);
@@ -270,6 +273,10 @@ public class PeerThread extends Thread {
 
 	public void sendREMOVED() throws IOException {
 
+	}
+
+	public LocalDataBase getDataBase() {
+		return dataBase;
 	}
 
 	public static void main(String[] args) throws IOException {

@@ -45,8 +45,7 @@ class LocalFile implements Serializable {
     }
 
     public boolean restoreFileFromChunks(String restoredFileLocation) throws IOException {
-        // TODO Check if all chunks exist
-
+		// TODO Check if all chunks exist
 
         final String filePath = restoredFileLocation + fileName;
 
