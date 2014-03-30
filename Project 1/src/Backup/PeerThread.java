@@ -10,7 +10,6 @@ package Backup;
 
 import java.io.*;
 import java.net.*;
-import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 import static Backup.PBMessage.*;
@@ -164,11 +163,59 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	public void sendGetChunk(String fileID, int chunkNo){
+	public void sendGetChunk(String filepath) throws IOException, InterruptedException {
 
-		PBMessage temp_getChunk = new Msg_Getchunk(new Chunk(fileID, chunkNo));
+		//PBMessage temp_getChunk = new Msg_Getchunk(new Chunk(fileID, chunkNo));
+		//sendRequest(temp_getChunk, addressMC, portMC);
 
-		sendRequest(temp_getChunk, addressMC, portMC);
+		int time_multiplier, retransmission_count;
+		//readChunks(new File(filepath), PotatoBackup.temporaryDirectory);
+		System.out.println("Starting to send FILE: " + filepath +  "...");
+
+		File[] chucksToSend = listFiles(backupDirectory);
+
+		for (File file : chucksToSend) {
+			if (file.isFile()) {
+				Chunk temp_chunk = Chunk.loadChunk(file.getPath());
+				PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, 1);
+
+				socMCReceiver.clearCount();
+
+				sendRequest(temp_putchunk, addressMDB, portMDB);
+
+				time_multiplier = 1;
+				retransmission_count = 1;
+
+				sleep(500 * time_multiplier);
+
+				int repDegree = temp_putchunk.getIntAttribute(1);
+				while (retransmission_count < 7 && socMCReceiver.stores < repDegree) {
+
+					if (retransmission_count != 6) {
+						System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
+						sendRequest(temp_putchunk, addressMC, portMC);
+					}
+
+					time_multiplier *= 2;
+					retransmission_count++;
+
+					sleep(500 * time_multiplier);
+				}
+
+				if (retransmission_count == 6){
+					System.out.println("FAILED TO BACKUP FILE " + filepath + " DUE TO ERROR SENDING CHUNK " + temp_chunk.getChunkNo() + ", WITH ONLY " + socMCReceiver.stores + "STORED MESSAGES");
+					return;
+				}
+			}
+		}
+
+		System.out.println("File " + filepath + " backup complete with " + chucksToSend + " chunks sent.");
+
+		for (File file : chucksToSend) {
+			if (file.isFile()) {
+				file.delete();
+			}
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
