@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Backup.Backup">
-  <grid id="cbd77" binding="buttonsContentPane" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="10" left="10" bottom="10" right="10"/>
+  <grid id="cbd77" binding="buttonsContentPane" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="48" y="54" width="509" height="330"/>
+      <xy x="48" y="54" width="800" height="510"/>
     </constraints>
     <properties>
+      <minimumSize width="800" height="500"/>
+      <preferredSize width="800" height="500"/>
       <requestFocusEnabled value="true"/>
     </properties>
     <border type="none"/>
     <children>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
+      <grid id="e3588" layout-manager="GridBagLayout">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false">
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="47" height="174"/>
           </grid>
+          <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
-        <properties/>
+        <properties>
+          <enabled value="true"/>
+          <toolTipText value="Actions"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="a83ed" class="javax.swing.JButton" binding="backupFileButton" default-binding="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties>
               <text value="Backup File"/>
@@ -31,6 +36,7 @@
           <component id="676ed" class="javax.swing.JButton" binding="restoreFileButton" default-binding="true">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties>
               <text value="Restore File"/>
@@ -39,6 +45,7 @@
           <component id="ceeef" class="javax.swing.JButton" binding="deleteFileButton" default-binding="true">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties>
               <text value="Delete File"/>
@@ -47,6 +54,7 @@
           <component id="b33d6" class="javax.swing.JButton" binding="freeSomeSpaceButton" default-binding="true">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties>
               <text value="Free Some Space"/>
@@ -54,29 +62,62 @@
           </component>
           <component id="e7465" class="javax.swing.JButton" binding="buttonEXIT">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="0.0"/>
             </constraints>
             <properties>
               <text value="Exit"/>
             </properties>
           </component>
+          <vspacer id="21cd6">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
+            </constraints>
+          </vspacer>
         </children>
       </grid>
-      <grid id="d2dd5" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="d2dd5" layout-manager="BorderLayout" hgap="1" vgap="1">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="2" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
-        <properties/>
+        <properties>
+          <minimumSize width="500" height="500"/>
+        </properties>
         <border type="none"/>
         <children>
-          <component id="68a17" class="javax.swing.JList" binding="list1" default-binding="true">
-            <constraints border-constraint="Center"/>
+          <grid id="827f6" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="East"/>
             <properties>
+              <minimumSize width="250" height="500"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="b4b83" class="javax.swing.JTextPane" binding="asdasdasdTextPane" default-binding="true">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <minimumSize width="300" height="500"/>
+                  <preferredSize width="300" height="500"/>
+                  <text value="asdasdasd"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="68a17" class="javax.swing.JList" binding="list1" default-binding="true">
+            <constraints border-constraint="West"/>
+            <properties>
+              <alignmentX value="0.0"/>
+              <alignmentY value="0.0"/>
+              <maximumSize width="2147483647" height="2147483647"/>
+              <minimumSize width="300" height="500"/>
               <model>
                 <item value="ASDASD"/>
                 <item value="ASDASD"/>
                 <item value="AAAA"/>
               </model>
+              <preferredSize width="300" height="500"/>
+              <selectionMode value="0"/>
             </properties>
           </component>
         </children>

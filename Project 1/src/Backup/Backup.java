@@ -17,6 +17,7 @@ class Backup extends JFrame {
     private JButton deleteFileButton;
     private JButton freeSomeSpaceButton;
     private JList list1;
+    private JTextPane asdasdasdTextPane;
 
     public Backup() {
         loadDataBase();
