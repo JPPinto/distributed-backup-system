@@ -1,6 +1,11 @@
 package Backup;
 
+import java.util.Date;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.Date;
 
 import static Backup.Utilities.getHashFromFile;
@@ -13,9 +18,10 @@ import static Backup.Utilities.getHashFromFile;
  *
  * Backup.LocalFile class
  */
-class LocalFile implements Serializable{
+class LocalFile implements Serializable {
     private String fileName;
     private String fileHash;
+    private long fileSize; // File size in bytes
     private Date creationDate;
     private Date modificationDate;
 
@@ -28,6 +34,14 @@ class LocalFile implements Serializable{
         this.fileHash = fileHash;
         this.creationDate = creationDate;
         this.modificationDate = modificationDate;
+    }
+
+    LocalFile(File input) throws IOException {
+        fileSize = input.length();
+        fileName = input.getName();
+        fileHash = Utilities.getHashFromFile(input);
+        // TODO missing dates
+
     }
 
     public boolean restoreFileFromChunks(String restoredFileLocation) throws IOException {
@@ -102,5 +116,13 @@ class LocalFile implements Serializable{
 
     public Date getModificationDate() {
         return modificationDate;
+    }
+
+    public int getNumberOfChunks(){
+        if (fileSize % 64000 == 0){
+            return (int) ((fileSize/6400) + 1);
+        } else {
+            return (int) ((fileSize/6400));
+        }
     }
 }
