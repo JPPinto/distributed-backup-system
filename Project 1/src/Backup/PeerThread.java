@@ -141,8 +141,8 @@ public class PeerThread extends Thread {
 		File f = new File(filepath);
 
 		if (!f.exists()) {
-			if (!dataBase.getFiles().containsValue(f)) {
-				System.out.println("File: " + f.getName() + " does NOT EXIST in the Data Base!");
+			if (dataBase.getFiles().containsValue(f)) {
+				System.out.println("File: " + f.getName() + " already EXISTS in the Data Base!");
 				return;
 			}
 			System.out.println("File: " + f.getName() + " does NOT EXIST!");
@@ -273,6 +273,7 @@ public class PeerThread extends Thread {
 	}
 
 	public void sendREMOVED() throws IOException {
+
 
 	}
 
