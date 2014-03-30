@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 class Backup extends JFrame {
+    private LocalDataBase dataBase;
     private JPanel contentPane;
     private final JFileChooser fc = new JFileChooser();
 
@@ -16,6 +17,8 @@ class Backup extends JFrame {
     private JButton freeSomeSpaceButton;
 
     public Backup() {
+        loadDataBase();
+
         setName("Potato Backup");
         setTitle("Potato Backup");
 
@@ -75,6 +78,10 @@ class Backup extends JFrame {
 
         // Bail out
         System.exit(0);
+    }
+
+    private void loadDataBase(){
+        dataBase = LocalDataBase.loadDataBaseFromFile("database.bin");
     }
 
     public static void main(String[] args) {

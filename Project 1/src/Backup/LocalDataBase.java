@@ -8,6 +8,9 @@ package Backup;
  *
  * Backup.LocalDataBase class
  */
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,5 +55,23 @@ public class LocalDataBase implements Serializable{
         // Remove from data base
         files.remove(fileToDelete.getFileHash());
         return true;
+    }
+
+    public static LocalDataBase loadDataBaseFromFile(String fn){
+        try {
+            FileInputStream fileIn = new FileInputStream(fn);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+
+            LocalDataBase temp = (LocalDataBase) in.readObject();
+            in.close();
+            fileIn.close();
+
+            return temp;
+
+        } catch(IOException i) {
+            return null;
+        } catch (ClassNotFoundException i) {
+            return null;
+        }
     }
 }
