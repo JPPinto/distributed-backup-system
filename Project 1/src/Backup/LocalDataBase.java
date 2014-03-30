@@ -8,10 +8,11 @@ package Backup;
  *
  * Backup.LocalDataBase class
  */
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LocalDataBase {
+public class LocalDataBase implements Serializable{
     private Map<String, LocalFile> files = new HashMap();
 
     public boolean addFileToDatabase(LocalFile fileToAdd) {
@@ -30,6 +31,7 @@ public class LocalDataBase {
     public LocalFile getFileFromId(String hash){
         return files.get(hash);
     }
+
 
     /***
      * Calls the file chunk delete and removes the file from the database

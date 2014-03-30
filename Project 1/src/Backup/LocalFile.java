@@ -13,7 +13,7 @@ import static Backup.Utilities.getHashFromFile;
  *
  * Backup.LocalFile class
  */
-class LocalFile {
+class LocalFile implements Serializable{
     private String fileName;
     private String fileHash;
     private Date creationDate;
