@@ -165,7 +165,7 @@ public class PeerThread extends Thread {
 
 				sendRequest(temp_putchunk, addressMDB, portMDB);
 
-				time_multiplier = 1;
+				time_multiplier = 1; 
 				retransmission_count = 1;
 
 				sleep(500 * time_multiplier);
