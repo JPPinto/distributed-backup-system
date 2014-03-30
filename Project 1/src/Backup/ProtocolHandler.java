@@ -70,7 +70,7 @@ public class ProtocolHandler extends Thread {
 				}
 			}
 
-			System.out.println("All chunks from file: " + msg.fileId + " were DELETED (" + deleted_chunks + " chunks deleted)!");
+			System.out.println("All chunks from file: " + msg.fileId + " were DELETED (" + (deleted_chunks - 1) + " chunks deleted)!");
 		} else if (msg.getType().equals(STORED)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 		} else if (msg.getType().equals(REMOVED)) {

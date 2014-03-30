@@ -148,7 +148,8 @@ public class PeerThread extends Thread {
 			return;
 		}
 
-		dataBase.addFileToDatabase(new LocalFile(f));
+		LocalFile local_file = new LocalFile(f);
+		dataBase.addFileToDatabase(local_file);
 
 		int time_multiplier, retransmission_count;
 
@@ -194,7 +195,7 @@ public class PeerThread extends Thread {
 			}
 		}
 
-		System.out.println("File " + filepath + " backup complete with " + chunksToSend.length + " chunks sent.");
+		System.out.println("File " + filepath + " backup complete with " + local_file.getNumberOfChunks() + " chunks sent.");
 
 		for (File file : chunksToSend) {
 			if (file.isFile()) {
