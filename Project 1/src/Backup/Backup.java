@@ -177,8 +177,7 @@ class Backup extends JFrame {
                 filesList.setEnabled(true);
                 listModel.clear();
 
-                LocalDataBase dataBase1 = peer.getDataBase();
-                Map<String, LocalFile> files = (Map<String, LocalFile>) dataBase1.getFiles();
+                Map<String, LocalFile> files = peer.getDataBase().getFiles();
 
                 Iterator it = files.entrySet().iterator();
                 while (it.hasNext()) {
