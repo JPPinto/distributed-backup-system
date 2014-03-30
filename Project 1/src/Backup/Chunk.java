@@ -82,7 +82,7 @@ class Chunk implements Serializable {
      * */
     public static Chunk loadChunk(String chunkFileName){
         try {
-            FileInputStream fileIn = new FileInputStream(chunkFileName/* + chunkFileExtension*/); //MINOR CHANGE
+            FileInputStream fileIn = new FileInputStream(chunkFileName); //MINOR CHANGE
             ObjectInputStream in = new ObjectInputStream(fileIn);
 
 			Chunk temp = (Chunk) in.readObject();
