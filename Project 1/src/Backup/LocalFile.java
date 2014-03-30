@@ -44,10 +44,9 @@ class LocalFile implements Serializable {
         lastModificationDate = new Date(lastMod);
     }
 
-    public boolean restoreFileFromChunks(String restoredFileLocation) throws IOException {
-		// TODO Check if all chunks exist
+    public boolean restoreFileFromChunks(String new_file_location) throws IOException {
 
-        final String filePath = restoredFileLocation + fileName;
+        final String filePath = new_file_location + fileName;
 
         // Get buffered output stream for file writing
         FileOutputStream fileOutputStream = new FileOutputStream(filePath);
@@ -58,9 +57,12 @@ class LocalFile implements Serializable {
         String currentChunkName;
         Chunk currentChunk = null;
 
+		int i = 0;
         do {
+			System.out.println("Chunk Nº: " + i);
+			i++;
             // Load chunk from file
-            currentChunkName = fileHash + "-" + currentChunk;
+            currentChunkName = PotatoBackup.backupDirectory + "/"+ fileHash + "-" + currentChunkNo + Chunk.chunkFileExtension;
             currentChunk = Chunk.loadChunk(currentChunkName);
 
             // Check if this is the final chunk
