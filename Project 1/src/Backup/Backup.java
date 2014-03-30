@@ -72,9 +72,10 @@ class Backup extends JFrame {
                         log+="Backing up: ";
                         log+=file.getAbsolutePath();
                         log+="...\n";
+                        updateLogWindow();
                         peer.sendPUTCHUNK(file.getAbsolutePath());
 
-                        logTextPane.setText(log);
+
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     } catch (InterruptedException e1) {
@@ -88,7 +89,7 @@ class Backup extends JFrame {
         // Start the peer
         peer.start();
 
-        updateFileList();
+        updateGui();
     }
 
     private void onExit() {
@@ -103,11 +104,24 @@ class Backup extends JFrame {
         System.exit(0);
     }
 
+    private void updateGui(){
+        updateLogWindow();
+        updateFileList();
+    }
+
+    private void updateLogWindow(){
+        if(logTextPane != null){
+            logTextPane.setText(log);
+        }
+    }
+
     private void updateFileList(){
-        if (peer != null) {
-            filesList.setEnabled(true);
-        } else {
-            filesList.setEnabled(false);
+        if (filesList != null){
+            if (peer != null) {
+                filesList.setEnabled(true);
+            } else {
+                filesList.setEnabled(false);
+            }
         }
     }
 
