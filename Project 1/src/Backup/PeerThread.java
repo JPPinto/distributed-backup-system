@@ -76,6 +76,7 @@ public class PeerThread extends Thread {
 
 		// We failed to load the database
 		if (dataBase == null) {
+			System.out.println("Failed to load DataBase.");
 			dataBase = new LocalDataBase();
 		}
 	}
@@ -295,18 +296,21 @@ public class PeerThread extends Thread {
 			//Give time to start the threads
 			sleep(1000);
 
+			//peer.dataBase.getFiles().clear();
 			peer.sendPUTCHUNK("./binary2.test");
 			System.out.println("Backup done Now for the Recovery!");
-			sleep(1000);
+			//sleep(1000);
 			peer.sendGETCHUNK("./binary2.test");
-			System.out.println("Recovery done Now for the Delete!");
-			peer.sendDELETE("./binary2.test");
+			//System.out.println("Recovery done Now for the Delete!");
+			//peer.sendDELETE("./binary2.test");
+
+			peer.saveDataBase();
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
-		peer.saveDataBase();
+
 	}
 }
 
