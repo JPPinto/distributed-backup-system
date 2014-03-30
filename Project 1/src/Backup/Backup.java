@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
@@ -42,57 +44,95 @@ class Backup extends JFrame {
 
         buttonEXIT.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onExit();
+                exitButtonPressed();
             }
         });
 
         // call onCancel() when cross is clicked
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onExit();
+                exitButtonPressed();
             }
         });
 
         // call onCancel() on ESCAPE
         buttonsContentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onExit();
+                exitButtonPressed();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        // Buttons actions listeners
         backupFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int returnVal = fc.showOpenDialog(Backup.this);
-
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-
-                    try {
-                        log+="Backing up: ";
-                        log+=file.getAbsolutePath();
-                        log+="...\n";
-                        updateLogWindow();
-                        peer.sendPUTCHUNK(file.getAbsolutePath());
-
-
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-
-                }
+                backupButtonPressed();
             }
         });
 
+        restoreFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                restoreButtonPressed();
+            }
+        });
+
+        deleteFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteFileButtonPressed();
+            }
+        });
+
+        freeSomeSpaceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                freeSomeSpaceButtonPressed();
+            }
+        });
+
+
         // Start the peer
         peer.start();
-
         updateGui();
     }
 
-    private void onExit() {
+    private void backupButtonPressed(){
+        int returnVal = fc.showOpenDialog(Backup.this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+
+            try {
+                log+="Backing up: ";
+                log+=file.getAbsolutePath();
+                log+="...\n";
+                updateLogWindow();
+                peer.sendPUTCHUNK(file.getAbsolutePath());
+
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+
+        }
+    }
+
+    private void restoreButtonPressed(){
+
+    }
+
+    private void deleteFileButtonPressed(){
+
+    }
+
+    private void freeSomeSpaceButtonPressed(){
+
+    }
+
+    private void exitButtonPressed() {
         // Destroy the GUI interface
         dispose();
 
@@ -119,6 +159,19 @@ class Backup extends JFrame {
         if (filesList != null){
             if (peer != null) {
                 filesList.setEnabled(true);
+                LocalDataBase dataBase1 = peer.getDataBase();
+                Map<String, LocalFile> files = (Map<String, LocalFile>) dataBase1.getFiles();
+
+                int i=0;
+                Iterator it = files.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pairs = (Map.Entry)it.next();
+                    filesList.add(new JLabel(pairs.getKey().toString() + " " + pairs.getValue().toString()), i);
+                    i++;
+                    it.remove();
+                }
+
+
             } else {
                 filesList.setEnabled(false);
             }
