@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Random;
 import java.util.Vector;
+
 import static Backup.PBMessage.*;
 import static Backup.PotatoBackup.*;
 
@@ -70,7 +71,7 @@ public class PeerThread extends Thread {
 		loadDataBase();
 	}
 
-	private void loadDataBase(){
+	private void loadDataBase() {
 		dataBase = LocalDataBase.loadDataBaseFromFile(dataBaseFileName);
 
 		// We failed to load the database
@@ -79,8 +80,8 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	private void saveDataBase(){
-			LocalDataBase.saveDataBaseToFile(dataBase, dataBaseFileName);
+	private void saveDataBase() {
+		LocalDataBase.saveDataBaseToFile(dataBase, dataBaseFileName);
 	}
 
 	public void run() {
@@ -138,8 +139,8 @@ public class PeerThread extends Thread {
 
 		File f = new File(filepath);
 
-		if(!f.exists()){
-			if(!dataBase.getFiles().containsValue(f)){
+		if (!f.exists()) {
+			if (!dataBase.getFiles().containsValue(f)) {
 				System.out.println("File: " + f.getName() + " does NOT EXIST in the Data Base!");
 				return;
 			}
@@ -152,41 +153,43 @@ public class PeerThread extends Thread {
 		int time_multiplier, retransmission_count;
 
 		readChunks(f, PotatoBackup.temporaryDirectory);
-		System.out.println("Starting to send FILE: " + filepath +  "...");
+		System.out.println("Starting to send FILE: " + filepath + "...");
 
 		File[] chunksToSend = listFiles(PotatoBackup.temporaryDirectory);
 
 		for (File file : chunksToSend) {
-			if (file.isFile() && file.getName().substring(0,64).equals(Utilities.getHashFromFile(f))) {
-				Chunk temp_chunk = Chunk.loadChunk(file.getPath());
-				PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, 1);
+			if (file.isFile() && file.getName().length() > 66) {
+				if (file.getName().substring(0, 64).equals(Utilities.getHashFromFile(f))) {
+					Chunk temp_chunk = Chunk.loadChunk(file.getPath());
+					PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, 1);
 
-				socMCReceiver.clearCountStores();
+					socMCReceiver.clearCountStores();
 
-				sendRequest(temp_putchunk, addressMDB, portMDB);
+					sendRequest(temp_putchunk, addressMDB, portMDB);
 
-				time_multiplier = 1; 
-				retransmission_count = 1;
-
-				sleep(500 * time_multiplier);
-
-				int repDegree = temp_putchunk.getIntAttribute(1);
-				while (retransmission_count < 7 && socMCReceiver.stores < repDegree) {
-
-					if (retransmission_count != 6) {
-						System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
-						sendRequest(temp_putchunk, addressMC, portMC);
-					}
-
-					time_multiplier *= 2;
-					retransmission_count++;
+					time_multiplier = 1;
+					retransmission_count = 1;
 
 					sleep(500 * time_multiplier);
-				}
 
-				if (retransmission_count == 6){
-					System.out.println("FAILED TO BACKUP FILE " + filepath + " DUE TO ERROR SENDING CHUNK " + temp_chunk.getChunkNo() + ", WITH ONLY " + socMCReceiver.stores + "STORED MESSAGES");
-					return;
+					int repDegree = temp_putchunk.getIntAttribute(1);
+					while (retransmission_count < 7 && socMCReceiver.stores < repDegree) {
+
+						if (retransmission_count != 6) {
+							System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
+							sendRequest(temp_putchunk, addressMC, portMC);
+						}
+
+						time_multiplier *= 2;
+						retransmission_count++;
+
+						sleep(500 * time_multiplier);
+					}
+
+					if (retransmission_count == 6) {
+						System.out.println("FAILED TO BACKUP FILE " + filepath + " DUE TO ERROR SENDING CHUNK " + temp_chunk.getChunkNo() + ", WITH ONLY " + socMCReceiver.stores + "STORED MESSAGES");
+						return;
+					}
 				}
 			}
 		}
@@ -204,7 +207,7 @@ public class PeerThread extends Thread {
 
 		File f = new File(filepath);
 
-		if(!dataBase.getFiles().containsKey(Utilities.getHashFromFile(f))){
+		if (!dataBase.getFiles().containsKey(Utilities.getHashFromFile(f))) {
 			System.out.println("File: " + f.getName() + " does NOT EXIST in the Data Base!");
 			return;
 		}
@@ -212,39 +215,39 @@ public class PeerThread extends Thread {
 		LocalFile local_file = dataBase.getFiles().get(Utilities.getHashFromFile(f));
 
 		int time_multiplier, retransmission_count;
-		System.out.println("Starting to recover FILE: " + filepath +  "...");
+		System.out.println("Starting to recover FILE: " + filepath + "...");
 
 		int i;
 		int num_chunks_to_recover = local_file.getNumberOfChunks();
-		for ( i = 0; i < num_chunks_to_recover;i++) {
+		for (i = 0; i < num_chunks_to_recover; i++) {
 
-				socMCReceiver.clearCountStores();
+			socMCReceiver.clearCountStores();
 
-				PBMessage temp_getChunk = new Msg_Getchunk(new Chunk(local_file.getFileHash(), i));
-				sendRequest(temp_getChunk, addressMC, portMC);
+			PBMessage temp_getChunk = new Msg_Getchunk(new Chunk(local_file.getFileHash(), i));
+			sendRequest(temp_getChunk, addressMC, portMC);
 
-				time_multiplier = 1;
-				retransmission_count = 1;
+			time_multiplier = 1;
+			retransmission_count = 1;
+
+			sleep(500 * time_multiplier);
+
+			while (retransmission_count < 7 && socMDRReceiver.messages_chuck < 1) {
+
+				if (retransmission_count != 6) {
+					System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
+					sendRequest(temp_getChunk, addressMC, portMC);
+				}
+
+				time_multiplier *= 2;
+				retransmission_count++;
 
 				sleep(500 * time_multiplier);
+			}
 
-				while (retransmission_count < 7 && socMDRReceiver.messages_chuck < 1) {
-
-					if (retransmission_count != 6) {
-						System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
-						sendRequest(temp_getChunk, addressMC, portMC);
-					}
-
-					time_multiplier *= 2;
-					retransmission_count++;
-
-					sleep(500 * time_multiplier);
-				}
-
-				if (retransmission_count == 6){
-					System.out.println("FAILED TO RECOVER FILE " + filepath + " DUE TO ERROR GETTING CHUNK " + i);
-					return;
-				}
+			if (retransmission_count == 6) {
+				System.out.println("FAILED TO RECOVER FILE " + filepath + " DUE TO ERROR GETTING CHUNK " + i);
+				return;
+			}
 		}
 
 		System.out.println("File " + filepath + " recovery complete with " + i + " chunks received.");
@@ -253,7 +256,7 @@ public class PeerThread extends Thread {
 	public void sendDELETE(String filepath) throws IOException {
 		File file = new File(filepath);
 
-		if(!file.exists()){
+		if (!file.exists()) {
 			System.out.println("File: " + filepath + " does NOT EXIST!");
 			return;
 		}
@@ -272,7 +275,7 @@ public class PeerThread extends Thread {
 
 		PeerThread peer;
 
-		if(args.length != 6) {
+		if (args.length != 6) {
 			peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001, "226.0.0.0", 60002);
 		} else {
 			peer = new PeerThread(args[0], Integer.getInteger(args[1]), args[2], Integer.getInteger(args[3]), args[4], Integer.getInteger(args[5]));
