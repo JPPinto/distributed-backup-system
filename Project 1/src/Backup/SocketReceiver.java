@@ -19,6 +19,7 @@ public class SocketReceiver extends Thread {
 	private Vector<String> addrs;
 	private Vector<Integer> ports;
 	public int stores;
+	public int messages_chuck;
 
 	SocketReceiver(Vector<String> a, Vector<Integer> p, int type) {
 		addrs = a;
@@ -58,6 +59,7 @@ public class SocketReceiver extends Thread {
 						if (received.add(temp_message)) {
 
 							countStores(temp_message);
+							countChunks(temp_message);
 
 							ProtocolHandler temp_handler = new ProtocolHandler(addrs, ports, temp_message, packet);
 							temp_handler.run();
@@ -87,6 +89,11 @@ public class SocketReceiver extends Thread {
 	public void countStores(PBMessage msg){
 		if(msg.getType() == STORED)
 			stores++;
+	}
+
+	public void countChunks(PBMessage msg){
+		if(msg.getType() == CHUNK)
+			messages_chuck++;
 	}
 
 	public void clearCount() {

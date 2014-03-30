@@ -175,8 +175,7 @@ public class PeerThread extends Thread {
 		//sendRequest(temp_getChunk, addressMC, portMC);
 
 		int time_multiplier, retransmission_count;
-		//readChunks(new File(filepath), PotatoBackup.temporaryDirectory);
-		System.out.println("Starting to send FILE: " + filepath +  "...");
+		System.out.println("Starting to recover FILE: " + filepath +  "...");
 
 		File[] chucksToSend = listFiles(backupDirectory);
 
@@ -236,6 +235,10 @@ public class PeerThread extends Thread {
 
 		PBMessage temp_delete = new Msg_Delete(sha_num);
 		sendRequest(temp_delete, addressMC, portMC);
+	}
+
+	public void sendREMOVED() throws IOException {
+
 	}
 
 	public static void main(String[] args) throws IOException {
