@@ -1,7 +1,10 @@
 package Backup;
 
-import java.io.*;
 import java.util.Date;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.*;
 
 import static Backup.Utilities.getHashFromFile;
 
@@ -13,21 +16,29 @@ import static Backup.Utilities.getHashFromFile;
  *
  * Backup.LocalFile class
  */
-class LocalFile implements Serializable{
+class LocalFile implements Serializable {
     private String fileName;
     private String fileHash;
-    private Date creationDate;
-    private Date modificationDate;
+    private long fileSize; // File size in bytes
+    private Date lastModificationDate;
 
-    LocalFile(String fileName, String fileHash, Date creationDate, Date modificationDate){
+    LocalFile(String fileName, String fileHash, Date lastModificationDate){
         if (fileName.length() <1) {
             throw new IllegalStateException("Invalid file name!");
         }
 
         this.fileName = fileName;
         this.fileHash = fileHash;
-        this.creationDate = creationDate;
-        this.modificationDate = modificationDate;
+        this.lastModificationDate = lastModificationDate;
+    }
+
+    LocalFile(File input) throws IOException {
+        fileSize = input.length();
+        fileName = input.getName();
+        fileHash = Utilities.getHashFromFile(input);
+
+        long lastMod = input.lastModified();
+        lastModificationDate = new Date(lastMod);
     }
 
     public boolean restoreFileFromChunks(String restoredFileLocation) throws IOException {
@@ -96,11 +107,15 @@ class LocalFile implements Serializable{
         return fileName;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public Date getLastModificationDate() {
+        return lastModificationDate;
     }
 
-    public Date getModificationDate() {
-        return modificationDate;
+    public int getNumberOfChunks(){
+        if (fileSize % 64000 == 0){
+            return (int) ((fileSize/6400) + 1);
+        } else {
+            return (int) ((fileSize/6400));
+        }
     }
 }
