@@ -21,14 +21,19 @@ class Backup extends JFrame {
     private JButton deleteFileButton;
     private JButton freeSomeSpaceButton;
     private JList filesList;
+    private DefaultListModel listModel;
     private JTextPane logTextPane;
+    private JButton refreshFileListButton;
     private String log;
 
     PeerThread peer;
 
     public Backup(String[] args) {
         log = "";
+        listModel = new DefaultListModel();
         //peer.loadDataBase();
+
+        filesList = new JList(listModel);
 
         if (args.length != 6) {
             peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001, "226.0.0.0", 60002);
@@ -63,6 +68,14 @@ class Backup extends JFrame {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         // Buttons actions listeners
+        refreshFileListButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateGui();
+            }
+            }
+        );
+
         backupFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,7 +136,7 @@ class Backup extends JFrame {
     private void restoreButtonPressed(){
         int selectedFile = filesList.getSelectedIndex();
 
-
+        //peer.sendGETCHUNK("./binary2.test");
     }
 
     private void deleteFileButtonPressed(){
@@ -162,18 +175,17 @@ class Backup extends JFrame {
         if (filesList != null){
             if (peer != null) {
                 filesList.setEnabled(true);
+                listModel.clear();
+
                 LocalDataBase dataBase1 = peer.getDataBase();
                 Map<String, LocalFile> files = (Map<String, LocalFile>) dataBase1.getFiles();
 
-                int i=0;
                 Iterator it = files.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry pairs = (Map.Entry)it.next();
-                    filesList.add(new JLabel(pairs.getKey().toString() + " " + pairs.getValue().toString()), i);
-                    i++;
+                    listModel.addElement(pairs.getKey().toString()); //addpairs.getKey().toString() + " " + pairs.getValue().toString())
                     it.remove();
                 }
-
 
             } else {
                 filesList.setEnabled(false);
