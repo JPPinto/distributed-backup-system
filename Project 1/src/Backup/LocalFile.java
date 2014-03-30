@@ -118,7 +118,7 @@ class LocalFile implements Serializable {
         if (fileSize % 64000 == 0){
             return (int) ((fileSize/64000) + 1);
         } else {
-            return (int) ((fileSize/64000));
+            return (int) ((fileSize/64000) + 1);
         }
     }
 }
