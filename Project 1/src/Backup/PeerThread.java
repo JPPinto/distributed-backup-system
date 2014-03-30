@@ -157,7 +157,7 @@ public class PeerThread extends Thread {
 		File[] chunksToSend = listFiles(PotatoBackup.temporaryDirectory);
 
 		for (File file : chunksToSend) {
-			if (file.isFile()) {
+			if (file.isFile() && file.getName().substring(0,64).equals(Utilities.getHashFromFile(f))) {
 				Chunk temp_chunk = Chunk.loadChunk(file.getPath());
 				PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, 1);
 
