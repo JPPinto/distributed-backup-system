@@ -6,7 +6,8 @@ import java.io.File;
 import java.io.IOException;
 
 class Backup extends JFrame {
-    private LocalDataBase dataBase;
+    private LocalDataBase dataBase = null;
+    private static final String dataBaseFileName = "database.bin";
     private JPanel contentPane;
     private final JFileChooser fc = new JFileChooser();
 
@@ -74,6 +75,8 @@ class Backup extends JFrame {
         // Destroy the GUI interface
         dispose();
 
+        saveDataBase();
+
         // Close all threads here
 
         // Bail out
@@ -81,7 +84,16 @@ class Backup extends JFrame {
     }
 
     private void loadDataBase(){
-        dataBase = LocalDataBase.loadDataBaseFromFile("database.bin");
+        dataBase = LocalDataBase.loadDataBaseFromFile(dataBaseFileName);
+
+        // We failed to load the database
+        if (dataBase == null) {
+            dataBase = new LocalDataBase();
+        }
+    }
+
+    private void saveDataBase(){
+        LocalDataBase.saveDataBaseToFile(dataBase, dataBaseFileName);
     }
 
     public static void main(String[] args) {

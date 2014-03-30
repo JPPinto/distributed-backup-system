@@ -8,10 +8,7 @@ package Backup;
  *
  * Backup.LocalDataBase class
  */
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,6 +69,19 @@ public class LocalDataBase implements Serializable{
             return null;
         } catch (ClassNotFoundException i) {
             return null;
+        }
+    }
+
+    public static void saveDataBaseToFile(LocalDataBase db, String fn){
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fn);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(db);
+            out.close();
+            fileOut.close();
+
+        } catch(IOException i) {
+            i.printStackTrace();
         }
     }
 }
