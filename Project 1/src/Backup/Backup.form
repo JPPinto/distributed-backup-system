@@ -117,13 +117,7 @@
                 <properties>
                   <alignmentX value="0.0"/>
                   <alignmentY value="0.0"/>
-                  <maximumSize width="2147483647" height="2147483647"/>
                   <minimumSize width="300" height="500"/>
-                  <model>
-                    <item value="ASDASD"/>
-                    <item value="ASDASD"/>
-                    <item value="AAAA"/>
-                  </model>
                   <preferredSize width="300" height="500"/>
                   <selectionMode value="0"/>
                   <toolTipText value="Backuped Files"/>

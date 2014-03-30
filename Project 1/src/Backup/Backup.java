@@ -81,14 +81,14 @@ class Backup extends JFrame {
                         e1.printStackTrace();
                     }
 
-                } else {
-                    // Do nothing
                 }
             }
         });
 
         // Start the peer
         peer.start();
+
+        updateFileList();
     }
 
     private void onExit() {
@@ -101,6 +101,14 @@ class Backup extends JFrame {
 
         // Bail out
         System.exit(0);
+    }
+
+    private void updateFileList(){
+        if (peer != null) {
+            filesList.setEnabled(true);
+        } else {
+            filesList.setEnabled(false);
+        }
     }
 
     private void loadDataBase(){
