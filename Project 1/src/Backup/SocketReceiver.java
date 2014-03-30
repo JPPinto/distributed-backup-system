@@ -52,7 +52,7 @@ public class SocketReceiver extends Thread {
 
 				try {
 
-					PBMessage temp_message = PBMessage.createMessageFromType(packet.getData(), packet.getLength());
+					PBMessage temp_message = createMessageFromType(packet.getData(), packet.getLength());
 
 					if (temp_message != null) {
 						if (received.add(temp_message)) {
@@ -80,6 +80,7 @@ public class SocketReceiver extends Thread {
 			e.printStackTrace();
 			mSocket.close();
 		}
+
 		mSocket.close();
 	}
 

@@ -21,13 +21,14 @@ import static Backup.Utilities.joinTwoArrays;
 public class Msg_Chunk extends PBMessage {
     private byte[] data;
     private byte[] headerData;
-    int chunkNo;
+    private int chunkNo;
+	private Chunk chunk;
 
     // Received message constructor
     public Msg_Chunk(byte[] inputData, int packetLenght){
         super(PBMessage.CHUNK);
         receivedMessage = true;
-        inputData = data;
+        data = inputData;
 
         header = getHeaderFromMessage(inputData);
 
@@ -35,7 +36,7 @@ public class Msg_Chunk extends PBMessage {
         String[] splitHeader = header.split(" ");
 
         if (splitHeader.length == 4){
-            if (!splitHeader[0].equals(PUTCHUNK)){
+            if (!splitHeader[0].equals(CHUNK)){
                 throw new InvalidStateException("Invalid Message!");
             }
 
@@ -51,10 +52,6 @@ public class Msg_Chunk extends PBMessage {
                 throw new InvalidStateException("Invalid Message chunk number!");
             }
 
-            if(!Utilities.validateReplicationDeg(Integer.parseInt(splitHeader[4]))){
-                throw new InvalidStateException("Invalid Message replication degree!");
-            }
-
             version = splitHeader[1];
             fileId  = splitHeader[2];
             chunkNo = Integer.parseInt(splitHeader[3]);
@@ -65,19 +62,19 @@ public class Msg_Chunk extends PBMessage {
         byte[] body = getBodyFromMessage(inputData, packetLenght);
         // Get the chunk data if it exists
         if (body == null){
-            Chunk receivedChunk = new Chunk(fileId, chunkNo);
-            //receivedChunk.write("pasta");
-
+            chunk = new Chunk(fileId, chunkNo);
         } else {
-            Chunk receivedChunk = new Chunk(fileId, chunkNo, body);
-            //receivedChunk.write("pasta");
+            chunk = new Chunk(fileId, chunkNo, body);
         }
     }
 
     // Message to be sent constructor
-    public Msg_Chunk(Chunk chunk){
+    public Msg_Chunk(Chunk c){
         super(PBMessage.CHUNK);
         receivedMessage = false;
+		chunk = c;
+		fileId = chunk.getFileId();
+		version = "1.0";
 
         String[] stringArray = new String[4];
         stringArray[0] = CHUNK;
@@ -90,12 +87,11 @@ public class Msg_Chunk extends PBMessage {
     }
 
 	@Override
-	public void saveChunk(String dir){
-	}
+	public void saveChunk(String dir){ chunk.write(dir); }
 
 	@Override
 	public int getIntAttribute(int type){
-		return 0;
+		return chunkNo;
 	}
 
     @Override

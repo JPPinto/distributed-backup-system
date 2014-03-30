@@ -14,8 +14,8 @@ import java.util.regex.Pattern;
 
 class Chunk implements Serializable {
     private static final long serialVersionUID = -1665082267372566163L;
-    private static final int chunkDataSize = 64000;
-    private static final String chunkFileExtension = ".bin";
+    public static final int chunkDataSize = 64000;
+    public static final String chunkFileExtension = ".bin";
 
     private String fileId;
     private int chunkNo;
@@ -35,7 +35,9 @@ class Chunk implements Serializable {
      * Constructor for a chunk with no data
      * */
     public Chunk(String fId, int cNo) throws IllegalStateException {
-        this(fId, cNo, null);
+		setChunkNo(cNo);
+		setFileId(fId);
+		chunkData = new byte[0];
     }
 
     /**

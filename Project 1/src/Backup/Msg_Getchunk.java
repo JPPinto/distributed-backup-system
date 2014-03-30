@@ -62,9 +62,11 @@ public class Msg_Getchunk extends PBMessage {
     public Msg_Getchunk(Chunk chunk){
         super(GETCHUNK);
         receivedMessage = false;
+		chunkNo = chunk.getChunkNo();
+		fileId = chunk.getFileId();
 
         String[] stringArray = new String[4];
-        stringArray[0] = STORED;
+        stringArray[0] = GETCHUNK;
         stringArray[1] = version;
         stringArray[2] = chunk.getFileId();
         stringArray[3] = Integer.toString(chunkNo);
@@ -73,12 +75,11 @@ public class Msg_Getchunk extends PBMessage {
     }
 
 	@Override
-	public void saveChunk(String dir){
-	}
+	public void saveChunk(String dir){}
 
     @Override
 	public int getIntAttribute(int type){
-		return 0;
+		return chunkNo;
 	}
 
     @Override
