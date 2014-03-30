@@ -5,8 +5,6 @@ import java.util.Date;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.*;
-import java.nio.file.Files;
-import java.util.Date;
 
 import static Backup.Utilities.getHashFromFile;
 
@@ -22,26 +20,25 @@ class LocalFile implements Serializable {
     private String fileName;
     private String fileHash;
     private long fileSize; // File size in bytes
-    private Date creationDate;
-    private Date modificationDate;
+    private Date lastModificationDate;
 
-    LocalFile(String fileName, String fileHash, Date creationDate, Date modificationDate){
+    LocalFile(String fileName, String fileHash, Date lastModificationDate){
         if (fileName.length() <1) {
             throw new IllegalStateException("Invalid file name!");
         }
 
         this.fileName = fileName;
         this.fileHash = fileHash;
-        this.creationDate = creationDate;
-        this.modificationDate = modificationDate;
+        this.lastModificationDate = lastModificationDate;
     }
 
     LocalFile(File input) throws IOException {
         fileSize = input.length();
         fileName = input.getName();
         fileHash = Utilities.getHashFromFile(input);
-        // TODO missing dates
 
+        long lastMod = input.lastModified();
+        lastModificationDate = new Date(lastMod);
     }
 
     public boolean restoreFileFromChunks(String restoredFileLocation) throws IOException {
@@ -110,12 +107,8 @@ class LocalFile implements Serializable {
         return fileName;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public Date getModificationDate() {
-        return modificationDate;
+    public Date getLastModificationDate() {
+        return lastModificationDate;
     }
 
     public int getNumberOfChunks(){
