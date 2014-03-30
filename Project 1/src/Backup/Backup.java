@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
+import static java.lang.Thread.sleep;
+
 class Backup extends JFrame {
     private LocalDataBase dataBase = null;
     private static final String dataBaseFileName = "database.bin";
@@ -16,11 +18,21 @@ class Backup extends JFrame {
     private JButton restoreFileButton;
     private JButton deleteFileButton;
     private JButton freeSomeSpaceButton;
-    private JList list1;
-    private JTextPane asdasdasdTextPane;
+    private JList filesList;
+    private JTextPane logTextPane;
+    private String log;
 
-    public Backup() {
-        loadDataBase();
+    PeerThread peer;
+
+    public Backup(String[] args) {
+        log = "";
+        //peer.loadDataBase();
+
+        if (args.length != 6) {
+            peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001, "226.0.0.0", 60002);
+        } else {
+            peer = new PeerThread(args[0], Integer.getInteger(args[1]), args[2], Integer.getInteger(args[3]), args[4], Integer.getInteger(args[5]));
+        }
 
         setName("Potato Backup");
         setTitle("Potato Backup");
@@ -56,28 +68,34 @@ class Backup extends JFrame {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
 
-                    // TODO Shove this into a thread
-                    // Create temporary chunks
                     try {
-                        PotatoBackup.readChunks(file, PotatoBackup.temporaryDirectory);
+                        log+="Backing up: ";
+                        log+=file.getAbsolutePath();
+                        log+="...\n";
+                        peer.sendPUTCHUNK(file.getAbsolutePath());
+
+                        logTextPane.setText(log);
                     } catch (IOException e1) {
                         e1.printStackTrace();
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
                     }
-
-                    // Send the files
 
                 } else {
                     // Do nothing
                 }
             }
         });
+
+        // Start the peer
+        peer.start();
     }
 
     private void onExit() {
         // Destroy the GUI interface
         dispose();
 
-        saveDataBase();
+        //peer.saveDataBase();
 
         // Close all threads here
 
@@ -94,12 +112,8 @@ class Backup extends JFrame {
         }
     }
 
-    private void saveDataBase(){
-        LocalDataBase.saveDataBaseToFile(dataBase, dataBaseFileName);
-    }
-
     public static void main(String[] args) {
-        Backup dialog = new Backup();
+        Backup dialog = new Backup(args);
         dialog.pack();
         dialog.setVisible(true);
         // Run threads

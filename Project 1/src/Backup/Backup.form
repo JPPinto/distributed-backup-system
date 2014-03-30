@@ -77,15 +77,15 @@
           </vspacer>
         </children>
       </grid>
-      <grid id="d2dd5" layout-manager="BorderLayout" hgap="1" vgap="1">
+      <grid id="d2dd5" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="2" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
           <minimumSize width="500" height="500"/>
         </properties>
-        <border type="none"/>
+        <border type="none" title-justification="3"/>
         <children>
           <grid id="827f6" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="East"/>
@@ -94,32 +94,43 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="b4b83" class="javax.swing.JTextPane" binding="asdasdasdTextPane" default-binding="true">
+              <component id="b4b83" class="javax.swing.JTextPane" binding="logTextPane" default-binding="true">
                 <constraints border-constraint="Center"/>
                 <properties>
+                  <editable value="false"/>
+                  <enabled value="true"/>
                   <minimumSize width="300" height="500"/>
                   <preferredSize width="300" height="500"/>
-                  <text value="asdasdasd"/>
+                  <text value=""/>
+                  <toolTipText value="Program log"/>
                 </properties>
               </component>
             </children>
           </grid>
-          <component id="68a17" class="javax.swing.JList" binding="list1" default-binding="true">
-            <constraints border-constraint="West"/>
-            <properties>
-              <alignmentX value="0.0"/>
-              <alignmentY value="0.0"/>
-              <maximumSize width="2147483647" height="2147483647"/>
-              <minimumSize width="300" height="500"/>
-              <model>
-                <item value="ASDASD"/>
-                <item value="ASDASD"/>
-                <item value="AAAA"/>
-              </model>
-              <preferredSize width="300" height="500"/>
-              <selectionMode value="0"/>
-            </properties>
-          </component>
+          <grid id="8a600" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Before"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="68a17" class="javax.swing.JList" binding="filesList" default-binding="true">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <alignmentX value="0.0"/>
+                  <alignmentY value="0.0"/>
+                  <maximumSize width="2147483647" height="2147483647"/>
+                  <minimumSize width="300" height="500"/>
+                  <model>
+                    <item value="ASDASD"/>
+                    <item value="ASDASD"/>
+                    <item value="AAAA"/>
+                  </model>
+                  <preferredSize width="300" height="500"/>
+                  <selectionMode value="0"/>
+                  <toolTipText value="Backuped Files"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>
