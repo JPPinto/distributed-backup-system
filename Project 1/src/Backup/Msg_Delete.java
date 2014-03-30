@@ -24,12 +24,30 @@ public class Msg_Delete extends PBMessage {
         receivedMessage = true;
 
         header = getHeaderFromMessage(inputData);
+
+		// Decode header
+		String[] splitHeader = header.split(" ");
+
+		if (splitHeader.length == 2) {                                            //Corrected size of string
+			if (!splitHeader[0].equals(DELETE)) {
+				throw new InvalidStateException("Invalid Message!");
+			}
+
+			if (!Utilities.validateFileId(splitHeader[1])) {
+				throw new InvalidStateException("Invalid Message file ID!");
+			}
+
+			fileId = splitHeader[1];
+		} else {
+			throw new InvalidStateException("Invalid Message!");
+		}
     }
 
     // Message to be sent constructor
     public Msg_Delete(String fId){
         super(DELETE);
         receivedMessage = false;
+		fileId = fId;
 
         String[] stringArray = new String[2];
         stringArray[0] = DELETE;

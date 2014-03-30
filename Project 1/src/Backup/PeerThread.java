@@ -103,6 +103,12 @@ public class PeerThread extends Thread {
 				System.out.println("SEND: " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 				socket.send(packet);
 
+			} else if (msg.getType() == DELETE) {
+
+				packet = new DatagramPacket(msg.getData(0), msg.getData(0).length, IPAddress, mcast_port);
+				System.out.println("SEND: " + msg.getType() + " " + msg.fileId);
+				socket.send(packet);
+
 			}
 			socket.close();
 
@@ -111,7 +117,7 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	public void sendPutChunk(String filepath) throws IOException, InterruptedException {
+	public void sendPUTCHUNK(String filepath) throws IOException, InterruptedException {
 
 		int time_multiplier, retransmission_count;
 		readChunks(new File(filepath), PotatoBackup.temporaryDirectory);
@@ -163,7 +169,7 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	public void sendGetChunk(String filepath) throws IOException, InterruptedException {
+	public void sendGETCHUNK(String filepath) throws IOException, InterruptedException {
 
 		//PBMessage temp_getChunk = new Msg_Getchunk(new Chunk(fileID, chunkNo));
 		//sendRequest(temp_getChunk, addressMC, portMC);
@@ -218,6 +224,20 @@ public class PeerThread extends Thread {
 		}
 	}
 
+	public void sendDELETE(String filepath) throws IOException {
+		File file = new File(filepath);
+
+		if(!file.exists()){
+			System.out.println("File: " + filepath + " does NOT EXIST!");
+			return;
+		}
+
+		String sha_num = Utilities.getHashFromFile(file);
+
+		PBMessage temp_delete = new Msg_Delete(sha_num);
+		sendRequest(temp_delete, addressMC, portMC);
+	}
+
 	public static void main(String[] args) throws IOException {
 
 		PeerThread peer;
@@ -234,8 +254,9 @@ public class PeerThread extends Thread {
 			//Give time to start the threads
 			sleep(1000);
 
-			//peer.sendPutChunk("./binary2.test");
-			peer.sendGetChunk("E6A2E9EFC9740B1C556EE0DB770B5D9F12956450CB4DB38594D794176EA4FD8E", 1);
+			//peer.sendPUTCHUNK("./binary2.test");
+			//peer.sendGETCHUNK("./binary2.test");
+			peer.sendDELETE("./binary2.test");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

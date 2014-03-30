@@ -52,7 +52,24 @@ public class ProtocolHandler extends Thread {
 			sendRequest(message, addrs.get(SOCKET_MC), ports.get(SOCKET_MC));
 
 		} else if (msg.getType().equals(DELETE)) {
-			System.out.println("HANDLED DELETE!");
+			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.fileId);
+
+			File[] chunksInBackup = listFiles(backupDirectory);
+
+			int deleted_chunks = 0;
+			for (int i = 0; i < chunksInBackup.length; i++) {
+
+				if(chunksInBackup[i].length() < 66)
+					continue;
+
+				String temp_id = chunksInBackup[i].getName().substring(0, 64);
+				if (temp_id.equals(msg.fileId)) {
+					chunksInBackup[i].delete();
+					deleted_chunks++;
+				}
+			}
+
+			System.out.println("All chunks from file: " + msg.fileId + " were DELETED (" + deleted_chunks + " chunks deleted)!");
 		} else if (msg.getType().equals(STORED)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 		} else if (msg.getType().equals(REMOVED)) {
