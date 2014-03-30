@@ -145,7 +145,6 @@ abstract class PBMessage {
 	}
 
 	public static byte[] getBodyFromMessage(byte[] inputData, int length) throws InvalidStateException {
-        System.out.println(Utilities.convertByteArrayToHex(inputData));
 
 		int it = 0;
 		int terminators = 0;

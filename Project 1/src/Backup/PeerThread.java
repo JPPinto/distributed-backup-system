@@ -131,14 +131,16 @@ public class PeerThread extends Thread {
 			if (msg.getType() == PBMessage.PUTCHUNK) {
 
 				packet = new DatagramPacket(msg.getData(2), msg.getData(2).length, IPAddress, mcast_port);
+				System.out.println("SEND: " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0) + " " + msg.getIntAttribute(1));
 				socket.send(packet);
 
 			} else if (msg.getType() == PBMessage.STORED) {
 
 				packet = new DatagramPacket(msg.getData(0), msg.getData(0).length, IPAddress, mcast_port);
+				System.out.println("SEND: " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 				socket.send(packet);
-			}
 
+			}
 			socket.close();
 
 		} catch (Exception e) {
@@ -150,44 +152,42 @@ public class PeerThread extends Thread {
 
 		int time_multiplier, retransmission_count;
 		PotatoBackup.readChunks(new File(filepath), PotatoBackup.temporaryDirectory);
-		System.out.println("DONE!");
+		System.out.println("Starting to send...");
 
 		File[] chucksToSend = PotatoBackup.listFiles(PotatoBackup.temporaryDirectory);
-
-		//Chunk temp_chunk = Chunk.loadChunk(chucksToSend[0].getPath());
-
 
 		for (File file : chucksToSend) {
 			if (file.isFile()) {
 				Chunk temp_chunk = Chunk.loadChunk(file.getPath());
 				PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, 1);
 
+				socMCReceiver.clearCount();
+
 				sendRequest(temp_putchunk, addressMDB, portMDB);
 
 				time_multiplier = 1;
 				retransmission_count = 1;
-				while (retransmission_count < 7) {
 
-					sleep(500 * time_multiplier);
+				sleep(500 * time_multiplier);
 
-					if (storesWaiting >= temp_putchunk.getIntAttribute(1)) {    //STORES received == replication degree
-						System.out.println("CONFIRMED CHUNK Nº: " + temp_chunk.getChunkNo());  //Debug Purposes
-						storesWaiting = 0;
-						break;
-					}
+				int repDegree = temp_putchunk.getIntAttribute(1);
+				while (retransmission_count < 7 && socMCReceiver.stores < repDegree) {
 
 					if (retransmission_count != 6) {
 						System.out.println("RETRANSMITTING... (Nº of Retransmittion: " + retransmission_count + ")");
 						sendRequest(temp_putchunk, addressMC, portMC);
 					}
+
 					time_multiplier *= 2;
 					retransmission_count++;
+
+					sleep(500 * time_multiplier);
 				}
 
-				/*if (retransmission_count == 6){
-					System.out.println("FAILED TO BACKUP FILE " + filepath + " WITH REPLICATION DEGREE OF: " + temp_putchunk.getIntAttribute(1));
+				if (retransmission_count == 6){
+					System.out.println("FAILED TO BACKUP FILE " + filepath + " DUE TO ERROR SENDING CHUNK " + temp_chunk.getChunkNo() + ", WITH ONLY " + socMCReceiver.stores + "STORED MESSAGES");
 					break;
-				}*/
+				}
 			}
 		}
 
@@ -202,15 +202,19 @@ public class PeerThread extends Thread {
 
 	public static void main(String[] args) throws IOException {
 
-		PeerThread peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001);
+		PeerThread peer;
+
+		if(args.length != 4 && args.length != 6) {
+			peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001);
+		} else {
+			peer = new PeerThread(args[0], Integer.getInteger(args[1]), args[2], Integer.getInteger(args[3]));
+		}
 
 		peer.start();
 
 		try {
 			//Give time to start the threads
 			sleep(1000);
-
-			//PBMessage message = new Msg_Stored("2ACE2D72832ACE2D72832ACE2D72832ACE2D72832ACE2D72832ACE2D72831234",1); //Works
 
 			/*
 			PotatoBackup.readChunks(new File("./binary.test"), PotatoBackup.temporaryDirectory);
@@ -221,7 +225,7 @@ public class PeerThread extends Thread {
 			System.out.println("SENDING...");
 			peer.sendRequest(message, peer.addressMDB, peer.portMDB);
 			*/
-			//peer.sendPUTCHUNK("./binary.test");
+			peer.sendPUTCHUNK("./binary2.test");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -1,24 +1,24 @@
 package Backup;
 
 import sun.plugin.dom.exception.InvalidStateException;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import static Backup.PBMessage.*;
 
 /**
  * Created by Jose on 26-03-2014.
  */
 public class SocketReceiver extends Thread {
 
-	public HashSet<PBMessage> received;
-	public String mcast_adrr;
-	public int mcast_port;
-	public Vector<String> addrs;
-	public Vector<Integer> ports;
+	private HashSet<PBMessage> received;
+	private String mcast_adrr;
+	private int mcast_port;
+	private Vector<String> addrs;
+	private Vector<Integer> ports;
+	public int stores;
 
 	SocketReceiver(Vector<String> a, Vector<Integer> p, int type) {
 		addrs = a;
@@ -56,9 +56,11 @@ public class SocketReceiver extends Thread {
 
 					if (temp_message != null) {
 						if (received.add(temp_message)) {
-							ProtocolHandler temp_handler = new ProtocolHandler(addrs, ports, temp_message);
+
+							countStores(temp_message);
+
+							ProtocolHandler temp_handler = new ProtocolHandler(addrs, ports, temp_message, packet);
 							temp_handler.run();
-							System.out.println("RECEIVED FROM " + packet.getAddress().getHostAddress() + " TYPE: " + temp_message.getType());
 						}
 					} else {
 						System.out.println("MESSAGE DISCARDED!");
@@ -81,7 +83,12 @@ public class SocketReceiver extends Thread {
 		mSocket.close();
 	}
 
-	public void clearMessages() {
-		this.received.clear();
+	public void countStores(PBMessage msg){
+		if(msg.getType() == PUTCHUNK)
+			stores++;
+	}
+
+	public void clearCount() {
+		stores = 0;
 	}
 }
