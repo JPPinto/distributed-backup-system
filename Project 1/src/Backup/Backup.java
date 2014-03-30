@@ -8,7 +8,7 @@ import java.io.IOException;
 class Backup extends JFrame {
     private LocalDataBase dataBase = null;
     private static final String dataBaseFileName = "database.bin";
-    private JPanel contentPane;
+    private JPanel buttonsContentPane;
     private final JFileChooser fc = new JFileChooser();
 
     private JButton buttonEXIT;
@@ -16,6 +16,7 @@ class Backup extends JFrame {
     private JButton restoreFileButton;
     private JButton deleteFileButton;
     private JButton freeSomeSpaceButton;
+    private JList list1;
 
     public Backup() {
         loadDataBase();
@@ -23,7 +24,7 @@ class Backup extends JFrame {
         setName("Potato Backup");
         setTitle("Potato Backup");
 
-        setContentPane(contentPane);
+        setContentPane(buttonsContentPane);
         getRootPane().setDefaultButton(buttonEXIT);
 
         buttonEXIT.addActionListener(new ActionListener() {
@@ -40,7 +41,7 @@ class Backup extends JFrame {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
+        buttonsContentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onExit();
             }
