@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static Backup.Utilities.getHashFromFile;
@@ -113,16 +114,13 @@ class PotatoBackup {
         int currentChunkNumber = 0;
 
         while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
-            Chunk currentChunk = new Chunk(fileID, currentChunkNumber, buffer);
+
+            byte[] realData = Arrays.copyOfRange(buffer, 0, sizeRead);
+
+            Chunk currentChunk = new Chunk(fileID, currentChunkNumber, realData);
             currentChunk.write(directory);
 
-            // Last chunk if file size not a multiple
-            if (sizeRead < chunkDataSize) {
-                // It's the final chunkdown
-                // TODO SOMETHING
-            } else {
-                currentChunkNumber++;
-            }
+            currentChunkNumber++;
 
         }
         bufferedInputStream.close();

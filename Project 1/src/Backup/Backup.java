@@ -121,15 +121,18 @@ class Backup extends JFrame {
     }
 
     private void restoreButtonPressed(){
+        int selectedFile = filesList.getSelectedIndex();
+
 
     }
 
     private void deleteFileButtonPressed(){
+        int selectedFile = filesList.getSelectedIndex();
 
     }
 
     private void freeSomeSpaceButtonPressed(){
-
+        //peer.
     }
 
     private void exitButtonPressed() {
