@@ -84,7 +84,7 @@ public class SocketReceiver extends Thread {
 	}
 
 	public void countStores(PBMessage msg){
-		if(msg.getType() == PUTCHUNK)
+		if(msg.getType() == STORED)
 			stores++;
 	}
 
