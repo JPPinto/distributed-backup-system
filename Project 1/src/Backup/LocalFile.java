@@ -114,12 +114,11 @@ class LocalFile implements Serializable {
         return lastModificationDate;
     }
 
-    // TODO Check this
     public int getNumberOfChunks(){
         if (fileSize % 64000 == 0){
-            return (int) ((fileSize/6400) + 1);
+            return (int) ((fileSize/64000) + 1);
         } else {
-            return (int) ((fileSize/6400));
+            return (int) ((fileSize/64000));
         }
     }
 }

@@ -89,4 +89,8 @@ public class LocalDataBase implements Serializable{
             i.printStackTrace();
         }
     }
+
+	public Map<String, LocalFile> getFiles(){
+		return files;
+	}
 }

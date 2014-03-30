@@ -75,6 +75,7 @@ public class Msg_Chunk extends PBMessage {
 		chunk = c;
 		fileId = chunk.getFileId();
 		version = "1.0";
+		chunkNo = chunk.getChunkNo();
 
         String[] stringArray = new String[4];
         stringArray[0] = CHUNK;

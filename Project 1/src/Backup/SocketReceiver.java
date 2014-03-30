@@ -27,6 +27,8 @@ public class SocketReceiver extends Thread {
 		mcast_adrr = a.get(type);
 		mcast_port = p.get(type);
 		received = new HashSet<PBMessage>();
+		stores = 0;
+		messages_chuck = 0;
 	}
 
 	public void run() {
@@ -96,7 +98,9 @@ public class SocketReceiver extends Thread {
 			messages_chuck++;
 	}
 
-	public void clearCount() {
+	public void clearCountStores() {
 		stores = 0;
 	}
+
+	public void clearCountChunks(){ messages_chuck = 0; }
 }

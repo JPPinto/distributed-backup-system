@@ -23,6 +23,7 @@ class PotatoBackup {
 
     /* Path constants */
     public static final String backupDirectory = "./backup";
+	public static final String recoveryDirectory = "./recovery";
     public static final String temporaryDirectory = "./temporary";
 
     /**

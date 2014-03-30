@@ -77,7 +77,7 @@ public class ProtocolHandler extends Thread {
 		} else if (msg.getType().equals(CHUNK)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 
-			msg.saveChunk(backupDirectory);
+			msg.saveChunk(recoveryDirectory);
 			System.out.println("CHUNK SAVED!");
 		} else if (msg.getType().equals(GETCHUNK)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
