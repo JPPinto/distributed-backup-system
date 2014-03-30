@@ -154,9 +154,9 @@ public class PeerThread extends Thread {
 		readChunks(f, PotatoBackup.temporaryDirectory);
 		System.out.println("Starting to send FILE: " + filepath +  "...");
 
-		File[] chucksToSend = listFiles(PotatoBackup.temporaryDirectory);
+		File[] chunksToSend = listFiles(PotatoBackup.temporaryDirectory);
 
-		for (File file : chucksToSend) {
+		for (File file : chunksToSend) {
 			if (file.isFile()) {
 				Chunk temp_chunk = Chunk.loadChunk(file.getPath());
 				PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, 1);
@@ -191,9 +191,9 @@ public class PeerThread extends Thread {
 			}
 		}
 
-		System.out.println("File " + filepath + " backup complete with " + chucksToSend.length + " chunks sent.");
+		System.out.println("File " + filepath + " backup complete with " + chunksToSend.length + " chunks sent.");
 
-		for (File file : chucksToSend) {
+		for (File file : chunksToSend) {
 			if (file.isFile()) {
 				file.delete();
 			}
@@ -288,7 +288,8 @@ public class PeerThread extends Thread {
 			System.out.println("Backup done Now for the Recovery!");
 			sleep(1000);
 			peer.sendGETCHUNK("./binary2.test");
-			//peer.sendDELETE("./binary2.test");
+			System.out.println("Recovery done Now for the Delete!");
+			peer.sendDELETE("./binary2.test");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

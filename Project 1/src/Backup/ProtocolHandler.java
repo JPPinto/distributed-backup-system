@@ -32,7 +32,7 @@ public class ProtocolHandler extends Thread {
 	public void run() {
 		try {
 			handleProtocol(message_to_be_handled);
-		}catch(InterruptedException e){
+		} catch (InterruptedException e) {
 			System.out.println("Sleep Malfunction!");
 			e.printStackTrace();
 		}
@@ -59,11 +59,12 @@ public class ProtocolHandler extends Thread {
 			int deleted_chunks = 0;
 			for (int i = 0; i < chunksInBackup.length; i++) {
 
-				if(chunksInBackup[i].length() < 66)
+				if (chunksInBackup[i].length() < 66)
 					continue;
 
 				String temp_id = chunksInBackup[i].getName().substring(0, 64);
 				if (temp_id.equals(msg.fileId)) {
+					System.out.println("Chunk Nº: " + chunksInBackup[i].getName() + " DELETED");
 					chunksInBackup[i].delete();
 					deleted_chunks++;
 				}
@@ -77,7 +78,7 @@ public class ProtocolHandler extends Thread {
 		} else if (msg.getType().equals(CHUNK)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 
-			msg.saveChunk(recoveryDirectory);
+			msg.saveChunk(backupDirectory);
 			System.out.println("CHUNK SAVED!");
 		} else if (msg.getType().equals(GETCHUNK)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
@@ -93,7 +94,7 @@ public class ProtocolHandler extends Thread {
 				}
 
 
-			if(chunk_to_send != null) {
+			if (chunk_to_send != null) {
 				int randomNum = rand.nextInt((400 - 0) + 1);
 				PBMessage temp_message = new Msg_Chunk(chunk_to_send);
 
