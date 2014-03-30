@@ -21,6 +21,9 @@ class LocalFile implements Serializable {
     private String fileHash;
     private long fileSize; // File size in bytes
     private Date lastModificationDate;
+    private int desiredReplicationDegree;
+    private int currentReplicationDegree;
+
 
     LocalFile(String fileName, String fileHash, Date lastModificationDate){
         if (fileName.length() <1) {
@@ -111,6 +114,7 @@ class LocalFile implements Serializable {
         return lastModificationDate;
     }
 
+    // TODO Check this
     public int getNumberOfChunks(){
         if (fileSize % 64000 == 0){
             return (int) ((fileSize/6400) + 1);
