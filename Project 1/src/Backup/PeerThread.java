@@ -289,9 +289,11 @@ public class PeerThread extends Thread {
 		int num_chunks_to_remove = kbytes / chunkDataSize;
 
 		if(num_chunks_to_remove > chunks_on_backup.length){
-			System.out.println("Amount memory to free ");
-
+			System.out.println("Amount of memory to free is too high!");
+			return;
 		}
+
+
 	}
 
 	public void sendREMOVED(String fId, int chunkNo) throws IOException {
