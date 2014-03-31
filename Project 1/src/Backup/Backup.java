@@ -31,9 +31,6 @@ class Backup extends JFrame {
     public Backup(String[] args) {
         log = "";
         listModel = new DefaultListModel<String>();
-        //peer.loadDataBase();
-
-        filesList = new JList(listModel);
 
         if (args.length != 6) {
             peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001, "226.0.0.0", 60002);
@@ -46,6 +43,8 @@ class Backup extends JFrame {
 
         setContentPane(buttonsContentPane);
         getRootPane().setDefaultButton(buttonEXIT);
+
+        filesList = new JList(listModel);
 
         buttonEXIT.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -73,8 +72,7 @@ class Backup extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 updateGui();
             }
-            }
-        );
+        });
 
         backupFileButton.addActionListener(new ActionListener() {
             @Override
@@ -176,6 +174,7 @@ class Backup extends JFrame {
             if (peer != null) {
                 filesList.setEnabled(true);
 
+                filesList.clearSelection();
                 listModel.clear();
 
                 Map<String, LocalFile> dataBase = peer.getDataBase().getFiles();
@@ -183,7 +182,6 @@ class Backup extends JFrame {
                 for (Map.Entry<String, LocalFile> pairs : dataBase.entrySet()) {
                     String hash = pairs.getKey();
                     listModel.addElement(hash + " " + peer.getDataBase().getFileNameFromId(hash));
-
                     System.out.println(hash + " " + peer.getDataBase().getFileNameFromId(hash));
                 }
 
@@ -195,10 +193,16 @@ class Backup extends JFrame {
     }
 
     public static void main(String[] args) {
-        Backup dialog = new Backup(args);
-        dialog.pack();
-        dialog.setVisible(true);
-        // Run threads
+        final String [] arg = args;
+
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Backup dialog = new Backup(arg);
+                dialog.pack();
+                dialog.setVisible(true);
+            }
+        });
+
 
         //System.exit(0);
     }
