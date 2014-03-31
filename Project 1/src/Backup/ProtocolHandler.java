@@ -6,7 +6,6 @@ import java.util.*;
 
 import static Backup.PeerThread.*;
 import static Backup.PBMessage.*;
-import static Backup.PotatoBackup.*;
 import static Backup.Chunk.*;
 
 
@@ -42,7 +41,7 @@ public class ProtocolHandler extends Thread {
 
 		if (msg.getType().equals(PUTCHUNK)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0) + " " + msg.getIntAttribute(1));
-			msg.saveChunk(PotatoBackup.backupDirectory);
+			msg.saveChunk(Utilities.backupDirectory);
 
 			//				rand.nextInt((MAX-MIN) + 1) + MIN;
 			int randomNum = rand.nextInt((400 - 0) + 1);
@@ -54,7 +53,7 @@ public class ProtocolHandler extends Thread {
 		} else if (msg.getType().equals(DELETE)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.fileId);
 
-			File[] chunksInBackup = listFiles(backupDirectory);
+			File[] chunksInBackup = Utilities.listFiles(Utilities.backupDirectory);
 
 			int deleted_chunks = 0;
 			for (int i = 0; i < chunksInBackup.length; i++) {
@@ -78,13 +77,12 @@ public class ProtocolHandler extends Thread {
 		} else if (msg.getType().equals(CHUNK)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 
-			msg.saveChunk(backupDirectory);
-			System.out.println("CHUNK SAVED!");
+			msg.saveChunk(Utilities.backupDirectory);
 		} else if (msg.getType().equals(GETCHUNK)) {
 			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 
 			String filename = msg.fileId + "-" + msg.getIntAttribute(0) + chunkFileExtension;
-			File[] chunksInBackup = listFiles(backupDirectory);
+			File[] chunksInBackup = Utilities.listFiles(Utilities.backupDirectory);
 			Chunk chunk_to_send = null;
 
 			for (int i = 0; i < chunksInBackup.length; i++)

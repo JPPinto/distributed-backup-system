@@ -68,7 +68,7 @@ class LocalFile implements Serializable {
 			System.out.println("Chunk Nº: " + i);
 			i++;
             // Load chunk from file
-            currentChunkName = PotatoBackup.backupDirectory + "/"+ fileHash + "-" + currentChunkNo + Chunk.chunkFileExtension;
+            currentChunkName = Utilities.backupDirectory + "/"+ fileHash + "-" + currentChunkNo + Chunk.chunkFileExtension;
             currentChunk = Chunk.loadChunk(currentChunkName);
 
             // Check if this is the final chunk

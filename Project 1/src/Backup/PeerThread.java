@@ -14,7 +14,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import static Backup.PBMessage.*;
-import static Backup.PotatoBackup.*;
+import static Backup.Utilities.*;
 
 public class PeerThread extends Thread {
 
@@ -160,10 +160,10 @@ public class PeerThread extends Thread {
 
 		int time_multiplier, retransmission_count;
 
-		readChunks(f, PotatoBackup.temporaryDirectory);
+		Utilities.readChunks(f, Utilities.temporaryDirectory);
 		System.out.println("Starting to send FILE: " + filepath + "...");
 
-		File[] chunksToSend = listFiles(PotatoBackup.temporaryDirectory);
+		File[] chunksToSend = Utilities.listFiles(Utilities.temporaryDirectory);
 
 
 		for (File file : chunksToSend) {
@@ -282,7 +282,11 @@ public class PeerThread extends Thread {
 	}
 
 	public static void freeDiskSpace(int kbytes){
-		
+
+		File backup_folder = new File(backupDirectory);
+		File[] chunks_on_backup = backup_folder.listFiles();
+
+		int num_chunks_to_remove = kbytes / chunkDataSize;
 	}
 
 	public void sendREMOVED(String fId, int chunkNo) throws IOException {

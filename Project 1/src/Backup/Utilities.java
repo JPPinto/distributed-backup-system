@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -19,9 +20,14 @@ import java.util.regex.Pattern;
  * Misc Utilities
  */
 public class Utilities {
-    private static final int bufferSize = 1048576;
+	/* Path constants */
+	public static final String backupDirectory = "./backup";
+	public static final String temporaryDirectory = "./temporary";
+	private static final int bufferSize = 1048576;
+	/* Buffer size for hashing operations 1MiB */
+	static final int chunkDataSize = 64000;
 
-    /**
+	/**
      * Convert byte array to hex string (Stack Overflow)
      * @param bytes Byte array to be converted to hex string
      */
@@ -117,4 +123,49 @@ public class Utilities {
         return !(replicationDeg < 0 || replicationDeg > 9);
     }
 
+	/**
+     * Reads a file and creates chunks
+     * @param inputFile Input file
+     **/
+    public static void readChunks(File inputFile,String directory) throws IOException {
+        // Get fileId
+        String fileID = getHashFromFile(inputFile);
+
+        // Get buffered stream from file
+        FileInputStream fileInputStream = new FileInputStream(inputFile);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+
+        long fileSize = inputFile.length();
+
+        byte[] buffer = new byte[chunkDataSize];
+
+        int sizeRead;
+        int currentChunkNumber = 0;
+
+        while ((sizeRead = bufferedInputStream.read(buffer)) != -1) {
+
+            byte[] realData = Arrays.copyOfRange(buffer, 0, sizeRead);
+
+            Chunk currentChunk = new Chunk(fileID, currentChunkNumber, realData);
+            currentChunk.write(directory);
+
+            currentChunkNumber++;
+
+        }
+        bufferedInputStream.close();
+
+        if (fileSize % chunkDataSize == 0) {
+            Chunk finalChunk = new Chunk(fileID, currentChunkNumber);
+            finalChunk.write(directory);
+        }
+    }
+
+	/**
+     * Lists local files
+     * @param path Folder path
+     */
+    public static File[] listFiles(String path) {
+        File folder = new File(path);
+        return folder.listFiles();
+    }
 }
