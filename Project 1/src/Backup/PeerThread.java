@@ -268,20 +268,21 @@ public class PeerThread extends Thread {
 		System.out.println("File " + local_file.getFileName() + " recovery complete with " + i + " chunks received.");
 	}
 
-	public void sendDELETE(String filepath) throws IOException {
-		File file = new File(filepath);
+	public void sendDELETE(String filehash) throws IOException {
 
-		if (!file.exists()) {
-			System.out.println("File: " + filepath + " does NOT EXIST!");
+		if (!dataBase.getFiles().containsKey(filehash)) {
+			System.out.println("File: " + filehash + " does NOT EXIST!");
 			return;
 		}
 
+		dataBase.removeFileFromBackup(filehash);
 
-		String sha_num = Utilities.getHashFromFile(file);
-		dataBase.removeFileFromBackup(sha_num);
-
-		PBMessage temp_delete = new Msg_Delete(sha_num);
+		PBMessage temp_delete = new Msg_Delete(filehash);
 		sendRequest(temp_delete, addressMC, portMC);
+	}
+
+	public static void freeDiskSpace(int kbytes){
+			
 	}
 
 	public void sendREMOVED(String fId, int chunkNo) throws IOException {

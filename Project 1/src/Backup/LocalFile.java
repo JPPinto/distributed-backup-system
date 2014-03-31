@@ -52,7 +52,7 @@ class LocalFile implements Serializable {
 
     public boolean restoreFileFromChunks(String new_file_location) throws IOException {
 
-        final String filePath = new_file_location + fileName;
+        final String filePath = new_file_location;
 
         // Get buffered output stream for file writing
         FileOutputStream fileOutputStream = new FileOutputStream(filePath);
