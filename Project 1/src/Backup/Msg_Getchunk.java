@@ -2,20 +2,14 @@ package Backup;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
-import java.util.Arrays;
-
-import static Backup.Utilities.convertByteArrayToSring;
-import static Backup.Utilities.convertStringToByteArray;
-import static Backup.Utilities.joinTwoArrays;
-
 /**
  * SDIS TP1
- *
+ * <p/>
  * Eduardo Fernandes
  * José Pinto
- *
+ * <p/>
  * Backup.Msg_Getchunk class
- *
+ * <p/>
  * Syntax:
  * GETCHUNK <Version> <FileId> <ChunkNo> <CRLF><CRLF>
  */
@@ -24,7 +18,7 @@ public class Msg_Getchunk extends PBMessage {
     private int chunkNo;
 
     // Received message constructor
-    public Msg_Getchunk(byte[] inputData, int packetLenght){
+    public Msg_Getchunk(byte[] inputData, int packetLenght) {
         super(GETCHUNK);
         receivedMessage = true;
 
@@ -33,25 +27,25 @@ public class Msg_Getchunk extends PBMessage {
         // Decode header
         String[] splitHeader = header.split(" ");
 
-        if (splitHeader.length == 4){
-            if (!splitHeader[0].equals(GETCHUNK)){
+        if (splitHeader.length == 4) {
+            if (!splitHeader[0].equals(GETCHUNK)) {
                 throw new InvalidStateException("Invalid Message!");
             }
 
-            if(!validateVersion(splitHeader[1])){
+            if (!validateVersion(splitHeader[1])) {
                 throw new InvalidStateException("Invalid Message Version!");
             }
 
-            if(!Utilities.validateFileId(splitHeader[2])){
+            if (!Utilities.validateFileId(splitHeader[2])) {
                 throw new InvalidStateException("Invalid Message file ID!");
             }
 
-            if(!Utilities.validateChunkNo(Integer.parseInt(splitHeader[3]))){
+            if (!Utilities.validateChunkNo(Integer.parseInt(splitHeader[3]))) {
                 throw new InvalidStateException("Invalid Message chunk number!");
             }
 
             version = splitHeader[1];
-            fileId  = splitHeader[2];
+            fileId = splitHeader[2];
             chunkNo = Integer.parseInt(splitHeader[3]);
         } else {
             throw new InvalidStateException("Invalid Message!");
@@ -59,11 +53,11 @@ public class Msg_Getchunk extends PBMessage {
     }
 
     // Message to be sent constructor
-    public Msg_Getchunk(Chunk chunk){
+    public Msg_Getchunk(Chunk chunk) {
         super(GETCHUNK);
         receivedMessage = false;
-		chunkNo = chunk.getChunkNo();
-		fileId = chunk.getFileId();
+        chunkNo = chunk.getChunkNo();
+        fileId = chunk.getFileId();
 
         String[] stringArray = new String[4];
         stringArray[0] = GETCHUNK;
@@ -74,16 +68,17 @@ public class Msg_Getchunk extends PBMessage {
         data = constructHeaderFromStringArray(stringArray);
     }
 
-	@Override
-	public void saveChunk(String dir){}
+    @Override
+    public void saveChunk(String dir) {
+    }
 
     @Override
-	public int getIntAttribute(int type){
-		return chunkNo;
-	}
+    public int getIntAttribute(int type) {
+        return chunkNo;
+    }
 
     @Override
-    public byte[] getData(int type){
+    public byte[] getData(int type) {
         return data;
     }
 }

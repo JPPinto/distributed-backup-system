@@ -13,22 +13,23 @@ import java.util.regex.Pattern;
 
 /**
  * SDIS TP1
- *
+ * <p/>
  * Eduardo Fernandes
  * José Pinto
- *
+ * <p/>
  * Misc Utilities
  */
 public class Utilities {
-	/* Path constants */
-	public static final String backupDirectory = "./backup";
-	public static final String temporaryDirectory = "./temporary";
-	private static final int bufferSize = 1048576;
-	/* Buffer size for hashing operations 1MiB */
-	static final int chunkDataSize = 64000;
+    /* Path constants */
+    public static final String backupDirectory = "./backup";
+    public static final String temporaryDirectory = "./temporary";
+    /* Buffer size for hashing operations 1MiB */
+    static final int chunkDataSize = 64000;
+    private static final int bufferSize = 1048576;
 
-	/**
+    /**
      * Convert byte array to hex string (Stack Overflow)
+     *
      * @param bytes Byte array to be converted to hex string
      */
     public static String convertByteArrayToHex(byte[] bytes) {
@@ -37,16 +38,17 @@ public class Utilities {
     }
 
     public static String convertByteArrayToHex(byte Byte) {
-        byte [] bytes = new byte[1];
+        byte[] bytes = new byte[1];
         bytes[0] = Byte;
         return convertByteArrayToHex(bytes);
     }
 
     /**
      * Calculate file SHA256 sum
+     *
      * @param inputFile Input file
      * @return Returns file SHA-256 hash.
-     * */
+     */
     public static String getHashFromFile(File inputFile) throws IOException {
         // Get buffered stream from file
         FileInputStream fileInputStream = new FileInputStream(inputFile);
@@ -79,7 +81,7 @@ public class Utilities {
         }
     }
 
-    public static String convertByteArrayToSring(byte[] in){
+    public static String convertByteArrayToSring(byte[] in) {
         String newString = "";
 
         for (byte anIn : in) {
@@ -89,11 +91,11 @@ public class Utilities {
         return newString;
     }
 
-    public static byte[] convertStringToByteArray(String in){
+    public static byte[] convertStringToByteArray(String in) {
         return in.getBytes(Charset.forName("UTF-8"));
     }
 
-    public static byte[] joinTwoArrays(byte[] arrayA, byte[] arrayB){
+    public static byte[] joinTwoArrays(byte[] arrayA, byte[] arrayB) {
         byte[] merged = new byte[arrayA.length + arrayB.length];
         System.arraycopy(arrayA, 0, merged, 0, arrayA.length);
         System.arraycopy(arrayB, 0, merged, arrayA.length, arrayB.length);
@@ -123,11 +125,12 @@ public class Utilities {
         return !(replicationDeg < 0 || replicationDeg > 9);
     }
 
-	/**
+    /**
      * Reads a file and creates chunks
+     *
      * @param inputFile Input file
-     **/
-    public static void readChunks(File inputFile,String directory) throws IOException {
+     */
+    public static void readChunks(File inputFile, String directory) throws IOException {
         // Get fileId
         String fileID = getHashFromFile(inputFile);
 
@@ -160,8 +163,9 @@ public class Utilities {
         }
     }
 
-	/**
+    /**
      * Lists local files
+     *
      * @param path Folder path
      */
     public static File[] listFiles(String path) {

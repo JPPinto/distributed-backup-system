@@ -9,14 +9,12 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static java.lang.Thread.sleep;
-
 class Backup extends JFrame {
-    private LocalDataBase dataBase = null;
     private static final String dataBaseFileName = "database.bin";
-    private JPanel buttonsContentPane;
+    static PeerThread peer;
     private final JFileChooser fc = new JFileChooser();
-
+    private LocalDataBase dataBase = null;
+    private JPanel buttonsContentPane;
     private JButton buttonEXIT;
     private JButton backupFileButton;
     private JButton restoreFileButton;
@@ -27,11 +25,8 @@ class Backup extends JFrame {
     private JButton refreshFileListButton;
     private JComboBox repDegree;
     private JSpinner spinnerSpace;
-
     private ArrayList arrayListFileName;
     private ArrayList arrayListFileHash;
-
-    static PeerThread peer;
 
     public Backup(String[] args) {
 
@@ -108,6 +103,22 @@ class Backup extends JFrame {
         //updateGui();
     }
 
+    public static void main(String[] args) {
+        final String[] arg = args;
+
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Backup dialog = new Backup(arg);
+                // Start the peer
+                peer.start();
+                dialog.pack();
+                dialog.setVisible(true);
+                dialog.updateGui();
+            }
+        });
+
+    }
+
     /* Stack overflow */
     private void redirectConsoleTo(final JTextArea textarea) {
         PrintStream out = new PrintStream(new ByteArrayOutputStream() {
@@ -120,13 +131,13 @@ class Backup extends JFrame {
         System.setOut(out);
     }
 
-    private void backupButtonPressed(){
+    private void backupButtonPressed() {
         int returnVal = fc.showOpenDialog(Backup.this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
 
-            int temp =Integer.parseInt(repDegree.getSelectedItem().toString());
+            int temp = Integer.parseInt(repDegree.getSelectedItem().toString());
             try {
                 peer.sendPUTCHUNK(file.getAbsolutePath(), temp);
 
@@ -141,7 +152,7 @@ class Backup extends JFrame {
         }
     }
 
-    private void restoreButtonPressed(){
+    private void restoreButtonPressed() {
         if (filesList == null || arrayListFileName == null) {
             JOptionPane.showMessageDialog(null, "No files exist!");
             return;
@@ -161,7 +172,7 @@ class Backup extends JFrame {
 
         if (retrieval == JFileChooser.APPROVE_OPTION) {
             try {
-                peer.sendGETCHUNK(arrayListFileHash.get(selectedFile).toString() ,fileChooser.getSelectedFile().getAbsolutePath());
+                peer.sendGETCHUNK(arrayListFileHash.get(selectedFile).toString(), fileChooser.getSelectedFile().getAbsolutePath());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -171,7 +182,7 @@ class Backup extends JFrame {
         }
     }
 
-    private void deleteFileButtonPressed(){
+    private void deleteFileButtonPressed() {
         if (filesList == null || arrayListFileName == null) {
             JOptionPane.showMessageDialog(null, "No files exist!");
             return;
@@ -183,18 +194,18 @@ class Backup extends JFrame {
         }
 
         int selectedFile = filesList.getSelectedIndex();
-            try {
-                peer.sendDELETE(arrayListFileHash.get(selectedFile).toString());
+        try {
+            peer.sendDELETE(arrayListFileHash.get(selectedFile).toString());
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         updateGui();
 
     }
 
-    private void freeSomeSpaceButtonPressed(){
+    private void freeSomeSpaceButtonPressed() {
         int size = Integer.parseInt(spinnerSpace.getValue().toString());
 
         if (size < 0) {
@@ -218,13 +229,13 @@ class Backup extends JFrame {
         System.exit(0);
     }
 
-    private void updateGui(){
+    private void updateGui() {
         updateFileList();
         repaint();
     }
 
-    private void updateFileList(){
-        if (filesList != null){
+    private void updateFileList() {
+        if (filesList != null) {
             if (peer != null) {
                 filesList.setEnabled(true);
 
@@ -247,21 +258,5 @@ class Backup extends JFrame {
                 filesList.setEnabled(false);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        final String [] arg = args;
-
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Backup dialog = new Backup(arg);
-                // Start the peer
-                peer.start();
-                dialog.pack();
-                dialog.setVisible(true);
-                dialog.updateGui();
-            }
-        });
-
     }
 }

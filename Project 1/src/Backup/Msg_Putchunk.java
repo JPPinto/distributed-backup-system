@@ -13,7 +13,6 @@ package Backup;
  */
 
 import sun.plugin.dom.exception.InvalidStateException;
-import java.util.Arrays;
 
 import static Backup.Utilities.*;
 
@@ -35,38 +34,38 @@ public class Msg_Putchunk extends PBMessage {
         // Decode header
         String[] splitHeader = header.split(" ");
 
-        if (splitHeader.length == 5){
-            if (!splitHeader[0].equals(PUTCHUNK)){
+        if (splitHeader.length == 5) {
+            if (!splitHeader[0].equals(PUTCHUNK)) {
                 throw new InvalidStateException("Invalid Message!");
             }
 
-            if(!validateVersion(splitHeader[1])){
+            if (!validateVersion(splitHeader[1])) {
                 throw new InvalidStateException("Invalid Message Version!");
             }
 
-            if(!validateFileId(splitHeader[2])){
+            if (!validateFileId(splitHeader[2])) {
                 throw new InvalidStateException("Invalid Message file ID!");
             }
 
-            if(!validateChunkNo(Integer.parseInt(splitHeader[3]))){
+            if (!validateChunkNo(Integer.parseInt(splitHeader[3]))) {
                 throw new InvalidStateException("Invalid Message chunk number!");
             }
 
-            if(!validateReplicationDeg(Integer.parseInt(splitHeader[4]))){
+            if (!validateReplicationDeg(Integer.parseInt(splitHeader[4]))) {
                 throw new InvalidStateException("Invalid Message replication degree!");
             }
 
             version = splitHeader[1];
-            fileId  = splitHeader[2];
+            fileId = splitHeader[2];
             chunkNo = Integer.parseInt(splitHeader[3]);
-            replicationDegree =  Integer.parseInt(splitHeader[4]);
+            replicationDegree = Integer.parseInt(splitHeader[4]);
         } else {
-           throw new InvalidStateException("Invalid Message too many fields: " + splitHeader.length);
+            throw new InvalidStateException("Invalid Message too many fields: " + splitHeader.length);
         }
 
         chunkData = getBodyFromMessage(inputData, packetLenght);
         // Get the chunk data if it exists
-        if (chunkData == null){
+        if (chunkData == null) {
             receivedChunk = new Chunk(fileId, chunkNo);
             //receivedChunk.write("pasta");
 
@@ -78,12 +77,12 @@ public class Msg_Putchunk extends PBMessage {
     }
 
     // Message to be sent constructor
-    Msg_Putchunk(Chunk chunk, int repDegree){
+    Msg_Putchunk(Chunk chunk, int repDegree) {
         super(PUTCHUNK);
         receivedMessage = false;
-		fileId = chunk.getFileId();
-		chunkNo = chunk.getChunkNo();
-		replicationDegree = repDegree;
+        fileId = chunk.getFileId();
+        chunkNo = chunk.getChunkNo();
+        replicationDegree = repDegree;
 
         String[] stringArray = new String[5];
 
@@ -97,7 +96,7 @@ public class Msg_Putchunk extends PBMessage {
         chunkData = chunk.getChunkData();
 
         //<Body>
-        if (chunkData != null){
+        if (chunkData != null) {
             dataToBeSent = joinTwoArrays(headerData, chunkData);
         } else {
             dataToBeSent = headerData;
@@ -105,40 +104,40 @@ public class Msg_Putchunk extends PBMessage {
 
     }
 
-    public byte[] getData(){
+    public byte[] getData() {
         return dataToBeSent;
     }
 
-	@Override
-	public void saveChunk(String dir){
-		this.receivedChunk.write(dir);
-	}
-
-	@Override
-	public int getIntAttribute(int type){
-		switch (type){
-			case 0:
-				return chunkNo;
-			case 1:
-				return replicationDegree;
-			default:
-				System.out.println("Valid OPTION!");
-		}
-		return 0;
-	}
+    @Override
+    public void saveChunk(String dir) {
+        this.receivedChunk.write(dir);
+    }
 
     @Override
-	public byte[] getData(int type){
-		switch (type){
-			case 0:
-				return headerData;
-			case 1:
-				return chunkData;
-			case 2:
-				return getData();
-			default:
-				System.out.println("Valid OPTION!");
-		}
-		return new byte[0];
-	}
+    public int getIntAttribute(int type) {
+        switch (type) {
+            case 0:
+                return chunkNo;
+            case 1:
+                return replicationDegree;
+            default:
+                System.out.println("Valid OPTION!");
+        }
+        return 0;
+    }
+
+    @Override
+    public byte[] getData(int type) {
+        switch (type) {
+            case 0:
+                return headerData;
+            case 1:
+                return chunkData;
+            case 2:
+                return getData();
+            default:
+                System.out.println("Valid OPTION!");
+        }
+        return new byte[0];
+    }
 }
