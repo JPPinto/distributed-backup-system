@@ -1,5 +1,7 @@
 package Backup;
 
+import sun.plugin.dom.exception.InvalidStateException;
+
 /**
  * SDIS TP1
  *
@@ -14,6 +16,7 @@ package Backup;
 
 public class Msg_Removed extends PBMessage {
     private byte[] data;
+	private int chunkNo;
 
     // Received message constructor
     public Msg_Removed(byte[] inputData, int packetLenght){
@@ -22,12 +25,41 @@ public class Msg_Removed extends PBMessage {
         data = inputData;
 
         header = getHeaderFromMessage(inputData);
+
+		// Decode header
+		String[] splitHeader = header.split(" ");
+
+		if (splitHeader.length == 4){
+			if (!splitHeader[0].equals(REMOVED)){
+				throw new InvalidStateException("Invalid Message!");
+			}
+
+			if(!validateVersion(splitHeader[1])){
+				throw new InvalidStateException("Invalid Message Version!");
+			}
+
+			if(!Utilities.validateFileId(splitHeader[2])){
+				throw new InvalidStateException("Invalid Message file ID!");
+			}
+
+			if(!Utilities.validateChunkNo(Integer.parseInt(splitHeader[3]))){
+				throw new InvalidStateException("Invalid Message chunk number!");
+			}
+
+			version = splitHeader[1];
+			fileId  = splitHeader[2];
+			chunkNo = Integer.parseInt(splitHeader[3]);
+		} else {
+			throw new InvalidStateException("Invalid Message!");
+		}
     }
 
     // Message to be sent constructor
     public Msg_Removed(String fId, int cNo){
         super(REMOVED);
         receivedMessage = false;
+		fileId = fId;
+		chunkNo = cNo;
 
         String[] stringArray = new String[4];
         stringArray[0] = REMOVED;

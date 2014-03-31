@@ -22,12 +22,12 @@ class LocalFile implements Serializable {
     private String fileHash;
     private long fileSize; // File size in bytes
     private Date lastModificationDate;
-    private int desiredReplicationDegree;
-    private int currentReplicationDegree;
+    private int replicationDegree;
 	private ArrayList<Integer> chunks_rep;
 
 
-    LocalFile(String fileName, String fileHash, Date lastModificationDate){
+
+    LocalFile(String fileName, String fileHash, int rep_degree,Date lastModificationDate){
         if (fileName.length() <1) {
             throw new IllegalStateException("Invalid file name!");
         }
@@ -36,13 +36,15 @@ class LocalFile implements Serializable {
         this.fileName = fileName;
         this.fileHash = fileHash;
         this.lastModificationDate = lastModificationDate;
+		replicationDegree = rep_degree;
     }
 
-    LocalFile(File input) throws IOException {
+    LocalFile(File input, int rep_degree) throws IOException {
         fileSize = input.length();
         fileName = input.getName();
         fileHash = Utilities.getHashFromFile(input);
 		chunks_rep = new ArrayList<Integer>();
+		replicationDegree = rep_degree;
 
         long lastMod = input.lastModified();
         lastModificationDate = new Date(lastMod);

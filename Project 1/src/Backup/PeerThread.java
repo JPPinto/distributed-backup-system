@@ -128,6 +128,12 @@ public class PeerThread extends Thread {
 				System.out.println("SEND: " + msg.getType() + " " + msg.fileId);
 				socket.send(packet);
 
+			} else if (msg.getType() == REMOVED) {
+
+				packet = new DatagramPacket(msg.getData(0), msg.getData(0).length, IPAddress, mcast_port);
+				System.out.println("SEND: " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
+				socket.send(packet);
+
 			}
 			socket.close();
 
@@ -138,19 +144,19 @@ public class PeerThread extends Thread {
 
 	public void sendPUTCHUNK(String filepath, int rep_degree) throws IOException, InterruptedException {
 
+		LocalFile local_file;
 		File f = new File(filepath);
 
 		if (!f.exists()) {
-			if (dataBase.getFiles().containsValue(f)) {
-				System.out.println("File: " + f.getName() + " already EXISTS in the Data Base!");
-				return;
-			}
 			System.out.println("File: " + f.getName() + " does NOT EXIST!");
 			return;
 		}
 
-		LocalFile local_file = new LocalFile(f);
-
+		if (dataBase.getFiles().containsValue(f)) {
+			local_file = dataBase.getFiles().get(Utilities.getHashFromFile(f));
+		} else {
+			local_file = new LocalFile(f, rep_degree);
+		}
 
 		int time_multiplier, retransmission_count;
 
@@ -194,8 +200,11 @@ public class PeerThread extends Thread {
 						return;
 					}
 
-
-					local_file.addChunkRepDegree(socMCReceiver.stores);
+					//if (local_file.getChunks_rep().get(temp_chunk.getChunkNo()) != null) {
+					//	local_file.addChunkRepDegree(local_file.getChunks_rep().get(temp_chunk.getChunkNo()) + socMCReceiver.stores);
+					//} else {
+						local_file.addChunkRepDegree(socMCReceiver.stores);
+					//}
 				}
 			}
 		}
@@ -210,19 +219,17 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	public void sendGETCHUNK(String filepath) throws IOException, InterruptedException {
+	public void sendGETCHUNK(String filehash, String dir) throws IOException, InterruptedException {
 
-		File f = new File(filepath);
-
-		if (!dataBase.getFiles().containsKey(Utilities.getHashFromFile(f))) {
-			System.out.println("File: " + f.getName() + " does NOT EXIST in the Data Base!");
+		if (!dataBase.getFiles().containsKey(filehash)) {
+			System.out.println("File: " + filehash + " does NOT EXIST in the Data Base!");
 			return;
 		}
 
-		LocalFile local_file = dataBase.getFiles().get(Utilities.getHashFromFile(f));
+		LocalFile local_file = dataBase.getFiles().get(filehash);
 
 		int time_multiplier, retransmission_count;
-		System.out.println("Starting to recover FILE: " + filepath + "...");
+		System.out.println("Starting to recover FILE: " + local_file.getFileName() + "...");
 
 		int i;
 		int num_chunks_to_recover = local_file.getNumberOfChunks();
@@ -252,13 +259,13 @@ public class PeerThread extends Thread {
 			}
 
 			if (retransmission_count == 6) {
-				System.out.println("FAILED TO RECOVER FILE " + filepath + " DUE TO ERROR GETTING CHUNK " + i);
+				System.out.println("FAILED TO RECOVER FILE " + local_file.getFileName() + " DUE TO ERROR GETTING CHUNK " + i);
 				return;
 			}
 		}
 
-		local_file.restoreFileFromChunks("./");
-		System.out.println("File " + filepath + " recovery complete with " + i + " chunks received.");
+		local_file.restoreFileFromChunks(dir);
+		System.out.println("File " + local_file.getFileName() + " recovery complete with " + i + " chunks received.");
 	}
 
 	public void sendDELETE(String filepath) throws IOException {
@@ -277,8 +284,10 @@ public class PeerThread extends Thread {
 		sendRequest(temp_delete, addressMC, portMC);
 	}
 
-	public void sendREMOVED() throws IOException {
+	public void sendREMOVED(String fId, int chunkNo) throws IOException {
 
+		PBMessage temp_removed = new Msg_Removed(fId, chunkNo);
+		sendRequest(temp_removed, addressMC, portMC);
 
 	}
 
@@ -303,7 +312,7 @@ public class PeerThread extends Thread {
 			sleep(1000);
 
 			//peer.dataBase.getFiles().clear();
-			peer.sendPUTCHUNK("./binary2.test",1);
+			peer.sendPUTCHUNK("./binary2.test", 1);
 			System.out.println("Backup done Now for the Recovery!");
 			//sleep(1000);
 			peer.sendGETCHUNK("./binary2.test");
