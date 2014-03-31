@@ -145,19 +145,26 @@ class Backup extends JFrame {
                 log+="Restoring: ";
                 log+=fileChooser.getSelectedFile().getAbsolutePath();
                 log+="...\n";
-                
-                //peer.sendGETCHUNK(fileChooser.getSelectedFile().getAbsolutePath());
+                peer.sendGETCHUNK(arlH.get(selectedFile).toString() ,fileChooser.getSelectedFile().getAbsolutePath());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        //peer.sendGETCHUNK("./binary2.test");
     }
 
     private void deleteFileButtonPressed(){
         int selectedFile = filesList.getSelectedIndex();
+
+            try {
+                log+="Deleting: ";
+                log+=arl.get(selectedFile).toString();
+                log+="...\n";
+                peer.sendDELETE(arlH.get(selectedFile).toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
     }
 
