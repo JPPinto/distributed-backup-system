@@ -22,7 +22,6 @@ class Backup extends JFrame {
     private JButton deleteFileButton;
     private JButton freeSomeSpaceButton;
     private JList filesList;
-    private DefaultListModel<String> listModel;
     private JTextPane logTextPane;
     private JButton refreshFileListButton;
     private String log;
@@ -31,7 +30,6 @@ class Backup extends JFrame {
 
     public Backup(String[] args) {
         log = "";
-        listModel = new DefaultListModel<String>();
 
         if (args.length != 6) {
             peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001, "226.0.0.0", 60002);
@@ -44,8 +42,6 @@ class Backup extends JFrame {
 
         setContentPane(buttonsContentPane);
         getRootPane().setDefaultButton(buttonEXIT);
-
-        filesList = new JList(listModel);
 
         buttonEXIT.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -172,12 +168,11 @@ class Backup extends JFrame {
     }
 
     private void updateFileList(){
-        if (listModel != null && filesList != null){
+        if (filesList != null){
             if (peer != null) {
                 filesList.setEnabled(true);
 
                 filesList.clearSelection();
-                listModel.clear();
 
                 Map<String, LocalFile> dataBase = peer.getDataBase().getFiles();
 
@@ -185,9 +180,10 @@ class Backup extends JFrame {
 
                 for (Map.Entry<String, LocalFile> pairs : dataBase.entrySet()) {
                     String hash = pairs.getKey();
-                    listModel.addElement(hash + " " + peer.getDataBase().getFileNameFromId(hash));
-                    arl.add(hash + " " + peer.getDataBase().getFileNameFromId(hash));
+                    arl.add(peer.getDataBase().getFileNameFromId(hash));
                 }
+
+                filesList.setListData(arl.toArray());
 
             } else {
                 filesList.setEnabled(false);

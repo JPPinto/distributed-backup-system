@@ -121,9 +121,7 @@
                   <alignmentX value="0.0"/>
                   <alignmentY value="0.0"/>
                   <minimumSize width="300" height="500"/>
-                  <model>
-                    <item value="Files Will"/>
-                  </model>
+                  <model/>
                   <preferredSize width="300" height="500"/>
                   <selectionMode value="0"/>
                   <toolTipText value="Backuped Files"/>
