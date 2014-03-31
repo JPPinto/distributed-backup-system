@@ -31,6 +31,9 @@ public class LocalDataBase implements Serializable{
         return files.get(hash);
     }
 
+    public String getFileNameFromId(String hash){
+        return files.get(hash).getFileName();
+    }
 
     /***
      * Calls the file chunk delete and removes the file from the database

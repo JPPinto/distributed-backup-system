@@ -21,7 +21,7 @@ class Backup extends JFrame {
     private JButton deleteFileButton;
     private JButton freeSomeSpaceButton;
     private JList filesList;
-    private DefaultListModel listModel;
+    private DefaultListModel<String> listModel;
     private JTextPane logTextPane;
     private JButton refreshFileListButton;
     private String log;
@@ -30,7 +30,7 @@ class Backup extends JFrame {
 
     public Backup(String[] args) {
         log = "";
-        listModel = new DefaultListModel();
+        listModel = new DefaultListModel<String>();
         //peer.loadDataBase();
 
         filesList = new JList(listModel);
@@ -172,32 +172,25 @@ class Backup extends JFrame {
     }
 
     private void updateFileList(){
-        if (filesList != null){
+        if (listModel != null && filesList != null){
             if (peer != null) {
                 filesList.setEnabled(true);
+
                 listModel.clear();
 
-                Map<String, LocalFile> files = peer.getDataBase().getFiles();
+                Map<String, LocalFile> dataBase = peer.getDataBase().getFiles();
 
-                Iterator it = files.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pairs = (Map.Entry)it.next();
-                    listModel.addElement(pairs.getKey().toString()); //addpairs.getKey().toString() + " " + pairs.getValue().toString())
-                    it.remove();
+                for (Map.Entry<String, LocalFile> pairs : dataBase.entrySet()) {
+                    String hash = pairs.getKey();
+                    listModel.addElement(hash + " " + peer.getDataBase().getFileNameFromId(hash));
+
+                    System.out.println(hash + " " + peer.getDataBase().getFileNameFromId(hash));
                 }
+
 
             } else {
                 filesList.setEnabled(false);
             }
-        }
-    }
-
-    private void loadDataBase(){
-        dataBase = LocalDataBase.loadDataBaseFromFile(dataBaseFileName);
-
-        // We failed to load the database
-        if (dataBase == null) {
-            dataBase = new LocalDataBase();
         }
     }
 
