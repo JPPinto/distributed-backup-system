@@ -151,12 +151,20 @@ class Backup extends JFrame {
                 e.printStackTrace();
             }
         }
-
-        //peer.sendGETCHUNK("./binary2.test");
     }
 
     private void deleteFileButtonPressed(){
         int selectedFile = filesList.getSelectedIndex();
+
+            try {
+                log+="Deleting: ";
+                log+=arl.get(selectedFile).toString();
+                log+="...\n";
+                peer.sendDELETE(arlH.get(selectedFile).toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
     }
 
