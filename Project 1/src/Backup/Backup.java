@@ -144,6 +144,16 @@ class Backup extends JFrame {
     }
 
     private void restoreButtonPressed(){
+        if (filesList == null || arrayListFileName == null) {
+            JOptionPane.showMessageDialog(null, "No files exist!");
+            return;
+        }
+
+        if (filesList.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "No file selected!");
+            return;
+        }
+
         int selectedFile = filesList.getSelectedIndex();
 
         JFileChooser fileChooser = new JFileChooser();
@@ -164,6 +174,16 @@ class Backup extends JFrame {
     }
 
     private void deleteFileButtonPressed(){
+        if (filesList == null || arrayListFileName == null) {
+            JOptionPane.showMessageDialog(null, "No files exist!");
+            return;
+        }
+
+        if (filesList.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "No file selected!");
+            return;
+        }
+
         int selectedFile = filesList.getSelectedIndex();
             try {
                 peer.sendDELETE(arrayListFileHash.get(selectedFile).toString());
