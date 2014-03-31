@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -105,7 +106,7 @@ class Backup extends JFrame {
 
         // Start the peer
         peer.start();
-        updateGui();
+        //updateGui();
     }
 
     private void backupButtonPressed(){
@@ -161,6 +162,7 @@ class Backup extends JFrame {
     private void updateGui(){
         updateLogWindow();
         updateFileList();
+        repaint();
     }
 
     private void updateLogWindow(){
@@ -179,12 +181,13 @@ class Backup extends JFrame {
 
                 Map<String, LocalFile> dataBase = peer.getDataBase().getFiles();
 
+                ArrayList arl = new ArrayList();
+
                 for (Map.Entry<String, LocalFile> pairs : dataBase.entrySet()) {
                     String hash = pairs.getKey();
                     listModel.addElement(hash + " " + peer.getDataBase().getFileNameFromId(hash));
-                    System.out.println(hash + " " + peer.getDataBase().getFileNameFromId(hash));
+                    arl.add(hash + " " + peer.getDataBase().getFileNameFromId(hash));
                 }
-
 
             } else {
                 filesList.setEnabled(false);
