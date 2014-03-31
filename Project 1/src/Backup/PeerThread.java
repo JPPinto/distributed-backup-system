@@ -282,7 +282,7 @@ public class PeerThread extends Thread {
 	}
 
 	public static void freeDiskSpace(int kbytes){
-			
+		
 	}
 
 	public void sendREMOVED(String fId, int chunkNo) throws IOException {
@@ -313,8 +313,8 @@ public class PeerThread extends Thread {
 			sleep(1000);
 
 			//peer.dataBase.getFiles().clear();
-			peer.sendPUTCHUNK("./binary2.test", 1);
-			System.out.println("Backup done Now for the Recovery!");
+			//peer.sendPUTCHUNK("./binary2.test", 1);
+			//System.out.println("Backup done Now for the Recovery!");
 			//sleep(1000);
 			//peer.sendGETCHUNK("./binary2.test");
 			//System.out.println("Recovery done Now for the Delete!");
