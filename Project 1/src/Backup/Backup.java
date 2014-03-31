@@ -31,7 +31,7 @@ class Backup extends JFrame {
     private ArrayList arrayListFileName;
     private ArrayList arrayListFileHash;
 
-    PeerThread peer;
+    static PeerThread peer;
 
     public Backup(String[] args) {
 
@@ -105,8 +105,6 @@ class Backup extends JFrame {
 
         redirectConsoleTo(logTextPane);
 
-        // Start the peer
-        peer.start();
         //updateGui();
     }
 
@@ -212,7 +210,7 @@ class Backup extends JFrame {
         // Destroy the GUI interface
         dispose();
 
-        //peer.;
+        peer.saveDataBase();
 
         // Close all threads here
 
@@ -257,8 +255,11 @@ class Backup extends JFrame {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Backup dialog = new Backup(arg);
+                // Start the peer
+                peer.start();
                 dialog.pack();
                 dialog.setVisible(true);
+                dialog.updateGui();
             }
         });
 
