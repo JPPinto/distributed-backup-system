@@ -1,7 +1,6 @@
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -14,3 +13,4 @@ Project 1/.idea/copyright/profiles_settings.xml
 Project 1/.idea/copyright/profiles_settings.xml
 Project 1/.idea/misc.xml
 Project 1/Potato Backup.iml
+Project 1/out/*
