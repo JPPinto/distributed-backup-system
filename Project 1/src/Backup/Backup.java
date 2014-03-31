@@ -175,9 +175,15 @@ class Backup extends JFrame {
     }
 
     private void freeSomeSpaceButtonPressed(){
-        peer.freeDiskSpace(9);
+        int size = Integer.parseInt(spinnerSpace.getValue().toString());
 
-        updateGui();
+        if (size < 0) {
+            JOptionPane.showMessageDialog(null, "Invalid value in space reclaim!");
+        } else {
+            peer.freeDiskSpace(size);
+            updateGui();
+        }
+
     }
 
     private void exitButtonPressed() {
