@@ -25,6 +25,7 @@ class Backup extends JFrame {
     private JTextPane logTextPane;
     private JButton refreshFileListButton;
     private JComboBox repDegree;
+    private JSpinner spinnerSpace;
     private String log;
 
     private ArrayList arl;
@@ -120,7 +121,7 @@ class Backup extends JFrame {
                 log+=file.getAbsolutePath();
                 log+="...\n";
                 updateLogWindow();
-                peer.sendPUTCHUNK(file.getAbsolutePath(), 1);
+                peer.sendPUTCHUNK(file.getAbsolutePath(), Integer.parseInt(repDegree.getSelectedItem().toString()));
 
 
             } catch (IOException e1) {
@@ -151,6 +152,8 @@ class Backup extends JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            updateGui();
         }
     }
 
@@ -167,10 +170,14 @@ class Backup extends JFrame {
                 e.printStackTrace();
             }
 
+        updateGui();
+
     }
 
     private void freeSomeSpaceButtonPressed(){
-        //peer.
+        peer.freeDiskSpace(9);
+
+        updateGui();
     }
 
     private void exitButtonPressed() {
