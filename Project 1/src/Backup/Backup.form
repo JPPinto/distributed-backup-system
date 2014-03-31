@@ -146,10 +146,12 @@
                 <properties>
                   <editable value="false"/>
                   <enabled value="true"/>
+                  <font swing-font="PasswordField.font"/>
                   <minimumSize width="300" height="500"/>
                   <preferredSize width="300" height="500"/>
                   <text value=""/>
                   <toolTipText value="Program log"/>
+                  <wrapStyleWord value="false"/>
                 </properties>
               </component>
             </children>

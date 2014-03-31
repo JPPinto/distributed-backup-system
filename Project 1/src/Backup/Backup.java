@@ -1,6 +1,7 @@
 package Backup;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.event.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -22,7 +23,6 @@ class Backup extends JFrame {
     private JButton freeSomeSpaceButton;
     private JList filesList;
     private JTextArea logTextPane;
-    JScrollPane scrollTextPane;
     private JButton refreshFileListButton;
     private JComboBox repDegree;
     private JSpinner spinnerSpace;
@@ -100,10 +100,8 @@ class Backup extends JFrame {
         });
 
         redirectConsoleTo(logTextPane);
-        scrollTextPane = new JScrollPane (logTextPane,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-        //updateGui();
+        DefaultCaret caret = (DefaultCaret) logTextPane.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
 
     public static void main(String[] args) {
