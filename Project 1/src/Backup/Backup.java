@@ -135,6 +135,24 @@ class Backup extends JFrame {
     private void restoreButtonPressed(){
         int selectedFile = filesList.getSelectedIndex();
 
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setSelectedFile(new File(arl.get(selectedFile).toString()));
+
+        int retrieval = fileChooser.showSaveDialog(Backup.this);
+
+        if (retrieval == JFileChooser.APPROVE_OPTION) {
+            try {
+                log+="Restoring: ";
+                log+=fileChooser.getSelectedFile().getAbsolutePath();
+                log+="...\n";
+                
+                //peer.sendGETCHUNK(fileChooser.getSelectedFile().getAbsolutePath());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         //peer.sendGETCHUNK("./binary2.test");
     }
 
