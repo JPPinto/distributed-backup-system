@@ -116,12 +116,14 @@ class Backup extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
 
+            int temp =Integer.parseInt(repDegree.getSelectedItem().toString());
             try {
                 log+="Backing up: ";
                 log+=file.getAbsolutePath();
+                log+=" with " + temp + " copies";
                 log+="...\n";
                 updateLogWindow();
-                peer.sendPUTCHUNK(file.getAbsolutePath(), Integer.parseInt(repDegree.getSelectedItem().toString()));
+                peer.sendPUTCHUNK(file.getAbsolutePath(), temp);
 
 
             } catch (IOException e1) {
@@ -180,6 +182,8 @@ class Backup extends JFrame {
         if (size < 0) {
             JOptionPane.showMessageDialog(null, "Invalid value in space reclaim!");
         } else {
+            log+="Reclaiming " + size + "kB";
+            log+="...\n";
             peer.freeDiskSpace(size);
             updateGui();
         }
