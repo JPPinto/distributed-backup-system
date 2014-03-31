@@ -315,7 +315,7 @@ public class PeerThread extends Thread {
 			peer.sendPUTCHUNK("./binary2.test", 1);
 			System.out.println("Backup done Now for the Recovery!");
 			//sleep(1000);
-			peer.sendGETCHUNK("./binary2.test");
+			//peer.sendGETCHUNK("./binary2.test");
 			//System.out.println("Recovery done Now for the Delete!");
 			//peer.sendDELETE("./binary2.test");
 
