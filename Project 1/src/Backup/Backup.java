@@ -24,6 +24,7 @@ class Backup extends JFrame {
     private JList filesList;
     private JTextPane logTextPane;
     private JButton refreshFileListButton;
+    private JComboBox repDegree;
     private String log;
 
     private ArrayList arl;
