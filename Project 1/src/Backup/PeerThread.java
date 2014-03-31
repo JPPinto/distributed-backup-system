@@ -195,7 +195,7 @@ public class PeerThread extends Thread {
 					}
 
 
-					local_file.getChunks_rep().add(socMCReceiver.stores);
+					local_file.addChunkRepDegree(socMCReceiver.stores);
 				}
 			}
 		}

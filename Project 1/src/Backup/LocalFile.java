@@ -42,6 +42,7 @@ class LocalFile implements Serializable {
         fileSize = input.length();
         fileName = input.getName();
         fileHash = Utilities.getHashFromFile(input);
+		chunks_rep = new ArrayList<Integer>();
 
         long lastMod = input.lastModified();
         lastModificationDate = new Date(lastMod);
@@ -129,5 +130,9 @@ class LocalFile implements Serializable {
 
 	public ArrayList<Integer> getChunks_rep() {
 		return chunks_rep;
+	}
+
+	public void addChunkRepDegree(int i){
+		chunks_rep.add(i);
 	}
 }
