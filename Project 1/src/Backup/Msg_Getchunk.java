@@ -1,6 +1,5 @@
 package Backup;
 
-import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  * SDIS TP1
@@ -29,26 +28,26 @@ public class Msg_Getchunk extends PBMessage {
 
         if (splitHeader.length == 4) {
             if (!splitHeader[0].equals(GETCHUNK)) {
-                throw new InvalidStateException("Invalid Message!");
+                throw new IllegalAccessError("Invalid Message!");
             }
 
             if (!validateVersion(splitHeader[1])) {
-                throw new InvalidStateException("Invalid Message Version!");
+                throw new IllegalAccessError("Invalid Message Version!");
             }
 
             if (!Utilities.validateFileId(splitHeader[2])) {
-                throw new InvalidStateException("Invalid Message file ID!");
+                throw new IllegalAccessError("Invalid Message file ID!");
             }
 
             if (!Utilities.validateChunkNo(Integer.parseInt(splitHeader[3]))) {
-                throw new InvalidStateException("Invalid Message chunk number!");
+                throw new IllegalAccessError("Invalid Message chunk number!");
             }
 
             version = splitHeader[1];
             fileId = splitHeader[2];
             chunkNo = Integer.parseInt(splitHeader[3]);
         } else {
-            throw new InvalidStateException("Invalid Message!");
+            throw new IllegalAccessError("Invalid Message!");
         }
     }
 

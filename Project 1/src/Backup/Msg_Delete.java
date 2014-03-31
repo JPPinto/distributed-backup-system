@@ -1,7 +1,5 @@
 package Backup;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 /**
  * SDIS TP1
  * <p/>
@@ -28,16 +26,16 @@ public class Msg_Delete extends PBMessage {
 
         if (splitHeader.length == 2) {                                            //Corrected size of string
             if (!splitHeader[0].equals(DELETE)) {
-                throw new InvalidStateException("Invalid Message!");
+                throw new IllegalAccessError("Invalid Message!");
             }
 
             if (!Utilities.validateFileId(splitHeader[1])) {
-                throw new InvalidStateException("Invalid Message file ID!");
+                throw new IllegalAccessError("Invalid Message file ID!");
             }
 
             fileId = splitHeader[1];
         } else {
-            throw new InvalidStateException("Invalid Message!");
+            throw new IllegalAccessError("Invalid Message!");
         }
     }
 

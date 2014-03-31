@@ -12,7 +12,7 @@ package Backup;
  * PUTCHUNK <Version> <FileId> <ChunkNo> <ReplicationDeg> <CRLF><CRLF> <Body>
  */
 
-import sun.plugin.dom.exception.InvalidStateException;
+
 
 import static Backup.Utilities.*;
 
@@ -25,7 +25,7 @@ public class Msg_Putchunk extends PBMessage {
     private Chunk receivedChunk;
 
     // Received message constructor
-    Msg_Putchunk(byte[] inputData, int packetLenght) throws InvalidStateException {
+    Msg_Putchunk(byte[] inputData, int packetLenght) throws IllegalAccessError {
         super(PUTCHUNK);
         receivedMessage = true;
 
@@ -36,23 +36,23 @@ public class Msg_Putchunk extends PBMessage {
 
         if (splitHeader.length == 5) {
             if (!splitHeader[0].equals(PUTCHUNK)) {
-                throw new InvalidStateException("Invalid Message!");
+                throw new IllegalAccessError("Invalid Message!");
             }
 
             if (!validateVersion(splitHeader[1])) {
-                throw new InvalidStateException("Invalid Message Version!");
+                throw new IllegalAccessError("Invalid Message Version!");
             }
 
             if (!validateFileId(splitHeader[2])) {
-                throw new InvalidStateException("Invalid Message file ID!");
+                throw new IllegalAccessError("Invalid Message file ID!");
             }
 
             if (!validateChunkNo(Integer.parseInt(splitHeader[3]))) {
-                throw new InvalidStateException("Invalid Message chunk number!");
+                throw new IllegalAccessError("Invalid Message chunk number!");
             }
 
             if (!validateReplicationDeg(Integer.parseInt(splitHeader[4]))) {
-                throw new InvalidStateException("Invalid Message replication degree!");
+                throw new IllegalAccessError("Invalid Message replication degree!");
             }
 
             version = splitHeader[1];
@@ -60,7 +60,7 @@ public class Msg_Putchunk extends PBMessage {
             chunkNo = Integer.parseInt(splitHeader[3]);
             replicationDegree = Integer.parseInt(splitHeader[4]);
         } else {
-            throw new InvalidStateException("Invalid Message too many fields: " + splitHeader.length);
+            throw new IllegalAccessError("Invalid Message too many fields: " + splitHeader.length);
         }
 
         chunkData = getBodyFromMessage(inputData, packetLenght);

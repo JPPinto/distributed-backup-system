@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -162,6 +163,13 @@ public class Utilities {
             finalChunk.write(directory);
         }
     }
+
+	public static byte[] getThrash(){
+		byte[] t = new byte[64000];
+		byte u = 0x31;
+		Arrays.fill(t, u);
+		return t;
+	}
 
     /**
      * Lists local files

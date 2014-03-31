@@ -7,7 +7,7 @@ package Backup; /**
  * Backup.PBMessage class
  */
 
-import sun.plugin.dom.exception.InvalidStateException;
+
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -85,7 +85,7 @@ abstract class PBMessage {
                 //System.out.println("PROCESSING, MESSAGE TYPE: GETCHUNK");
                 return new Msg_Getchunk(data, lenght);
             }
-        } catch (InvalidStateException e) {
+        } catch (IllegalAccessError e) {
             e.printStackTrace();
         }
 
@@ -98,14 +98,14 @@ abstract class PBMessage {
         return p.matcher(m).matches();
     }
 
-    public static String getHeaderFromMessage(byte[] inputData) throws InvalidStateException {
+    public static String getHeaderFromMessage(byte[] inputData) throws IllegalAccessError {
         int it = 0;
 
         byte[] headerData = null;
 
         while (true) {
             if (it >= inputData.length) {
-                throw new InvalidStateException("Message Error!");
+                throw new IllegalAccessError("Message Error!");
             }
 
             /* 0xD 0xA */
@@ -121,14 +121,14 @@ abstract class PBMessage {
         return Utilities.convertByteArrayToSring(headerData);
     }
 
-    public static byte[] getBodyFromMessage(byte[] inputData, int length) throws InvalidStateException {
+    public static byte[] getBodyFromMessage(byte[] inputData, int length) throws IllegalAccessError {
 
         int it = 0;
         int terminators = 0;
 
         while (true) {
             if (it >= length) {
-                throw new InvalidStateException("Message Error!");
+                throw new IllegalAccessError("Message Error!");
             }
 
             /* 0xD 0xA */

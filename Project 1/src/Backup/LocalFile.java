@@ -22,7 +22,6 @@ class LocalFile implements Serializable {
     private int replicationDegree;
     private ArrayList<Integer> chunks_rep;
 
-
     LocalFile(String fileName, String fileHash, int rep_degree, Date lastModificationDate) {
         if (fileName.length() < 1) {
             throw new IllegalStateException("Invalid file name!");
@@ -61,7 +60,6 @@ class LocalFile implements Serializable {
 
         int i = 0;
         do {
-            System.out.println("Chunk Nº: " + i);
             i++;
             // Load chunk from file
             currentChunkName = Utilities.backupDirectory + "/" + fileHash + "-" + currentChunkNo + Chunk.chunkFileExtension;
@@ -133,4 +131,8 @@ class LocalFile implements Serializable {
     public void addChunkRepDegree(int i) {
         chunks_rep.add(i);
     }
+
+	public int getReplicationDegree() {
+		return replicationDegree;
+	}
 }

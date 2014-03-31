@@ -64,7 +64,7 @@ public class ProtocolHandler extends Thread {
 
                 String temp_id = chunksInBackup[i].getName().substring(0, 64);
                 if (temp_id.equals(msg.fileId)) {
-                    System.out.println("Chunk Nº: " + chunksInBackup[i].getName() + " DELETED");
+                    //System.out.println("Chunk Nº: " + chunksInBackup[i].getName() + " DELETED");
                     chunksInBackup[i].delete();
                     deleted_chunks++;
                 }
@@ -74,7 +74,18 @@ public class ProtocolHandler extends Thread {
         } else if (msg.getType().equals(STORED)) {
             System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
         } else if (msg.getType().equals(REMOVED)) {
-            System.out.println("HANDLED REMOVED!");
+			System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
+
+			LocalFile local_File = Backup.peer.getDataBase().getFiles().get(msg.fileId);
+
+			if(local_File != null){
+				int file_rep_degree = local_File.getReplicationDegree(), chunk_rep_degree = local_File.getChunks_rep().get(msg.getIntAttribute(0)) - 1;
+				if(chunk_rep_degree < file_rep_degree){
+					PBMessage temp_message = new Msg_Putchunk(new Chunk(msg.fileId, msg.getIntAttribute(0), Utilities.getThrash()), 2);
+					sendRequest(temp_message, addrs.get(SOCKET_MDB),ports.get(SOCKET_MDB));
+				}
+			}
+
         } else if (msg.getType().equals(CHUNK)) {
             System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));
 
