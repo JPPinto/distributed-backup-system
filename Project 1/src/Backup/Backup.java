@@ -99,9 +99,10 @@ class Backup extends JFrame {
             }
         });
 
-        redirectConsoleTo(logTextPane);
         DefaultCaret caret = (DefaultCaret) logTextPane.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+        redirectConsoleTo(logTextPane);
     }
 
     public static void main(String[] args) {
