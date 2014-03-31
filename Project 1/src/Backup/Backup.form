@@ -2,11 +2,11 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Backup.Backup">
   <grid id="cbd77" binding="buttonsContentPane" layout-manager="BorderLayout" hgap="2" vgap="2">
     <constraints>
-      <xy x="48" y="54" width="800" height="510"/>
+      <xy x="48" y="54" width="1000" height="510"/>
     </constraints>
     <properties>
-      <minimumSize width="800" height="500"/>
-      <preferredSize width="800" height="500"/>
+      <minimumSize width="1000" height="500"/>
+      <preferredSize width="1000" height="500"/>
       <requestFocusEnabled value="true"/>
     </properties>
     <border type="none">
@@ -141,7 +141,7 @@
             </properties>
             <border type="line"/>
             <children>
-              <component id="b4b83" class="javax.swing.JTextPane" binding="logTextPane" default-binding="true">
+              <component id="b4b83" class="javax.swing.JTextArea" binding="logTextPane" default-binding="true">
                 <constraints border-constraint="Center"/>
                 <properties>
                   <editable value="false"/>

@@ -2,10 +2,11 @@ package Backup;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import static java.lang.Thread.sleep;
@@ -22,19 +23,17 @@ class Backup extends JFrame {
     private JButton deleteFileButton;
     private JButton freeSomeSpaceButton;
     private JList filesList;
-    private JTextPane logTextPane;
+    private JTextArea logTextPane;
     private JButton refreshFileListButton;
     private JComboBox repDegree;
     private JSpinner spinnerSpace;
-    private String log;
 
-    private ArrayList arl;
-    private ArrayList arlH;
+    private ArrayList arrayListFileName;
+    private ArrayList arrayListFileHash;
 
     PeerThread peer;
 
     public Backup(String[] args) {
-        log = "";
 
         if (args.length != 6) {
             peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001, "226.0.0.0", 60002);
@@ -104,10 +103,23 @@ class Backup extends JFrame {
             }
         });
 
+        redirectConsoleTo(logTextPane);
 
         // Start the peer
         peer.start();
         //updateGui();
+    }
+
+    /* Stack overflow */
+    private void redirectConsoleTo(final JTextArea textarea) {
+        PrintStream out = new PrintStream(new ByteArrayOutputStream() {
+            public synchronized void flush() throws IOException {
+                textarea.setText(toString());
+            }
+        }, true);
+
+        System.setErr(out);
+        System.setOut(out);
     }
 
     private void backupButtonPressed(){
@@ -118,11 +130,6 @@ class Backup extends JFrame {
 
             int temp =Integer.parseInt(repDegree.getSelectedItem().toString());
             try {
-                log+="Backing up: ";
-                log+=file.getAbsolutePath();
-                log+=" with " + temp + " copies";
-                log+="...\n";
-                updateLogWindow();
                 peer.sendPUTCHUNK(file.getAbsolutePath(), temp);
 
 
@@ -140,16 +147,13 @@ class Backup extends JFrame {
         int selectedFile = filesList.getSelectedIndex();
 
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setSelectedFile(new File(arl.get(selectedFile).toString()));
+        fileChooser.setSelectedFile(new File(arrayListFileName.get(selectedFile).toString()));
 
         int retrieval = fileChooser.showSaveDialog(Backup.this);
 
         if (retrieval == JFileChooser.APPROVE_OPTION) {
             try {
-                log+="Restoring: ";
-                log+=fileChooser.getSelectedFile().getAbsolutePath();
-                log+="...\n";
-                peer.sendGETCHUNK(arlH.get(selectedFile).toString() ,fileChooser.getSelectedFile().getAbsolutePath());
+                peer.sendGETCHUNK(arrayListFileHash.get(selectedFile).toString() ,fileChooser.getSelectedFile().getAbsolutePath());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -161,12 +165,8 @@ class Backup extends JFrame {
 
     private void deleteFileButtonPressed(){
         int selectedFile = filesList.getSelectedIndex();
-
             try {
-                log+="Deleting: ";
-                log+=arl.get(selectedFile).toString();
-                log+="...\n";
-                peer.sendDELETE(arlH.get(selectedFile).toString());
+                peer.sendDELETE(arrayListFileHash.get(selectedFile).toString());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -182,8 +182,6 @@ class Backup extends JFrame {
         if (size < 0) {
             JOptionPane.showMessageDialog(null, "Invalid value in space reclaim!");
         } else {
-            log+="Reclaiming " + size + "kB";
-            log+="...\n";
             peer.freeDiskSpace(size);
             updateGui();
         }
@@ -194,7 +192,7 @@ class Backup extends JFrame {
         // Destroy the GUI interface
         dispose();
 
-        //peer.saveDataBase();
+        //peer.;
 
         // Close all threads here
 
@@ -203,15 +201,8 @@ class Backup extends JFrame {
     }
 
     private void updateGui(){
-        updateLogWindow();
         updateFileList();
         repaint();
-    }
-
-    private void updateLogWindow(){
-        if(logTextPane != null){
-            logTextPane.setText(log);
-        }
     }
 
     private void updateFileList(){
@@ -223,16 +214,16 @@ class Backup extends JFrame {
 
                 Map<String, LocalFile> dataBase = peer.getDataBase().getFiles();
 
-                arl = new ArrayList();
-                arlH = new ArrayList();
+                arrayListFileName = new ArrayList();
+                arrayListFileHash = new ArrayList();
 
                 for (Map.Entry<String, LocalFile> pairs : dataBase.entrySet()) {
                     String hash = pairs.getKey();
-                    arlH.add(hash);
-                    arl.add(peer.getDataBase().getFileNameFromId(hash));
+                    arrayListFileHash.add(hash);
+                    arrayListFileName.add(peer.getDataBase().getFileNameFromId(hash));
                 }
 
-                filesList.setListData(arl.toArray());
+                filesList.setListData(arrayListFileName.toArray());
 
             } else {
                 filesList.setEnabled(false);
@@ -251,7 +242,5 @@ class Backup extends JFrame {
             }
         });
 
-
-        //System.exit(0);
     }
 }
