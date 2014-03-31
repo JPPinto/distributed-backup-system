@@ -22,6 +22,7 @@ class Backup extends JFrame {
     private JButton freeSomeSpaceButton;
     private JList filesList;
     private JTextArea logTextPane;
+    JScrollPane scrollTextPane;
     private JButton refreshFileListButton;
     private JComboBox repDegree;
     private JSpinner spinnerSpace;
@@ -99,6 +100,8 @@ class Backup extends JFrame {
         });
 
         redirectConsoleTo(logTextPane);
+        scrollTextPane = new JScrollPane (logTextPane,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         //updateGui();
     }

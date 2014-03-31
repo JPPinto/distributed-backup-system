@@ -1,8 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="Potato Backup:jar">
+  <artifact name="Potato Backup:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Potato_Backup_jar</output-path>
-    <root id="archive" name="Potato Backup.jar">
-      <element id="module-output" name="Potato Backup" />
+    <root id="root">
+      <element id="archive" name="Potato Backup.jar">
+        <element id="module-output" name="Potato Backup" />
+      </element>
     </root>
   </artifact>
 </component>
