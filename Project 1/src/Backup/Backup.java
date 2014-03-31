@@ -26,6 +26,9 @@ class Backup extends JFrame {
     private JButton refreshFileListButton;
     private String log;
 
+    private ArrayList arl;
+    private ArrayList arlH;
+
     PeerThread peer;
 
     public Backup(String[] args) {
@@ -125,6 +128,7 @@ class Backup extends JFrame {
                 e1.printStackTrace();
             }
 
+            updateGui();
         }
     }
 
@@ -176,10 +180,12 @@ class Backup extends JFrame {
 
                 Map<String, LocalFile> dataBase = peer.getDataBase().getFiles();
 
-                ArrayList arl = new ArrayList();
+                arl = new ArrayList();
+                arlH = new ArrayList();
 
                 for (Map.Entry<String, LocalFile> pairs : dataBase.entrySet()) {
                     String hash = pairs.getKey();
+                    arlH.add(hash);
                     arl.add(peer.getDataBase().getFileNameFromId(hash));
                 }
 
