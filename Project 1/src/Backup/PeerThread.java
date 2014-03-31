@@ -81,7 +81,7 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	private void saveDataBase() {
+	public void saveDataBase() {
 		LocalDataBase.saveDataBaseToFile(dataBase, dataBaseFileName);
 	}
 
@@ -287,6 +287,11 @@ public class PeerThread extends Thread {
 		File[] chunks_on_backup = backup_folder.listFiles();
 
 		int num_chunks_to_remove = kbytes / chunkDataSize;
+
+		if(num_chunks_to_remove > chunks_on_backup.length){
+			System.out.println("Amount memory to free ");
+
+		}
 	}
 
 	public void sendREMOVED(String fId, int chunkNo) throws IOException {
