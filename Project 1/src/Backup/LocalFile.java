@@ -1,5 +1,6 @@
 package Backup;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ class LocalFile implements Serializable {
     private Date lastModificationDate;
     private int desiredReplicationDegree;
     private int currentReplicationDegree;
+	private ArrayList<Integer> chunks_rep;
 
 
     LocalFile(String fileName, String fileHash, Date lastModificationDate){
@@ -30,6 +32,7 @@ class LocalFile implements Serializable {
             throw new IllegalStateException("Invalid file name!");
         }
 
+		this.chunks_rep = new ArrayList<Integer>();
         this.fileName = fileName;
         this.fileHash = fileHash;
         this.lastModificationDate = lastModificationDate;
@@ -123,4 +126,8 @@ class LocalFile implements Serializable {
             return (int) ((fileSize/64000) + 1);
         }
     }
+
+	public ArrayList<Integer> getChunks_rep() {
+		return chunks_rep;
+	}
 }

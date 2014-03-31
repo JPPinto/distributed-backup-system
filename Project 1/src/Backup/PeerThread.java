@@ -136,7 +136,7 @@ public class PeerThread extends Thread {
 		}
 	}
 
-	public void sendPUTCHUNK(String filepath) throws IOException, InterruptedException {
+	public void sendPUTCHUNK(String filepath, int rep_degree) throws IOException, InterruptedException {
 
 		File f = new File(filepath);
 
@@ -150,7 +150,7 @@ public class PeerThread extends Thread {
 		}
 
 		LocalFile local_file = new LocalFile(f);
-		dataBase.addFileToDatabase(local_file);
+
 
 		int time_multiplier, retransmission_count;
 
@@ -159,11 +159,12 @@ public class PeerThread extends Thread {
 
 		File[] chunksToSend = listFiles(PotatoBackup.temporaryDirectory);
 
+
 		for (File file : chunksToSend) {
 			if (file.isFile() && file.getName().length() > 66) {
 				if (file.getName().substring(0, 64).equals(Utilities.getHashFromFile(f))) {
 					Chunk temp_chunk = Chunk.loadChunk(file.getPath());
-					PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, 1);
+					PBMessage temp_putchunk = new Msg_Putchunk(temp_chunk, rep_degree);
 
 					socMCReceiver.clearCountStores();
 
@@ -192,10 +193,14 @@ public class PeerThread extends Thread {
 						System.out.println("FAILED TO BACKUP FILE " + filepath + " DUE TO ERROR SENDING CHUNK " + temp_chunk.getChunkNo() + ", WITH ONLY " + socMCReceiver.stores + "STORED MESSAGES");
 						return;
 					}
+
+
+					local_file.getChunks_rep().add(socMCReceiver.stores);
 				}
 			}
 		}
 
+		dataBase.addFileToDatabase(local_file);
 		System.out.println("File " + filepath + " backup complete with " + local_file.getNumberOfChunks() + " chunks sent.");
 
 		for (File file : chunksToSend) {
@@ -298,7 +303,7 @@ public class PeerThread extends Thread {
 			sleep(1000);
 
 			//peer.dataBase.getFiles().clear();
-			peer.sendPUTCHUNK("./binary2.test");
+			peer.sendPUTCHUNK("./binary2.test",1);
 			System.out.println("Backup done Now for the Recovery!");
 			//sleep(1000);
 			peer.sendGETCHUNK("./binary2.test");

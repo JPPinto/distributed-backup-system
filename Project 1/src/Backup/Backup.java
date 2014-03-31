@@ -119,7 +119,7 @@ class Backup extends JFrame {
                 log+=file.getAbsolutePath();
                 log+="...\n";
                 updateLogWindow();
-                peer.sendPUTCHUNK(file.getAbsolutePath());
+                peer.sendPUTCHUNK(file.getAbsolutePath(), 1);
 
 
             } catch (IOException e1) {
