@@ -97,6 +97,7 @@ public class PeerThread extends Thread {
 				socket.send(packet);
 
 			} else if (msg.getType() == CHUNK) {
+				msg.fileId = msg.fileId;
 
 				packet = new DatagramPacket(msg.getData(0), msg.getData(0).length, IPAddress, mcast_port);
 				System.out.println("SEND: " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0));

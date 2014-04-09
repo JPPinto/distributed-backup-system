@@ -32,9 +32,9 @@ class Backup extends JFrame {
     public Backup(String[] args) {
 
         if (args.length != 6) {
-            peer = new PeerThread("224.0.0.0", 60000, "225.0.0.0", 60001, "226.0.0.0", 60002);
+            peer = new PeerThread("239.0.0.1", 8765, "239.0.0.1", 8766, "239.0.0.1", 8767);
         } else {
-            peer = new PeerThread(args[0], Integer.getInteger(args[1]), args[2], Integer.getInteger(args[3]), args[4], Integer.getInteger(args[5]));
+            peer = new PeerThread(args[0], Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]), args[4], Integer.parseInt(args[5]));
         }
 
         setName("Potato Backup");

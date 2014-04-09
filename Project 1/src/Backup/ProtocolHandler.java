@@ -44,7 +44,6 @@ public class ProtocolHandler extends Thread {
             System.out.println("FROM: " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " - " + msg.getType() + " " + msg.version + " " + msg.fileId + " " + msg.getIntAttribute(0) + " " + msg.getIntAttribute(1));
             msg.saveChunk(Utilities.backupDirectory);
 
-            //				rand.nextInt((MAX-MIN) + 1) + MIN;
             int randomNum = rand.nextInt((400 - 0) + 1);
 
             PBMessage message = new Msg_Stored(msg.fileId, msg.getIntAttribute(0));
