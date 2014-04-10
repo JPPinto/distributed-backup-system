@@ -35,7 +35,7 @@ public class Utilities {
      */
     public static String convertByteArrayToHex(byte[] bytes) {
         BigInteger bi = new BigInteger(1, bytes);
-        return String.format("%0" + (bytes.length << 1) + "X", bi);
+        return String.format("%0" + (bytes.length << 1) + "x", bi);
     }
 
     public static String convertByteArrayToHex(byte Byte) {
@@ -71,7 +71,7 @@ public class Utilities {
             byte[] hash = digest.digest();
 
             /* Convert to string */
-            return convertByteArrayToHex(hash);
+			return convertByteArrayToHex(hash);
 
         } catch (NoSuchAlgorithmException e) {
             System.out.println("SHA-256 Algorithm Not found! Aborting execution.");
